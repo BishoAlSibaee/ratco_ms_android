@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/me"  android:title="hjkh" app:showAsAction="ifRoom"/>
+
+   <!-- <item android:id="@+id/addMyWorkLocation"
+        android:title="@string/addMyWorkLocation"></item>
+
+    <item android:id="@+id/SetWorkLocationForEmployees"
+        android:title="@string/addMyWorkLocationForYourEmployees"></item>-->
+    <item android:id="@+id/changeMyPassword" android:title="@string/changeMyPassword" />
+    <item android:id="@+id/goToHR" android:title="@string/hr" />
+    <item android:id="@+id/goToSales" android:title="@string/sales" />
+    <item android:id="@+id/goToProjects" android:title="@string/projects" />
+    <item android:id="@+id/LogOut" android:title="LogOut"/>
+</menu>

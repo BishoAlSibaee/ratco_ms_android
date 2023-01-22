@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "230435155902",
+    "project_id": "ratco-ms-9b2fc",
+    "storage_bucket": "ratco-ms-9b2fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230435155902:android:40fc8366a07458d4f713ef",
+        "android_client_info": {
+          "package_name": "com.syrsoft.ratcoms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "230435155902-04amr6m7877l094rair1u2l30e9cbvcu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHbDS-tYePX26mBFRiinvBtVwidffI7C0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "230435155902-04amr6m7877l094rair1u2l30e9cbvcu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

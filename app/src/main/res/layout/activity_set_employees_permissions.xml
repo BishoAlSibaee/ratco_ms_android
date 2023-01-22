@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".Management.SetEmployeesPermissions">
+
+    <TextView
+        android:id="@+id/textView95"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/hr_order_background"
+        android:padding="10dp"
+        android:text="@string/setUsersPermissions"
+        android:textColor="@color/ic_launcher_background"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/mainpage_btns_background"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/textView96"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/selectEmp"
+            android:textColor="@color/ic_launcher_background" />
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mainpage_btns_background"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <Button
+                android:id="@+id/button47"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/btns"
+                android:onClick="checkSalesmanPermissions"
+                android:text="@string/salesMan"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/button471"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/btns"
+                android:onClick="chechkLabourPermissions"
+                android:text="@string/labour"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/button4714"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/btns"
+                android:onClick="checkTecniciansPermissions"
+                android:text="@string/technician"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/button4714r"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/btns"
+                android:onClick="checkAllPermissions"
+                android:text="@string/checkAll"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/button4714t"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/btns"
+                android:onClick="encheckAllPermissions"
+                android:text="@string/uncheckAll"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/mainpage_btns_background"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/permissionsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button48"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btns"
+        android:onClick="savePermissions"
+        android:text="@string/save"
+        android:textAllCaps="false" />
+</LinearLayout>

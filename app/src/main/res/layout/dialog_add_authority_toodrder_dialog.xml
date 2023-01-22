@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Authorized Person"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+
+    <ListView
+        android:id="@+id/AddAuthorityToOrderDialog_list"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/AddAuthorityToOrderDialog_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/purple_700"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/AddAuthorityToOrderDialog_addBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/approve_btn_background"
+        android:text="add" />
+
+</LinearLayout>

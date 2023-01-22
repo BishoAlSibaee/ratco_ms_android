@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_bg"
+    android:gravity="left"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".ManagementActivity">
+
+    <TextView
+        android:id="@+id/textView98"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mainpage_btns_background"
+        android:padding="10dp"
+        android:text="@string/management"
+        android:textColor="@color/ic_launcher_background"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/mainpage_btns_background"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView158"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/manageEmployees"
+                android:textColor="#005353"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/goToEmpRates"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/approve_btns"
+                    android:drawableTop="@drawable/rate"
+                    android:gravity="center"
+                    android:onClick="goToEmployeesRates"
+                    android:padding="10dp"
+                    android:text="@string/employeesRates"
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/button10"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/approve_btns"
+                    android:drawableTop="@drawable/title"
+                    android:gravity="center"
+                    android:onClick="goToAuthorizedJobTitles"
+                    android:padding="10dp"
+                    android:paddingEnd="5dp"
+                    android:text="@string/manageAuthorizedJobTitles"
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button46"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/approve_btns"
+                    android:drawableTop="@drawable/perissions"
+                    android:gravity="center"
+                    android:onClick="goTOPermisstions"
+                    android:padding="10dp"
+                    android:text="@string/setEmployeesPermissions"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/HR_manageEmployees"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/approve_btns"
+                    android:drawableTop="@drawable/manage_emps"
+                    android:gravity="center"
+                    android:onClick="goToMangeEmployees"
+                    android:padding="10dp"
+                    android:text="@string/manageEmployees"
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/HR_manageorderTypesAuthorities"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/approve_btns"
+                    android:drawableTop="@drawable/orders"
+                    android:gravity="center"
+                    android:onClick="goToManageOrdertypesAuthorities"
+                    android:padding="10dp"
+                    android:paddingEnd="5dp"
+                    android:text="@string/ManageOrdersAuthorities"
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/HR_manageEmployeesContracts"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/approve_btns"
+                    android:drawableTop="@drawable/ic_baseline_insert_drive_file_24"
+                    android:gravity="center"
+                    android:onClick="goToManageContracts"
+                    android:padding="10dp"
+                    android:text="@string/manageEmployeesContracts"
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/HR_managePassports"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/approve_btns"
+                    android:drawableTop="@drawable/passport"
+                    android:gravity="center"
+                    android:onClick="gotoManagePassports"
+                    android:padding="10dp"
+                    android:text="@string/manageEmployeesPassports"
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/HR_manageEmployeesId"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/approve_btns"
+                    android:drawableTop="@drawable/card"
+                    android:gravity="center"
+                    android:onClick="goToMangeEmployeesIds"
+                    android:padding="10dp"
+                    android:text="@string/manageEmployeesIds"
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView15f"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/ads"
+            android:textColor="#005353"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button53"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/approve_btns"
+            android:gravity="start|center_vertical"
+            android:onClick="goToSetMaintenanceResponsibles"
+            android:paddingStart="20dp"
+            android:text="@string/setMaintenanceResponsibles"
+            android:textAllCaps="false"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/HR_sendNewAd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/approve_btns"
+                android:drawableTop="@drawable/announcement"
+                android:gravity="center"
+                android:onClick="sendNewAdDialog"
+                android:padding="10dp"
+                android:text="@string/sendNewAd"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/HR_sendNewAdWithImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/approve_btns"
+                android:drawableTop="@drawable/image"
+                android:gravity="center"
+                android:onClick="sendNewAdWithImage"
+                android:padding="10dp"
+                android:text="@string/sendNewAdWithImage"
+                android:textAllCaps="false" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

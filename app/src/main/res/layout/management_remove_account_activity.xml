@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@drawable/img_bg"
+    android:orientation="vertical"
+    tools:context=".Management.RemoveAccount">
+
+    <TextView
+        android:id="@+id/textView98"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mainpage_btns_background"
+        android:padding="10dp"
+        android:text="@string/removeAccount"
+        android:textColor="@color/ic_launcher_background"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/mainpage_btns_background"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/textView145"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/searchEmployee"
+            android:textColor="@color/purple_700"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView146"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mainpage_btns_background"
+            android:gravity="center"
+            android:hint="@string/search"
+            android:minHeight="48dp"
+            android:onClick="goToSearchUser"
+            android:padding="10dp"
+            android:textColor="@color/purple_700"
+            android:textColorHint="@color/teal_200"
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/search_user" />
+    </LinearLayout>
+
+</LinearLayout>

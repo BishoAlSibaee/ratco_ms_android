@@ -1,0 +1,1648 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:background="@drawable/btns"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/MyApprovals_Resignation_sendDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="1dp"
+            android:background="@color/teal_700"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/purple_700"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView14"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:background="@color/teal_700"
+                android:padding="5dp"
+                app:srcCompat="@drawable/drop_down_icon" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView43"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:text="@string/order"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView42"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:text="@string/jobNumber"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView41"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:text="@string/jobTitle"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView40"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:text="@string/fname"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView39"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:text="@string/lname"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/MyApprovals_Resignation_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_Resignation_jobNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_Resignation_jobTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_Resignation_fname"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_Resignation_lname"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView38"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_weight="0.8"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:text="@string/resignationٍReason"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:text="@string/resignationٍDate"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/MyApprovals_Resignation_reason"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="1dp"
+                        android:layout_weight="0.8"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_Resignation_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:gravity="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/auth_background"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/textView27"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approval1"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView26"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalResult"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView25"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalDate"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth1ID0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth1Res0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth1Date0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/MyApprovals_Custody_Auth1Note"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/auth_background"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView24"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approval2"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView23"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalResult"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView22"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalDate"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth2ID0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth2Res0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth2Date0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/MyApprovals_Custody_Auth2Note"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/auth_background"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton300"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/textView270"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approval3"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView260"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalResult"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView250"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalDate"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth3ID0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth3Res0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth3Date0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/MyApprovals_Custody_Auth3Note"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/auth_background"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton3000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/textView240"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approval4"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView230"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalResult"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView220"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalDate"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth4ID0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth4Res0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth4Date0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/MyApprovals_Custody_Auth4Note"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/auth_background"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton30000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/textView271"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approval5"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView261"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalResult"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView251"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalDate"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth5ID0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth5Res0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth5Date0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/MyApprovals_Custody_Auth5Note"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/auth_background"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton300000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/textView241"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:text="@string/approval6"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView231"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalResult"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView221"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalDate"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth6ID0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth6Res0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth6Date0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/MyApprovals_Custody_Auth6Note"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/auth_background"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton3000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/textView2715"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approval7"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView2615"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalResult"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView2515"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalDate"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth7ID"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth7Res"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth7Date"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/MyApprovals_Custody_Auth7Note"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/auth_background"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton30000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/textView2415"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approval8"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView2315"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalResult"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView2215"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalDate"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth8ID"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth8Res"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth8Date"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/MyApprovals_Custody_Auth8Note"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/auth_background"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton300000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/textView2714"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approval9"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView2614"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalResult"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView2514"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalDate"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth9ID"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth9Res"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth9Date"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/MyApprovals_Custody_Auth9Note"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/auth_background"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton3000000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/textView2414"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approval10"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView2314"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalResult"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView2214"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:text="@string/approvalDate"
+                        android:textColor="@color/purple_700"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth10ID"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth10Res"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/MyApprovals_resignation_Auth10Date"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/lightGray"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_700"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/MyApprovals_Custody_Auth10Note"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/BtnsLayoutt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/teal_700"
+            android:orientation="vertical"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:text="@string/myNotes"
+                android:textColor="@color/purple_700"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/MyApproval_VS_unit_myNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/MyApprovals_Resignation_reject"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/mainpage_btns"
+                    android:text="@string/reject"
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/MyApprovals_Resignation_approve"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/approve_btn_background"
+                    android:text="@string/approve"
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
