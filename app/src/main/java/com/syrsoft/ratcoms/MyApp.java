@@ -674,7 +674,7 @@ public class MyApp extends Application {
         Volley.newRequestQueue(app).add(request);
     }
 
-    public static void uploadPDF (final String pdfname, Uri pdffile,VollyCallback callback) {
+    public static void uploadPDF (final String pdfname,Uri pdffile, VollyCallback callback) {
 
         InputStream iStream = null;
         try {
@@ -699,10 +699,6 @@ public class MyApp extends Application {
                                     String message = jsonObject.getString("error") ;
                                     callback.onSuccess("0");
                                 }
-                                //Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                                //jsonObject.toString().replace("\\\\", "");
-                                //recordFileLinkInTable(jsonObject.getString("message"),"ClientVisitReport","FileLink",ID);
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -711,7 +707,6 @@ public class MyApp extends Application {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            //Toast.makeText(app, error.getMessage(), Toast.LENGTH_SHORT).show();
                             if (error != null) {
                                 callback.onSuccess(error.toString());
                             }
@@ -720,7 +715,6 @@ public class MyApp extends Application {
                             }
                         }
                     }) {
-
                 /*
                  * If you want to add more parameters with the image
                  * you can do it here
@@ -730,7 +724,6 @@ public class MyApp extends Application {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
-                    // params.put("tags", "ccccc");  add string parameters
                     return params;
                 }
 
@@ -828,6 +821,16 @@ public class MyApp extends Application {
                 res = "Dec" ;
         }
         return res ;
+    }
+
+    public static String getNameSalesMan(int salesId) {
+        String na = null;
+        for (int i = 0 ;i<EMPS.size();i++){
+            if (EMPS.get(i).JobNumber == salesId) {
+                na =EMPS.get(i).FirstName + " " + EMPS.get(i).LastName;
+            }
+        }
+        return na;
     }
 
 }

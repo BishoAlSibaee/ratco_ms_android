@@ -173,7 +173,7 @@
     <string name="projectDesc">وصف المشروع</string>
     <string name="projectResponsible">مسؤول المشروع</string>
     <string name="projectResponsibleMobile">جوال المسؤول</string>
-    <string name="enterAvaliability">ادخل مدة التوريد</string>
+    <string name="enterAvaliability">ادخل مدة التوريد (أيام)</string>
     <string name="avaliability">التوريد</string>
     <string name="termsAndConditions">شروط العقد</string>
     <string name="deliveryLocation">موقع التوريد</string>
@@ -446,4 +446,30 @@
     <string name="noRatesDoneYes">لا يوجد تقييمات تمت حتى الان</string>
     <string name="employeesRates">تقييمات الموظفين</string>
     <string name="bonusReason">ادخل سبب المكافأة</string>
+    <string name="select_employee">اختر الموظف</string>
+    <string name="new_buy_order">اضافة طلب شراء جديد</string>
+    <string name="view_contract">عرض العقد</string>
+    <string name="BuyOrder">طلبات الشراء</string>
+    <string name="addnewbuyorder">اضافة طلب شراء</string>
+    <string name="expectedsupplydate">تاريخ التوريد</string>
+    <string name="viewbuyordertomanager">عرض طلب الشراء</string>
+    <string name="view_purchase_attachments">ِعرض مرفقات الشراء</string>
+    <string name="purchase_order">طلبات الشراء</string>
+    <string name="orders_accepted">طلبات مقبولة</string>
+    <string name="orders_pending">طلبات معلقة</string>
+    <string name="viewpurchase">طلبات الشراء</string>
+    <string name="order_notes">ملاحظات الطلب</string>
+    <string name="attachment">المرفقات</string>
+    <string name="ExpectedDelevaryDate">تاريخ التوريد المتوقع</string>
+    <string name="order_status">حالة الطلب</string>
+    <string name="Orderupdate">تحديثات الطلب</string>
+    <string name="orderrequest">تم الطلب</string>
+    <string name="orderreceived">تم الإستلام</string>
+    <string name="accept_selas_manager">موافقة مدير المبيعات</string>
+    <string name="accept_import_manager">موافقة مدير المشتريات</string>
+    <string name="delivery_status">حالة الإستلام</string>
+    <string name="ddate">Date</string>
+    <string name="Update">تحديث</string>
+    <string name="enter_warranty">ادخل الضمان (سنة)</string>
+
 </resources>

@@ -149,10 +149,9 @@
                         android:layout_weight="0.5"
                         android:drawableEnd="@android:drawable/ic_menu_today"
                         android:gravity="center"
-
                         android:hint="@string/selectDate"
                         android:textColor="@color/white"
-                        android:textColorHint="@android:color/darker_gray"
+                        android:textColorHint="@color/bg"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -585,6 +584,7 @@
                         android:background="@android:drawable/editbox_background"
                         android:gravity="center"
                         android:hint="@string/enterAvaliability"
+                        android:inputType="number"
                         android:padding="5dp"
                         android:textColor="@color/purple_700"
                         android:textColorHint="@android:color/darker_gray"
@@ -849,7 +849,7 @@
                         android:layout_weight="1"
                         android:background="@android:drawable/editbox_background"
                         android:gravity="center"
-                        android:hint="enter warranty"
+                        android:hint="@string/enter_warranty"
                         android:inputType="number"
                         android:padding="5dp"
                         android:textColor="@color/purple_700"
@@ -857,45 +857,6 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/mainpage_btns_background"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:id="@+id/items_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textView3601"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="@string/items"
-                        android:textColor="@color/bg"
-                        android:textStyle="bold" />
-
-
-                </LinearLayout>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/btns"
-                    android:drawableEnd="@android:drawable/ic_input_add"
-                    android:onClick="addNewItem"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:text="@string/addNewItem"
-                    android:textAllCaps="false" />
             </LinearLayout>
 
             <Button

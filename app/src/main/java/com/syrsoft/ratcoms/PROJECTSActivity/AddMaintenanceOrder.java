@@ -80,33 +80,33 @@ import java.util.Random;
 
 public class AddMaintenanceOrder extends AppCompatActivity {
 
-    Activity act ;
-    TextView ProjectName , ClientName , Warranty , WarrantyDate ,ProjectDescTV,ProjectResponsibleTV,ResponsibleMobileTV,ContractDateTV,SupplyTV,InstallTV,HandoverTV ;
-    TextView DeliveryLocationTV,AvailabilityTV,InstallationTV,WarrantyTV,Payment1TV,Payment1TVtext,Payment2TV,Payment2TVtext,Payment3TV,Payment3TVtext,Payment4TV,Payment4TVtext;
-    EditText DamageDescET , NotesET , ContactNumberET , ContactNameET ;
-    LinearLayout FilesLayout , DamageLayout ;
-    CheckBox MaintenanceCB , AluminumCB , DoorsCB ;
-    String[] SearchByArr ;
-    PROJECT_CONTRACT_CLASS CONTRACT ;
-    CLIENT_CLASS CLIENT ;
-    TermsAndConditions TERMS ;
-    List<CONTRACT_ITEMS_CLASS>  ITEMS ;
-    String searchProjectUrl = MyApp.MainUrl + "searchProject.php" ;
-    String getContractTermsURL = MyApp.MainUrl + "getContractTermsAndConditions.php" ;
-    String getContractItemsURL = MyApp.MainUrl + "getContractItems.php" ;
+    Activity act;
+    TextView ProjectName, ClientName, Warranty, WarrantyDate, ProjectDescTV, ProjectResponsibleTV, ResponsibleMobileTV, ContractDateTV, SupplyTV, InstallTV, HandoverTV;
+    TextView DeliveryLocationTV, AvailabilityTV, InstallationTV, WarrantyTV, Payment1TV, Payment1TVtext, Payment2TV, Payment2TVtext, Payment3TV, Payment3TVtext, Payment4TV, Payment4TVtext;
+    EditText DamageDescET, NotesET, ContactNumberET, ContactNameET;
+    LinearLayout FilesLayout, DamageLayout;
+    CheckBox MaintenanceCB, AluminumCB, DoorsCB;
+    String[] SearchByArr;
+    PROJECT_CONTRACT_CLASS CONTRACT;
+    CLIENT_CLASS CLIENT;
+    TermsAndConditions TERMS;
+    List<CONTRACT_ITEMS_CLASS> ITEMS;
+    String searchProjectUrl = MyApp.MainUrl + "searchProject.php";
+    String getContractTermsURL = MyApp.MainUrl + "getContractTermsAndConditions.php";
+    String getContractItemsURL = MyApp.MainUrl + "getContractItems.php";
     String getClientUrl = MyApp.MainUrl + "getClient.php";
     String saveMaintenanceOrderUrl = MyApp.MainUrl + "insertMaintenanceOrder.php";
-    RequestQueue Q ;
-    List<PROJECT_CONTRACT_CLASS> ContractsResult ;
-    Dialog D ;
-    int ATTACHFILE_REQCODE = 20 ;
-    int CAM_REQCODE = 21 ;
-    List<Bitmap> FILES ;
-    RecyclerView ItemsRecycler ;
-    RecyclerView.LayoutManager Manager ;
-    Items_Adapter items_adapter ;
-    List<USER> RespectiveUsers ;
-    String City ;
+    RequestQueue Q;
+    List<PROJECT_CONTRACT_CLASS> ContractsResult;
+    Dialog D;
+    int ATTACHFILE_REQCODE = 20;
+    int CAM_REQCODE = 21;
+    List<Bitmap> FILES;
+    RecyclerView ItemsRecycler;
+    RecyclerView.LayoutManager Manager;
+    Items_Adapter items_adapter;
+    List<USER> RespectiveUsers;
+    String City;
 
 
     @Override
@@ -119,7 +119,7 @@ public class AddMaintenanceOrder extends AppCompatActivity {
     }
 
     void setActivity() {
-        act = this ;
+        act = this;
         ProjectName = (TextView) findViewById(R.id.AddNewProject_ClientName);
         ClientName = (TextView) findViewById(R.id.AddNewProject_ClientNamee);
         DamageDescET = (EditText) findViewById(R.id.AddMaintenanceOrder_damageDesc);
@@ -154,7 +154,7 @@ public class AddMaintenanceOrder extends AppCompatActivity {
         AluminumCB = (CheckBox) findViewById(R.id.addMaintenance_aluminumCB);
         DoorsCB = (CheckBox) findViewById(R.id.addMaintenance_doorsCB);
         ItemsRecycler = (RecyclerView) findViewById(R.id.Items_Recycler);
-        Manager = new LinearLayoutManager(act,RecyclerView.VERTICAL,false);
+        Manager = new LinearLayoutManager(act, RecyclerView.VERTICAL, false);
         ItemsRecycler.setLayoutManager(Manager);
         Q = Volley.newRequestQueue(act);
         SearchByArr = getResources().getStringArray(R.array.searchProjectByArray);
@@ -166,7 +166,7 @@ public class AddMaintenanceOrder extends AppCompatActivity {
             if (u.JobTitle.equals("Sales Manager")) {
                 RespectiveUsers.add(u);
             }
-            if (u.JobNumber == MyApp.db.getUser().DirectManager ) {
+            if (u.JobNumber == MyApp.db.getUser().DirectManager) {
                 if (!u.JobTitle.equals("Manager") && !u.JobTitle.equals("Sales Manager")) {
                     RespectiveUsers.add(u);
                 }
@@ -177,12 +177,11 @@ public class AddMaintenanceOrder extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Random r = new Random() ;
+        Random r = new Random();
         int x = r.nextInt(10000);
         if (requestCode == ATTACHFILE_REQCODE) {
 
-            if (resultCode == RESULT_OK)
-            {
+            if (resultCode == RESULT_OK) {
                 if (data == null) {
                     //Display an error
                     return;
@@ -192,35 +191,29 @@ public class AddMaintenanceOrder extends AppCompatActivity {
                     BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
                     Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
                     FILES.add(bmp);
-                    View v = LayoutInflater.from(act).inflate(R.layout.images_to_save_unit,null,false);
+                    View v = LayoutInflater.from(act).inflate(R.layout.images_to_save_unit, null, false);
                     ImageView image = (ImageView) v.findViewById(R.id.imagesToSave_image);
                     image.setImageBitmap(bmp);
                     FilesLayout.addView(v);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-            }
-            else
-            {
+            } else {
                 //Log.d("path" , "error result "+data.getData().getPath());
             }
 
-        }
-        else if (requestCode == CAM_REQCODE) {
+        } else if (requestCode == CAM_REQCODE) {
             //x = r.nextInt(10000);
-            if (resultCode == RESULT_OK)
-            {
+            if (resultCode == RESULT_OK) {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 FILES.add(imageBitmap);
-                View v = LayoutInflater.from(act).inflate(R.layout.images_to_save_unit,null,false);
+                View v = LayoutInflater.from(act).inflate(R.layout.images_to_save_unit, null, false);
                 ImageView image = (ImageView) v.findViewById(R.id.imagesToSave_image);
                 image.setImageBitmap(imageBitmap);
                 FilesLayout.addView(v);
-            }
-            else
-            {
-                ToastMaker.Show(1,"error getting Image",act);
+            } else {
+                ToastMaker.Show(1, "error getting Image", act);
             }
         }
 
@@ -232,7 +225,7 @@ public class AddMaintenanceOrder extends AppCompatActivity {
         Window w = D.getWindow();
         w.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         D.setCancelable(false);
-        ArrayAdapter<String> SearchByAdapter = new ArrayAdapter<String>(act,R.layout.spinner_item,SearchByArr);
+        ArrayAdapter<String> SearchByAdapter = new ArrayAdapter<String>(act, R.layout.spinner_item, SearchByArr);
         Spinner SearchBySpinner = (Spinner) D.findViewById(R.id.SearchProject_searchBySpinner);
         SearchBySpinner.setAdapter(SearchByAdapter);
         Spinner ResultSpinner = (Spinner) D.findViewById(R.id.SearchProject_searchResultSpinner);
@@ -256,36 +249,34 @@ public class AddMaintenanceOrder extends AppCompatActivity {
                 if (SearchField.getText() != null && !SearchField.getText().toString().isEmpty()) {
                     ContractsResult.clear();
                     String[] resArr = new String[0];
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(act,R.layout.spinner_item,resArr);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(act, R.layout.spinner_item, resArr);
                     ResultSpinner.setAdapter(adapter);
                     if (SearchBySpinner.getSelectedItem() != null && !SearchBySpinner.getSelectedItem().toString().isEmpty()) {
                         P.setVisibility(View.VISIBLE);
                         StringRequest request = new StringRequest(Request.Method.POST, searchProjectUrl, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Log.d("searchProjectResp" , response);
+                                Log.d("searchProjectResp", response);
                                 P.setVisibility(View.GONE);
                                 if (response.equals("0")) {
 
-                                }
-                                else if (response.equals("-1")) {
+                                } else if (response.equals("-1")) {
 
-                                }
-                                else {
+                                } else {
                                     ContractsResult.clear();
                                     try {
                                         JSONArray arr = new JSONArray(response);
                                         String[] resArr = new String[arr.length()];
-                                        for (int i=0;i<arr.length();i++) {
+                                        for (int i = 0; i < arr.length(); i++) {
                                             JSONObject row = arr.getJSONObject(i);
-                                            ContractsResult.add(new PROJECT_CONTRACT_CLASS(row.getInt("id"),row.getInt("ClientID"),row.getString("ProjectName"),row.getString("Date"),row.getString("City"),row.getString("Address"),row.getDouble("LA"),row.getDouble("LO"),row.getString("ProjectDescription"),row.getString("ProjectManager"),row.getString("MobileNumber"),row.getInt("SalesMan"),row.getString("HandOverDate"),row.getString("WarrantyExpireDate"),row.getString("ContractLink"),row.getInt("Supplied"),row.getInt("Installed"),row.getInt("Handovered"),row.getString("SupplyDate"),row.getString("InstallDate"),row.getString("HandOverDate")));
+                                            ContractsResult.add(new PROJECT_CONTRACT_CLASS(row.getInt("id"), row.getInt("ClientID"), row.getString("ProjectName"), row.getString("Date"), row.getString("City"), row.getString("Address"), row.getDouble("LA"), row.getDouble("LO"), row.getString("ProjectDescription"), row.getString("ProjectManager"), row.getString("MobileNumber"), row.getInt("SalesMan"), row.getString("HandOverDate"), row.getString("WarrantyExpireDate"), row.getString("ContractLink"), row.getInt("Supplied"), row.getInt("Installed"), row.getInt("Handovered"), row.getString("SupplyDate"), row.getString("InstallDate"), row.getString("HandOverDate")));
                                             resArr[i] = row.getString("ProjectName");
                                         }
-                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(act,R.layout.spinner_item,resArr);
+                                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(act, R.layout.spinner_item, resArr);
                                         ResultSpinner.setAdapter(adapter);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
-                                        Log.d("searchProjectResp" , e.getMessage());
+                                        Log.d("searchProjectResp", e.getMessage());
                                     }
 
                                 }
@@ -295,28 +286,25 @@ public class AddMaintenanceOrder extends AppCompatActivity {
                             public void onErrorResponse(VolleyError error) {
                                 P.setVisibility(View.GONE);
                             }
-                        })
-                        {
+                        }) {
                             @Nullable
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
-                                Map<String,String> par = new HashMap<String, String>();
-                                par.put("searchBy" , String.valueOf(SearchBySpinner.getSelectedItemPosition()));
-                                par.put("Field" , SearchField.getText().toString());
+                                Map<String, String> par = new HashMap<String, String>();
+                                par.put("searchBy", String.valueOf(SearchBySpinner.getSelectedItemPosition()));
+                                par.put("Field", SearchField.getText().toString());
                                 par.put("SalesMan", String.valueOf(MyApp.db.getUser().JobNumber));
                                 return par;
                             }
                         };
                         Q.add(request);
-                    }
-                    else {
+                    } else {
 
                     }
-                }
-                else {
+                } else {
                     ContractsResult.clear();
                     String[] resArr = new String[0];
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(act,R.layout.spinner_item,resArr);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(act, R.layout.spinner_item, resArr);
                     ResultSpinner.setAdapter(adapter);
                 }
             }
@@ -332,10 +320,10 @@ public class AddMaintenanceOrder extends AppCompatActivity {
         Select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ResultSpinner.getSelectedItem() != null ) {
+                if (ResultSpinner.getSelectedItem() != null) {
                     ProjectName.setText(ResultSpinner.getSelectedItem().toString());
-                    CONTRACT = ContractsResult.get(ResultSpinner.getSelectedItemPosition()) ;
-                    Log.d("warrantyEDate",CONTRACT.WarrantyExpireDate + " "+CONTRACT.ContractLink);
+                    CONTRACT = ContractsResult.get(ResultSpinner.getSelectedItemPosition());
+                    Log.d("warrantyEDate", CONTRACT.WarrantyExpireDate + " " + CONTRACT.ContractLink);
                     ProjectDescTV.setText(CONTRACT.ProjectDescription);
                     ProjectResponsibleTV.setText(CONTRACT.ProjectManager);
                     ResponsibleMobileTV.setText(CONTRACT.MobileNumber);
@@ -361,9 +349,8 @@ public class AddMaintenanceOrder extends AppCompatActivity {
                             }
                         }
                     }
-                }
-                else {
-                    ToastMaker.Show(0,"please select project contract",act);
+                } else {
+                    ToastMaker.Show(0, "please select project contract", act);
                 }
             }
         });
@@ -508,50 +495,44 @@ public class AddMaintenanceOrder extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, getContractTermsURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("getTermsResp" ,response);
+                Log.d("getTermsResp", response);
                 l.close();
                 if (response.equals("0")) {
-                    ToastMaker.Show(0,"No Terms",act);
-                }
-                else if (response.equals("-1")) {
+                    ToastMaker.Show(0, "No Terms", act);
+                } else if (response.equals("-1")) {
 
-                }
-                else {
+                } else {
                     try {
                         JSONArray arr = new JSONArray(response);
                         TermsAndConditions T = new TermsAndConditions();
-                        for (int i=0;i<arr.length();i++) {
+                        for (int i = 0; i < arr.length(); i++) {
                             JSONObject row = arr.getJSONObject(i);
                             if (row.getString("Name").equals("DeliveryLocation")) {
                                 T.setDeliveryLocation(row.getString("Term"));
-                            }
-                            else if (row.getString("Name").equals("Availability")) {
+                            } else if (row.getString("Name").equals("Availability")) {
                                 T.setAvailability(row.getString("Term"));
-                            }
-                            else if (row.getString("Name").equals("Installation")) {
+                            } else if (row.getString("Name").equals("Installation")) {
                                 T.setInstallation(row.getString("Term"));
-                            }
-                            else if (row.getString("Name").equals("Warranty")) {
+                            } else if (row.getString("Name").equals("Warranty")) {
                                 T.setWarranty(row.getString("Term"));
-                            }
-                            else if (row.getString("Name").equals("Payment")) {
+                            } else if (row.getString("Name").equals("Payment")) {
                                 String TT = row.getString("Term");
                                 String arrT[] = TT.split("-");
                                 List<PaymentTerms> paymentTerms = new ArrayList<PaymentTerms>();
-                                if ( arrT.length > 0 ) {
-                                    Log.d("paymentarrlength" ,arrT.length+"");
-                                    for (String s : arrT){
-                                        Log.d("paymentarrlength" ,s);
+                                if (arrT.length > 0) {
+                                    Log.d("paymentarrlength", arrT.length + "");
+                                    for (String s : arrT) {
+                                        Log.d("paymentarrlength", s);
                                         String[] XX = s.split("%");
                                         if (XX.length == 2) {
-                                            paymentTerms.add(new PaymentTerms(XX[0],XX[1]));
+                                            paymentTerms.add(new PaymentTerms(XX[0], XX[1]));
                                         }
                                     }
                                 }
                                 T.setPayment(paymentTerms);
                             }
                         }
-                        TERMS = T ;
+                        TERMS = T;
                         CONTRACT.setTerms(TERMS);
 //                        if (CONTRACT.getItems() != null && CLIENT != null ) {
 //                            D.dismiss();
@@ -559,7 +540,7 @@ public class AddMaintenanceOrder extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if (TERMS != null ) {
+                    if (TERMS != null) {
                         if (TERMS.getDeliveryLocation() != null && !TERMS.getDeliveryLocation().isEmpty()) {
                             DeliveryLocationTV.setText(TERMS.getDeliveryLocation());
                         }
@@ -572,7 +553,7 @@ public class AddMaintenanceOrder extends AppCompatActivity {
                         if (TERMS.getWarranty() != null && !TERMS.getWarranty().isEmpty()) {
                             WarrantyTV.setText(TERMS.getWarranty());
                         }
-                        if (TERMS.getPayment() != null && TERMS.getPayment().size()>0) {
+                        if (TERMS.getPayment() != null && TERMS.getPayment().size() > 0) {
                             Payment1TV.setText(TERMS.getPayment().get(0).Percent);
                             Payment1TVtext.setText(TERMS.getPayment().get(0).Condition);
                             if (TERMS.getPayment().size() > 1) {
@@ -595,14 +576,13 @@ public class AddMaintenanceOrder extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 l.close();
-                Log.d("getTermsResp" ,error.toString());
+                Log.d("getTermsResp", error.toString());
             }
-        })
-        {
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> par = new HashMap<String, String>();
+                Map<String, String> par = new HashMap<String, String>();
                 par.put("ContractID", String.valueOf(CONTRACT.id));
                 return par;
             }
@@ -620,18 +600,16 @@ public class AddMaintenanceOrder extends AppCompatActivity {
             public void onResponse(String response) {
                 l.close();
                 if (response.equals("0")) {
-                    ToastMaker.Show(1,"No Items" ,act);
-                }
-                else if (response.equals("-1")) {
-                    ToastMaker.Show(1,"error getting Items" ,act);
-                }
-                else {
+                    ToastMaker.Show(1, "No Items", act);
+                } else if (response.equals("-1")) {
+                    ToastMaker.Show(1, "error getting Items", act);
+                } else {
                     //ItemsLayout.setVisibility(View.VISIBLE);
                     try {
-                        JSONArray arr = new JSONArray(response) ;
-                        for (int i=0;i<arr.length();i++) {
+                        JSONArray arr = new JSONArray(response);
+                        for (int i = 0; i < arr.length(); i++) {
                             JSONObject row = arr.getJSONObject(i);
-                            ITEMS.add(new CONTRACT_ITEMS_CLASS(row.getInt("id"),row.getInt("ProjectID"),row.getString("ItemName"),row.getInt("Quantity"),row.getDouble("Price")));
+                            ITEMS.add(new CONTRACT_ITEMS_CLASS(row.getInt("id"), row.getInt("ProjectID"), row.getString("ItemName"), row.getInt("Quantity"), row.getDouble("Price")));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -646,12 +624,11 @@ public class AddMaintenanceOrder extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 l.close();
             }
-        })
-        {
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> par = new HashMap<String, String>();
+                Map<String, String> par = new HashMap<String, String>();
                 par.put("ContractID", String.valueOf(CONTRACT.id));
                 return par;
             }
@@ -659,26 +636,25 @@ public class AddMaintenanceOrder extends AppCompatActivity {
         Q.add(request);
     }
 
-    void getClient(int ID ) {
+    void getClient(int ID) {
 
         Loading l = new Loading(act);
         l.show();
         StringRequest request = new StringRequest(Request.Method.POST, getClientUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("xxxxxx" ,response);
+                Log.d("xxxxxx", response);
                 l.close();
                 if (response.equals("0")) {
-                    Log.d("xxxxxx" ,"0");
-                }
-                else {
+                    Log.d("xxxxxx", "0");
+                } else {
                     try {
                         JSONArray arr = new JSONArray(response);
                         JSONObject row = arr.getJSONObject(0);
-                        CLIENT = new CLIENT_CLASS(row.getInt("id"),row.getString("ClientName"),row.getString("City"),row.getString("PhonNumber"),row.getString("Address"),row.getString("Email"),row.getInt("SalesMan"),row.getDouble("LA"),row.getDouble("LO"),row.getString("FieldOfWork"));
+                        CLIENT = new CLIENT_CLASS(row.getInt("id"), row.getString("ClientName"), row.getString("City"), row.getString("PhonNumber"), row.getString("Address"), row.getString("Email"), row.getInt("SalesMan"), row.getDouble("LA"), row.getDouble("LO"), row.getString("FieldOfWork"));
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Log.d("xxxxxx" ,e.getMessage());
+                        Log.d("xxxxxx", e.getMessage());
                     }
                     CONTRACT.setCLIENT(CLIENT);
                     ClientName.setText(CONTRACT.getCLIENT().ClientName);
@@ -692,16 +668,15 @@ public class AddMaintenanceOrder extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 l.close();
-                Log.d("xxxxxx" ,error.getMessage());
+                Log.d("xxxxxx", error.getMessage());
             }
-        })
-        {
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
-                Map <String,String> par = new HashMap<String, String>();
-                par.put("ID", String.valueOf(ID) );
+                Map<String, String> par = new HashMap<String, String>();
+                par.put("ID", String.valueOf(ID));
                 return par;
             }
         };
@@ -709,21 +684,18 @@ public class AddMaintenanceOrder extends AppCompatActivity {
     }
 
     public void attachFile(View view) {
-        if (CONTRACT == null ) {
-            ToastMaker.Show(0,getResources().getString(R.string.pleaseSelectProjectFirst),act);
-        }
-        else {
+        if (CONTRACT == null) {
+            ToastMaker.Show(0, getResources().getString(R.string.pleaseSelectProjectFirst), act);
+        } else {
             AlertDialog.Builder selectDialog = new AlertDialog.Builder(act);
             selectDialog.setTitle(getResources().getString(R.string.selectFileTitle));
             selectDialog.setMessage(getResources().getString(R.string.selectFileMessage));
             selectDialog.setNegativeButton(getResources().getString(R.string.cam), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if (ActivityCompat.checkSelfPermission(act, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
-                    {
-                        ActivityCompat.requestPermissions(act,new String[]{Manifest.permission.CAMERA}, ClientVisitReport.CAM_PERMISSION_REQCODE);
-                    }
-                    else {
+                    if (ActivityCompat.checkSelfPermission(act, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+                        ActivityCompat.requestPermissions(act, new String[]{Manifest.permission.CAMERA}, ClientVisitReport.CAM_PERMISSION_REQCODE);
+                    } else {
                         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         try {
                             act.startActivityForResult(takePictureIntent, CAM_REQCODE);
@@ -739,7 +711,7 @@ public class AddMaintenanceOrder extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     Intent open = new Intent(Intent.ACTION_GET_CONTENT);
                     open.setType("image/*");
-                    act.startActivityForResult(Intent.createChooser(open,"select Image"),ATTACHFILE_REQCODE);
+                    act.startActivityForResult(Intent.createChooser(open, "select Image"), ATTACHFILE_REQCODE);
                 }
             });
             selectDialog.create().show();
@@ -748,9 +720,8 @@ public class AddMaintenanceOrder extends AppCompatActivity {
 
     public void viewContractFile(View view) {
         if (CONTRACT.ContractLink == null || CONTRACT.ContractLink.equals("0") || CONTRACT.ContractLink.isEmpty()) {
-            ToastMaker.Show(1,"No File Attached",act);
-        }
-        else {
+            ToastMaker.Show(1, "No File Attached", act);
+        } else {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(CONTRACT.ContractLink));
             startActivity(browserIntent);
         }
@@ -760,44 +731,42 @@ public class AddMaintenanceOrder extends AppCompatActivity {
     public void showOnMap(View view) {
         if (CONTRACT.LA != 0 && CONTRACT.LO != 0) {
             Intent i = new Intent(act, ShowVisitsOnMap.class);
-            i.putExtra("LA",CONTRACT.LA);
-            i.putExtra("LO" , CONTRACT.LO);
-            i.putExtra("ClientName" , CONTRACT.ProjectName);
+            i.putExtra("LA", CONTRACT.LA);
+            i.putExtra("LO", CONTRACT.LO);
+            i.putExtra("ClientName", CONTRACT.ProjectName);
             startActivity(i);
         }
     }
 
     public void sendMaintenanceOrder(View view) {
 
-        if (CONTRACT == null ) {
-            ToastMaker.Show(0,"select Contract" ,act);
+        if (CONTRACT == null) {
+            ToastMaker.Show(0, "select Contract", act);
             ProjectName.setHintTextColor(Color.RED);
             return;
         }
         if (DamageDescET.getText() == null || DamageDescET.getText().toString().isEmpty()) {
-            ToastMaker.Show(0,"enter Damage Description" ,act);
+            ToastMaker.Show(0, "enter Damage Description", act);
             DamageDescET.setHint("enter Damage Description");
             DamageDescET.setHintTextColor(Color.RED);
             return;
         }
         if (ContactNumberET.getText() == null || ContactNumberET.getText().toString().isEmpty()) {
-            ToastMaker.Show(0,"enter contact number",act);
+            ToastMaker.Show(0, "enter contact number", act);
             ContactNumberET.setHint("enter contact number");
             ContactNumberET.setHintTextColor(Color.RED);
             return;
-        }
-        else {
+        } else {
             if (ContactNumberET.getText().toString().length() < 10) {
-                ToastMaker.Show(1,"Contact Number is less than 10 numbers",act);
+                ToastMaker.Show(1, "Contact Number is less than 10 numbers", act);
                 ContactNumberET.setTextColor(Color.RED);
                 return;
-            }
-            else {
+            } else {
                 ContactNumberET.setTextColor(Color.WHITE);
             }
         }
         if (ContactNameET.getText() == null || ContactNameET.getText().toString().isEmpty()) {
-            ToastMaker.Show(0,"enter contact name",act);
+            ToastMaker.Show(0, "enter contact name", act);
             ContactNumberET.setHint("enter contact name");
             ContactNumberET.setHintTextColor(Color.RED);
             return;
@@ -808,17 +777,15 @@ public class AddMaintenanceOrder extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 l.close();
-                Log.d("saveOrderResp" , response);
+                Log.d("saveOrderResp", response);
                 if (response.equals("0")) {
-                    new MESSAGE_DIALOG(act,"Error .. ","Try again later") ;
-                }
-                else if (response.equals("-1")) {
-                    new MESSAGE_DIALOG(act,"Error" , "No Parameters");
-                }
-                else if (Integer.parseInt(response) > 0 ) {
+                    new MESSAGE_DIALOG(act, "Error .. ", "Try again later");
+                } else if (response.equals("-1")) {
+                    new MESSAGE_DIALOG(act, "Error", "No Parameters");
+                } else if (Integer.parseInt(response) > 0) {
                     int ID = Integer.parseInt(response);
                     for (Bitmap b : FILES) {
-                        MyApp.savePhoto(b,"MaintenanceOrderLinks",ID,"MaintenanceID");
+                        MyApp.savePhoto(b, "MaintenanceOrderLinks", ID, "MaintenanceID");
                     }
                     for (USER u : MyApp.EMPS) {
                         if (MaintenanceCB.isChecked()) {
@@ -840,47 +807,46 @@ public class AddMaintenanceOrder extends AppCompatActivity {
                     MyApp.sendNotificationsToGroup(RespectiveUsers, getResources().getString(R.string.maintenanceOrder), getResources().getString(R.string.maintenanceOrder) + " " + CONTRACT.ProjectName, MyApp.db.getUser().FirstName + " " + MyApp.db.getUser().LastName, MyApp.db.getUser().JobNumber, "MaintenanceOrder", act, new VolleyCallback() {
                         @Override
                         public void onSuccess() {
-                            MESSAGE_DIALOG m = new MESSAGE_DIALOG(act,getResources().getString(R.string.saved),getResources().getString(R.string.saved),0);
+                            MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, getResources().getString(R.string.saved), getResources().getString(R.string.saved), 0);
                         }
                     });
                 }
             }
         }
-        , new Response.ErrorListener() {
+                , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 l.close();
-                new MESSAGE_DIALOG(act,"error","error "+error.toString());
+                new MESSAGE_DIALOG(act, "error", "error " + error.toString());
             }
-        })
-        {
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Calendar c = Calendar.getInstance(Locale.getDefault());
-                String Date = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DAY_OF_MONTH);
-                Map<String,String> par = new HashMap<String,String>();
+                String Date = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
+                Map<String, String> par = new HashMap<String, String>();
                 par.put("ProjectID", String.valueOf(CONTRACT.id));
-                par.put("ProjectName",CONTRACT.ProjectName);
+                par.put("ProjectName", CONTRACT.ProjectName);
                 par.put("ClientID", String.valueOf(CONTRACT.ClientID));
-                par.put("LA" , String.valueOf(CONTRACT.LA));
-                par.put("LO" , String.valueOf(CONTRACT.LO));
-                par.put("DamageDesc" , DamageDescET.getText().toString());
-                par.put("ContactName" , ContactNameET.getText().toString());
+                par.put("LA", String.valueOf(CONTRACT.LA));
+                par.put("LO", String.valueOf(CONTRACT.LO));
+                par.put("DamageDesc", DamageDescET.getText().toString());
+                par.put("ContactName", ContactNameET.getText().toString());
                 par.put("SalesMan", String.valueOf(CONTRACT.SalesMan));
-                par.put("Date",Date);
+                par.put("Date", Date);
                 if (NotesET.getText() != null && !NotesET.getText().toString().isEmpty()) {
-                    par.put("Notes",NotesET.getText().toString());
+                    par.put("Notes", NotesET.getText().toString());
                 }
-                par.put("Contact",ContactNumberET.getText().toString());
+                par.put("Contact", ContactNumberET.getText().toString());
                 if (MaintenanceCB.isChecked()) {
-                    par.put("ToMaintenance","1");
+                    par.put("ToMaintenance", "1");
                 }
                 if (AluminumCB.isChecked()) {
-                    par.put("ToAluminum","1");
+                    par.put("ToAluminum", "1");
                 }
                 if (DoorsCB.isChecked()) {
-                    par.put("ToDoors","1");
+                    par.put("ToDoors", "1");
                 }
                 return par;
             }

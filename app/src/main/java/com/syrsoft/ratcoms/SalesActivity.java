@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.syrsoft.ratcoms.SALESActivities.AddNewPurchaseOrder;
 import com.syrsoft.ratcoms.SALESActivities.AddNewClient;
 import com.syrsoft.ratcoms.SALESActivities.AddNewProjectContract;
 import com.syrsoft.ratcoms.SALESActivities.Catalogs;
@@ -17,11 +18,12 @@ import com.syrsoft.ratcoms.SALESActivities.DataSheets;
 import com.syrsoft.ratcoms.SALESActivities.MyVisitReports;
 import com.syrsoft.ratcoms.SALESActivities.ViewMySalesProjectContracts;
 import com.syrsoft.ratcoms.SALESActivities.ViewMyStaffVisitsReport;
+import com.syrsoft.ratcoms.SALESActivities.ViewPurchaseOrders;
 
 public class SalesActivity extends AppCompatActivity {
 
     Activity act ;
-    Button viewMyStaffVisits , addNewProjectContract , addClientVisit , ViewMyClientVisits,AddClient,myContracts ;
+    Button viewMyStaffVisits , addNewProjectContract , addClientVisit , ViewMyClientVisits,AddClient,myContracts , btnGoBuyOrder ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class SalesActivity extends AppCompatActivity {
         ViewMyClientVisits = (Button) findViewById(R.id.ViewMyClientVisitReports);
         AddClient = (Button) findViewById(R.id.addNewClient);
         myContracts = (Button) findViewById(R.id.ViewMyProjectContracts);
+        btnGoBuyOrder = (Button) findViewById(R.id.btnGoBuyOrder);
         setButtonsView();
 //        if (MyApp.db.getUser().JobTitle.equals("SalesMan")) {
 //            viewMyStaffVisits.setVisibility(View.GONE);
@@ -119,6 +122,16 @@ public class SalesActivity extends AppCompatActivity {
 
     public void goToCatalogs(View view) {
         Intent i = new Intent(act, Catalogs.class);
+        startActivity(i);
+    }
+
+    public void goToAddNewBuyOrder(View view ){
+        Intent i = new Intent(act, AddNewPurchaseOrder.class);
+        startActivity(i);
+    }
+
+    public void goToViewPurchase(View view){
+        Intent i = new Intent(act, ViewPurchaseOrders.class);
         startActivity(i);
     }
 }

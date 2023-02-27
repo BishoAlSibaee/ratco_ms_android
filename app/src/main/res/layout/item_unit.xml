@@ -25,15 +25,4 @@
         android:padding="5dp"
         android:textSize="12sp" />
 
-    <EditText
-        android:id="@+id/itemUnit_price"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/mainpage_btns_background"
-        android:hint="@string/enterPrice"
-        android:inputType="numberDecimal"
-        android:padding="5dp"
-        android:textSize="12sp" />
-
 </LinearLayout>
