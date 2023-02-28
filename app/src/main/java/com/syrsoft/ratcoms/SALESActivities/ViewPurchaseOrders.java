@@ -39,11 +39,15 @@ public class ViewPurchaseOrders extends AppCompatActivity {
     LinearLayoutManager manager;
     PurchaseOrders_Adapter adapter;
     Activity act;
-    String UrlGetData = "http://192.168.100.101/EmployeeManagement/GetPurchase.php";
-    String UrlGetDataUpdate = "http://192.168.100.101/EmployeeManagement/GetPurchaseUpdate.php";
-    String UrlGetDateAttachment = "http://192.168.100.101/EmployeeManagement/GetPurchaseAttachment.php";
+    // String UrlGetData = "http://192.168.100.101/EmployeeManagement/GetPurchase.php";
+    String UrlGetData = MyApp.MainUrl + "GetPurchase";
+    //  String UrlGetDataUpdate = "http://192.168.100.101/EmployeeManagement/GetPurchaseUpdate.php";
+    String UrlGetDataUpdate = MyApp.MainUrl + "GetPurchaseUpdate";
+    // String UrlGetDateAttachment = "http://192.168.100.101/EmployeeManagement/GetPurchaseAttachment.php";
+    String UrlGetDateAttachment = MyApp.MainUrl + "GetPurchaseAttachment";
+
     private RequestQueue Q;
-    String ReceiveStatus = "0" , MyJobTitle;
+    String ReceiveStatus = "0", MyJobTitle;
     Loading l;
 
     @Override
@@ -144,7 +148,7 @@ public class ViewPurchaseOrders extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> parm = new HashMap<String, String>();
                 parm.put("receive_status", Res);
-                if(MyJobTitle.equals("SalesMan")){
+                if (MyJobTitle.equals("SalesMan")) {
                     parm.put("jobNumber", String.valueOf(MyApp.MyUser.JobNumber));
                 }
                 return parm;
@@ -157,7 +161,7 @@ public class ViewPurchaseOrders extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, UrlGetDataUpdate, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("updatesResp",response);
+                Log.d("updatesResp", response);
                 try {
                     List<PURCHASE_UPDATE_CLASS> list = new ArrayList<>();
                     JSONArray arr = new JSONArray(response);
@@ -170,6 +174,7 @@ public class ViewPurchaseOrders extends AppCompatActivity {
                             public void onSuccess(List<ImportUpdateAttachment> u) {
                                 PUC.Attachments = u;
                             }
+
                             @Override
                             public void onFailed() {
                             }
@@ -180,7 +185,7 @@ public class ViewPurchaseOrders extends AppCompatActivity {
                     l.close();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.d("updatesResp",e.toString());
+                    Log.d("updatesResp", e.toString());
                 }
 
             }

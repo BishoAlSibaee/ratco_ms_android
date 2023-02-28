@@ -18,7 +18,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -61,6 +63,7 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
     EditText txtMyNotes;
     Button btnContract, btnAddFile, btnSaveOrder;
     Dialog D;
+    CheckBox checkBoxAgree;
     Activity act;
     String[] SearchByArr;
     List<PROJECT_CONTRACT_CLASS> ContractsResult;
@@ -70,11 +73,14 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
     Uri UriFile;
     String FileName;
     List<FileParameters> FILES;
-    String UrlTest = "http://192.168.100.101/EmployeeManagement/testInsert.php";
-    String UrlTestInsertLink = "http://192.168.100.101/EmployeeManagement/testInsertLink.php";
-    LinearLayout filesLayout;
+    //  String UrlTest = "http://192.168.100.101/EmployeeManagement/testInsert.php";
+    String UrlInsertImportOrder = MyApp.MainUrl + "insertImportOrder";
+    // String UrlTestInsertLink = "http://192.168.100.101/EmployeeManagement/testInsertLink.php";
+    String UrlinsertImportOrderAttachement = MyApp.MainUrl + "insertImportOrderAttachement";
+    LinearLayout filesLayout, LinearParentTerms, LinearTerms;
     List<USER> sendTo;
     String expectedSupplyDate;
+    ImageView icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +103,14 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
         btnAddFile = (Button) findViewById(R.id.btnAddFile);
         btnSaveOrder = (Button) findViewById(R.id.btnSaveOrder);
         filesLayout = findViewById(R.id.fileNamesLayout);
+        LinearParentTerms = findViewById(R.id.LinearParentTerms);
+        LinearTerms = findViewById(R.id.LinearTerms);
         Q = Volley.newRequestQueue(act);
         SearchByArr = getResources().getStringArray(R.array.searchProjectByArray);
         ContractsResult = new ArrayList<>();
+        LinearTerms.setVisibility(View.GONE);
+        icon = findViewById(R.id.imageView11);
+        checkBoxAgree = findViewById(R.id.checkBoxAgree);
     }
 
     void setActivityActions() {
@@ -283,6 +294,28 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
                 }
             }
         });
+        LinearParentTerms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (LinearTerms.getVisibility() == View.VISIBLE) {
+                    LinearTerms.setVisibility(View.GONE);
+                    icon.setImageResource(R.drawable.drop_down_icon);
+                } else {
+                    LinearTerms.setVisibility(View.VISIBLE);
+                    icon.setImageResource(R.drawable.bring_up_icon);
+                }
+            }
+        });
+        checkBoxAgree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkBoxAgree.isChecked()) {
+                    checkBoxAgree.setTextColor(getResources().getColor(R.color.ok));
+                } else {
+                    checkBoxAgree.setTextColor(getResources().getColor(R.color.bg));
+                }
+            }
+        });
     }
 
     @SuppressLint("Range")
@@ -338,105 +371,113 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
             d.close();
             MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "اختر المشروع", "اختر المشروع اولاُ");
         } else {
-            StringRequest request = new StringRequest(Request.Method.POST, UrlTest, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    d.close();
-                    if (Integer.parseInt(response) > 0) {
-                        List<FileParameters> failedFiles = new ArrayList<>();
-                        for (int i = 0; i < FILES.size(); i++) {
-                            int finalI = i;
-                            MyApp.uploadPDF(FILES.get(i).pdfName, FILES.get(i).pdfUri, new VollyCallback() {
-                                @Override
-                                public void onSuccess(String s) {
-                                    StringRequest req = new StringRequest(Request.Method.POST, UrlTestInsertLink, new Response.Listener<String>() {
-                                        @Override
-                                        public void onResponse(String response1) {
-                                            Log.d("respoo1", " Link " + response1);
-                                            if (Integer.parseInt(response1) != 1) {
-                                                MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "Error", "Error File ");
+            if (!checkBoxAgree.isChecked()) {
+                d.close();
+                MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "قراءة الشروط", "تأكد من قراء شروط تقديم الطلب");
+            } else {
+                StringRequest request = new StringRequest(Request.Method.POST, UrlInsertImportOrder, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        d.close();
+                        if (Integer.parseInt(response) > 0) {
+                            List<FileParameters> failedFiles = new ArrayList<>();
+                            for (int i = 0; i < FILES.size(); i++) {
+                                int finalI = i;
+                                MyApp.uploadPDF(FILES.get(i).pdfName, FILES.get(i).pdfUri, new VollyCallback() {
+                                    @Override
+                                    public void onSuccess(String s) {
+                                        StringRequest req = new StringRequest(Request.Method.POST, UrlinsertImportOrderAttachement, new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response1) {
+                                                Log.d("respoo1", " Link " + response1);
+                                                if (Integer.parseInt(response1) != 1) {
+                                                    MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "Error", "Error File ");
+                                                }
                                             }
-                                        }
-                                    }, new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            Log.d("respoo", error.toString());
-                                        }
-                                    }) {
-                                        @Nullable
-                                        @Override
-                                        protected Map<String, String> getParams() throws AuthFailureError {
-                                            HashMap<String, String> parm = new HashMap<String, String>();
-                                            parm.put("update_id", response);
-                                            parm.put("link", s);
-                                            return parm;
-                                        }
-                                    };
-                                    Q.add(req);
-                                }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Log.d("respoo", error.toString());
+                                            }
+                                        }) {
+                                            @Nullable
+                                            @Override
+                                            protected Map<String, String> getParams() throws AuthFailureError {
+                                                HashMap<String, String> parm = new HashMap<String, String>();
+                                                parm.put("update_id", response);
+                                                parm.put("link", s);
+                                                return parm;
+                                            }
+                                        };
+                                        Q.add(req);
+                                    }
 
-                                @Override
-                                public void onFailed(String error) {
-                                    failedFiles.add(FILES.get(finalI));
-                                }
-                            });
-                        }
-                        if (failedFiles.size() == 0) {
-                            MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "حفظ", "تم تقديم الطلب", 0);
-                            setSendToList(CONTRACT.SalesMan);
-                            MyApp.sendNotificationsToGroup(sendTo, "طلب شراء", "طلب شراء جديد ", MyApp.MyUser.FirstName + " " + MyApp.MyUser.LastName, CONTRACT.SalesMan, "ImportOrder", act, new VolleyCallback() {
-                                @Override
-                                public void onSuccess() {
-                                    Log.d("SendNoti", "OK");
-                                }
-                            });
-                        } else {
-                            String files = "";
-                            for (int i = 0; i < failedFiles.size(); i++) {
-                                files = files + "-" + failedFiles.get(i).pdfName;
+                                    @Override
+                                    public void onFailed(String error) {
+                                        failedFiles.add(FILES.get(finalI));
+                                    }
+                                });
                             }
-                            MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "Saved", "تم الحفظ ولكن لم يتم حفظ المرفقات التالية \n" + files, 0);
-                            MyApp.sendNotificationsToGroup(sendTo, "طلب شراء", "طلب شراء جديد ", MyApp.MyUser.FirstName + " " + MyApp.MyUser.LastName, CONTRACT.SalesMan, "ImportOrder", act, new VolleyCallback() {
-                                @Override
-                                public void onSuccess() {
-                                    Log.d("SendNoti", "OK");
+                            if (failedFiles.size() == 0) {
+                                MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "حفظ", "تم تقديم الطلب", 0);
+                                setSendToList(CONTRACT.SalesMan);
+                                MyApp.sendNotificationsToGroup(sendTo, "طلب شراء", "طلب شراء جديد ", MyApp.MyUser.FirstName + " " + MyApp.MyUser.LastName, CONTRACT.SalesMan, "ImportOrder", act, new VolleyCallback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Log.d("SendNoti", "OK");
+                                    }
+                                });
+                            } else {
+                                String files = "";
+                                for (int i = 0; i < failedFiles.size(); i++) {
+                                    files = files + "-" + failedFiles.get(i).pdfName;
                                 }
-                            });
+                                MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "Saved", "تم الحفظ ولكن لم يتم حفظ المرفقات التالية \n" + files, 0);
+                                MyApp.sendNotificationsToGroup(sendTo, "طلب شراء", "طلب شراء جديد ", MyApp.MyUser.FirstName + " " + MyApp.MyUser.LastName, CONTRACT.SalesMan, "ImportOrder", act, new VolleyCallback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Log.d("SendNoti", "OK");
+                                    }
+                                });
+                            }
+                        } else if (response.equals("0")) {
+                            MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "Error", "Error Try Again");
                         }
-                    } else if (response.equals("0")) {
-                        MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "Error", "Error Try Again");
                     }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("saveProjectResp", error.toString());
-                }
-            }) {
-                @Nullable
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Calendar c = Calendar.getInstance(Locale.getDefault());
-                    String Date = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
-                    Map<String, String> par = new HashMap<String, String>();
-                    par.put("project_id", String.valueOf(CONTRACT.id));
-                    par.put("project_name", txtProjectName.getText().toString());
-                    par.put("client_id", String.valueOf(CONTRACT.ClientID));
-                    par.put("client_name", txtClientName.getText().toString());
-                    par.put("salesman", String.valueOf(CONTRACT.SalesMan));
-                    par.put("date", Date);
-                    par.put("delivery_date", expectedSupplyDate);
-                    par.put("salesmanager_accept", "0");
-                    par.put("importmanager_accept", "0");
-                    par.put("order_status", "0");
-                    par.put("receive_status", "0");
-                    par.put("user_id", String.valueOf(MyApp.MyUser.id));
-                    par.put("Update_date", Date);
-                    par.put("notes", txtMyNotes.getText().toString());
-                    return par;
-                }
-            };
-            Q.add(request);
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("saveProjectResp", error.toString());
+                        d.close();
+                        MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "خطأ", "حدث خطأ .. حاول مرة أخرى");
+
+                    }
+                }) {
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Calendar c = Calendar.getInstance(Locale.getDefault());
+                        String Date = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
+                        Map<String, String> par = new HashMap<String, String>();
+                        par.put("project_id", String.valueOf(CONTRACT.id));
+                        par.put("project_name", txtProjectName.getText().toString());
+                        par.put("client_id", String.valueOf(CONTRACT.ClientID));
+                        par.put("client_name", txtClientName.getText().toString());
+                        par.put("salesman", String.valueOf(CONTRACT.SalesMan));
+                        par.put("date", Date);
+                        par.put("delivery_date", expectedSupplyDate);
+                        par.put("salesmanager_accept", "0");
+                        par.put("importmanager_accept", "0");
+                        par.put("order_status", "0");
+                        par.put("receive_status", "0");
+                        par.put("user_id", String.valueOf(MyApp.MyUser.id));
+                        par.put("Update_date", Date);
+                        par.put("notes", txtMyNotes.getText().toString());
+                        return par;
+                    }
+                };
+                Q.add(request);
+            }
         }
     }
 

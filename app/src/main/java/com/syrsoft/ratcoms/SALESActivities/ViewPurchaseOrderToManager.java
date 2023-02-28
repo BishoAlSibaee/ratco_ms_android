@@ -58,7 +58,7 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
     TextView PN, CN, SM, ED, txtDate, txtAcceptSalesManager, txtAcceptImportManager, txtOrderStatus, txtExpectedDate, txtReceiveStatus, txtAccDateSalesManager, txtAccDateImportManager, txtDateOrderStatus, txtDateReceiveStatus;
     EditText txtNotes;
     Button ViewCon, AddFile, btnOK, btnNO;
-    CheckBox Checkreceived, CheckDone;
+    CheckBox Checkreceived, CheckDone,checkBoxAgree;
     int Index;
     PURCHASE_CLASS p;
     PROJECT_CONTRACT_CLASS CONTRACT;
@@ -70,10 +70,15 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
     RecyclerView ResOrderUpdate;
     LinearLayoutManager manager;
     PurchaseUpdateAdapter adapter;
-    String UrlUpdateAcc = "http://192.168.100.101/EmployeeManagement/UpdateSalesManagerAccept.php";
-    String UrlTestInsertLink = "http://192.168.100.101/EmployeeManagement/testInsertLink.php";
-    String UrlStatusOrder = "http://192.168.100.101/EmployeeManagement/OrderStatus.php";
-    String UrlOrderUpdate = "http://192.168.100.101/EmployeeManagement/OrderUpdate.php";
+    //String UrlUpdateAcc = "http://192.168.100.101/EmployeeManagement/UpdateSalesManagerAccept.php";
+    String UrlUpdateAcc = MyApp.MainUrl + "UpdateSalesManagerAccept";
+    // String UrlTestInsertLink = "http://192.168.100.101/EmployeeManagement/testInsertLink.php";
+    String UrlinsertImportOrderAttachement = MyApp.MainUrl + "insertImportOrderAttachement";
+   // String UrlStatusOrder = "http://192.168.100.101/EmployeeManagement/OrderStatus.php";
+    String UrlStatusOrder = MyApp.MainUrl + "OrderStatus";
+  //  String UrlOrderUpdate = "http://192.168.100.101/EmployeeManagement/OrderUpdate.php";
+    String UrlOrderUpdate = MyApp.MainUrl + "OrderUpdate";
+
     private RequestQueue Q;
     List<USER> sendTo;
     String MyJobTitle, EcpectedDate;
@@ -286,7 +291,7 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
                             MyApp.uploadPDF(FILES.get(i).pdfName, FILES.get(i).pdfUri, new VollyCallback() {
                                 @Override
                                 public void onSuccess(String s) {
-                                    StringRequest req = new StringRequest(Request.Method.POST, UrlTestInsertLink, new Response.Listener<String>() {
+                                    StringRequest req = new StringRequest(Request.Method.POST, UrlinsertImportOrderAttachement, new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response1) {
                                             if (Integer.parseInt(response1) != 1) {
@@ -395,7 +400,7 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
                             MyApp.uploadPDF(FILES.get(i).pdfName, FILES.get(i).pdfUri, new VollyCallback() {
                                 @Override
                                 public void onSuccess(String s) {
-                                    StringRequest req = new StringRequest(Request.Method.POST, UrlTestInsertLink, new Response.Listener<String>() {
+                                    StringRequest req = new StringRequest(Request.Method.POST, UrlinsertImportOrderAttachement, new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response1) {
                                             if (Integer.parseInt(response1) != 1) {

@@ -447,7 +447,7 @@
     <string name="employeesRates">تقييمات الموظفين</string>
     <string name="bonusReason">ادخل سبب المكافأة</string>
     <string name="select_employee">اختر الموظف</string>
-    <string name="new_buy_order">اضافة طلب شراء جديد</string>
+    <string name="new_purchase_order">طلب شراء جديد</string>
     <string name="view_contract">عرض العقد</string>
     <string name="BuyOrder">طلبات الشراء</string>
     <string name="addnewbuyorder">اضافة طلب شراء</string>
@@ -471,5 +471,7 @@
     <string name="ddate">Date</string>
     <string name="Update">تحديث</string>
     <string name="enter_warranty">ادخل الضمان (سنة)</string>
+    <string name="Title">يرجى مراعاة التالي عند تقديم طلب الشراء </string>
+    <string name="Agree">أوافق</string>
 
 </resources>

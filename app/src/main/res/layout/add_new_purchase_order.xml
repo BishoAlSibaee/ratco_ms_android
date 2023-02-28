@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/mainpage_btns_background"
                 android:padding="10dp"
-                android:text="@string/new_buy_order"
+                android:text="@string/new_purchase_order"
                 android:textColor="@color/purple_700"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -228,6 +228,78 @@
                     android:inputType="textMultiLine" />
 
             </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearParentTerms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mainpage_btns_background"
+            android:orientation="vertical"
+            android:padding="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textView180"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_weight="1"
+                    android:text="@string/Title"
+                    android:textColor="@color/teal_700"
+                    android:textStyle="bold"/>
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/drop_down_icon" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/LinearTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/lightGray"
+                android:padding="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="1 - اتجاهات الأقفال"
+                    android:textColor="@color/purple_700"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="2 - ارفاق مواصفات اللوحات المعتمدة"
+                    android:textColor="@color/purple_700"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="3 - ارفاق نماذج مفصلة للغرف"
+                    android:textColor="@color/purple_700"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/checkBoxAgree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:text="@string/Agree" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
 
             <Button
                 android:id="@+id/btnSaveOrder"
