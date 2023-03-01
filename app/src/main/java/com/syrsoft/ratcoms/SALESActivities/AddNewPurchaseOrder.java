@@ -71,16 +71,12 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
     private RequestQueue Q;
     PROJECT_CONTRACT_CLASS CONTRACT;
     Uri UriFile;
-    String FileName;
+    String FileName, expectedSupplyDate;
     List<FileParameters> FILES;
-    //  String UrlTest = "http://192.168.100.101/EmployeeManagement/testInsert.php";
-    String UrlInsertImportOrder = MyApp.MainUrl + "insertImportOrder";
-    // String UrlTestInsertLink = "http://192.168.100.101/EmployeeManagement/testInsertLink.php";
-    String UrlinsertImportOrderAttachement = MyApp.MainUrl + "insertImportOrderAttachement";
-    LinearLayout filesLayout, LinearParentTerms, LinearTerms;
+    String UrlInsertImportOrder = MyApp.MainUrl + "insertImportOrder.php";
+    String UrlinsertImportOrderAttachement = MyApp.MainUrl + "insertImportOrderAttachement.php";
+    LinearLayout filesLayout, LinearParentTerms;
     List<USER> sendTo;
-    String expectedSupplyDate;
-    ImageView icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,12 +100,9 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
         btnSaveOrder = (Button) findViewById(R.id.btnSaveOrder);
         filesLayout = findViewById(R.id.fileNamesLayout);
         LinearParentTerms = findViewById(R.id.LinearParentTerms);
-        LinearTerms = findViewById(R.id.LinearTerms);
         Q = Volley.newRequestQueue(act);
         SearchByArr = getResources().getStringArray(R.array.searchProjectByArray);
         ContractsResult = new ArrayList<>();
-        LinearTerms.setVisibility(View.GONE);
-        icon = findViewById(R.id.imageView11);
         checkBoxAgree = findViewById(R.id.checkBoxAgree);
     }
 
@@ -124,10 +117,14 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
         SearchBySpinner.setAdapter(SearchByAdapter);
         Spinner ResultSpinner = (Spinner) D.findViewById(R.id.SearchProject_searchResultSpinner);
         Spinner SalesmanSpinner = (Spinner) D.findViewById(R.id.SearchProject_salesmanSpinner);
+        LinearLayout LinearSalesMan = (LinearLayout) D.findViewById(R.id.LinearSalesMan);
         List<USER> salesmen = MyApp.MyUser.getSalesEmployees();
         String[] names = MyApp.MyUser.convertListToArrayOfNames(salesmen);
         ArrayAdapter<String> salesAdapter = new ArrayAdapter<String>(act, R.layout.spinner_item, names);
         SalesmanSpinner.setAdapter(salesAdapter);
+        if (MyApp.MyUser.JobTitle.equals("SalesMan")) {
+            LinearSalesMan.setVisibility(View.GONE);
+        }
         TextView SearchField = (TextView) D.findViewById(R.id.SearchProject_searchWord);
         ProgressBar P = (ProgressBar) D.findViewById(R.id.progressBar3);
         P.setVisibility(View.GONE);
@@ -172,7 +169,6 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
                                         ResultSpinner.setAdapter(adapter);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
-                                        Log.d("searchProjectResp", e.getMessage());
                                     }
                                 }
                             }
@@ -188,7 +184,11 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
                                 Map<String, String> par = new HashMap<String, String>();
                                 par.put("searchBy", String.valueOf(SearchBySpinner.getSelectedItemPosition()));
                                 par.put("Field", SearchField.getText().toString());
-                                par.put("SalesMan", String.valueOf(salesmen.get(SalesmanSpinner.getSelectedItemPosition()).JobNumber));
+                                if (MyApp.MyUser.JobTitle.equals("SalesMan")) {
+                                    par.put("SalesMan", String.valueOf(MyApp.MyUser.JobNumber));
+                                } else {
+                                    par.put("SalesMan", String.valueOf(salesmen.get(SalesmanSpinner.getSelectedItemPosition()).JobNumber));
+                                }
                                 return par;
 
                             }
@@ -265,7 +265,6 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
         btnContract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (CONTRACT == null) {
                     new MESSAGE_DIALOG(act, "اختر المشروع", "اختر المشروع اولا");
                     return;
@@ -274,7 +273,6 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(CONTRACT.ContractLink));
                     startActivity(browserIntent);
                 } else {
-                    Log.d("link", "IsNull");
                 }
 
             }
@@ -288,21 +286,7 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
                     intent.setType("application/pdf");
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     act.startActivityForResult(Intent.createChooser(intent, "select File"), 6);
-                    //act.startActivity(Intent.createChooser(intent, "select File"));
                 } catch (Exception e) {
-                    Log.d("AttacheFileError", e.getMessage());
-                }
-            }
-        });
-        LinearParentTerms.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (LinearTerms.getVisibility() == View.VISIBLE) {
-                    LinearTerms.setVisibility(View.GONE);
-                    icon.setImageResource(R.drawable.drop_down_icon);
-                } else {
-                    LinearTerms.setVisibility(View.VISIBLE);
-                    icon.setImageResource(R.drawable.bring_up_icon);
                 }
             }
         });
@@ -325,7 +309,6 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 if (data == null) {
                     //Display an error
-                    Log.d("fileselection", "error");
                     return;
                 }
                 Uri uri = null;
@@ -373,7 +356,7 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
         } else {
             if (!checkBoxAgree.isChecked()) {
                 d.close();
-                MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "قراءة الشروط", "تأكد من قراء شروط تقديم الطلب");
+                MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "قراءة الشروط", "يرجى التأكد من قراء شروط تقديم الطلب و الموافقة");
             } else {
                 StringRequest request = new StringRequest(Request.Method.POST, UrlInsertImportOrder, new Response.Listener<String>() {
                     @Override
@@ -389,7 +372,6 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
                                         StringRequest req = new StringRequest(Request.Method.POST, UrlinsertImportOrderAttachement, new Response.Listener<String>() {
                                             @Override
                                             public void onResponse(String response1) {
-                                                Log.d("respoo1", " Link " + response1);
                                                 if (Integer.parseInt(response1) != 1) {
                                                     MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "Error", "Error File ");
                                                 }
@@ -397,7 +379,6 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
                                         }, new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
-                                                Log.d("respoo", error.toString());
                                             }
                                         }) {
                                             @Nullable
@@ -424,7 +405,6 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
                                 MyApp.sendNotificationsToGroup(sendTo, "طلب شراء", "طلب شراء جديد ", MyApp.MyUser.FirstName + " " + MyApp.MyUser.LastName, CONTRACT.SalesMan, "ImportOrder", act, new VolleyCallback() {
                                     @Override
                                     public void onSuccess() {
-                                        Log.d("SendNoti", "OK");
                                     }
                                 });
                             } else {
@@ -436,7 +416,6 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
                                 MyApp.sendNotificationsToGroup(sendTo, "طلب شراء", "طلب شراء جديد ", MyApp.MyUser.FirstName + " " + MyApp.MyUser.LastName, CONTRACT.SalesMan, "ImportOrder", act, new VolleyCallback() {
                                     @Override
                                     public void onSuccess() {
-                                        Log.d("SendNoti", "OK");
                                     }
                                 });
                             }
@@ -447,10 +426,8 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("saveProjectResp", error.toString());
                         d.close();
                         MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "خطأ", "حدث خطأ .. حاول مرة أخرى");
-
                     }
                 }) {
                     @Nullable
@@ -489,5 +466,4 @@ public class AddNewPurchaseOrder extends AppCompatActivity {
         sendTo.add(salesManager);
         sendTo.add(purchaseManager);
     }
-
 }

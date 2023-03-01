@@ -250,17 +250,9 @@
                     android:text="@string/Title"
                     android:textColor="@color/teal_700"
                     android:textStyle="bold"/>
-                <ImageView
-                    android:id="@+id/imageView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:padding="5dp"
-                    app:srcCompat="@drawable/drop_down_icon" />
 
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/LinearTerms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

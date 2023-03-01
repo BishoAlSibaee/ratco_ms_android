@@ -39,13 +39,9 @@ public class ViewPurchaseOrders extends AppCompatActivity {
     LinearLayoutManager manager;
     PurchaseOrders_Adapter adapter;
     Activity act;
-    // String UrlGetData = "http://192.168.100.101/EmployeeManagement/GetPurchase.php";
-    String UrlGetData = MyApp.MainUrl + "GetPurchase";
-    //  String UrlGetDataUpdate = "http://192.168.100.101/EmployeeManagement/GetPurchaseUpdate.php";
-    String UrlGetDataUpdate = MyApp.MainUrl + "GetPurchaseUpdate";
-    // String UrlGetDateAttachment = "http://192.168.100.101/EmployeeManagement/GetPurchaseAttachment.php";
-    String UrlGetDateAttachment = MyApp.MainUrl + "GetPurchaseAttachment";
-
+    String UrlGetData = MyApp.MainUrl + "GetPurchase.php";
+    String UrlGetDataUpdate = MyApp.MainUrl + "GetPurchaseUpdate.php";
+    String UrlGetDateAttachment = MyApp.MainUrl + "GetPurchaseAttachment.php";
     private RequestQueue Q;
     String ReceiveStatus = "0", MyJobTitle;
     Loading l;
@@ -108,6 +104,7 @@ public class ViewPurchaseOrders extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, UrlGetData, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("ordersResp",response);
                 try {
                     listPurchase.clear();
                     l.close();
@@ -210,7 +207,6 @@ public class ViewPurchaseOrders extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
-                    Log.d("resppp", response);
                     List<ImportUpdateAttachment> list = new ArrayList<>();
                     JSONArray Arr = new JSONArray(response);
                     for (int i = 0; i < Arr.length(); i++) {
@@ -227,7 +223,6 @@ public class ViewPurchaseOrders extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("resppp", error.toString());
                 callbak.onFailed();
             }
         }) {
@@ -245,12 +240,10 @@ public class ViewPurchaseOrders extends AppCompatActivity {
 
 interface OrderUpdateCallback {
     void onSuccess(List<PURCHASE_UPDATE_CLASS> u);
-
     void onFailed();
 }
 
 interface OrderUpdateAttachmentCallbak {
     void onSuccess(List<ImportUpdateAttachment> u);
-
     void onFailed();
 }

@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
@@ -45,10 +44,8 @@ import com.syrsoft.ratcoms.VolleyCallback;
 import com.syrsoft.ratcoms.VollyCallback;
 
 import java.io.File;
-import java.lang.ref.ReferenceQueue;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -58,7 +55,7 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
     TextView PN, CN, SM, ED, txtDate, txtAcceptSalesManager, txtAcceptImportManager, txtOrderStatus, txtExpectedDate, txtReceiveStatus, txtAccDateSalesManager, txtAccDateImportManager, txtDateOrderStatus, txtDateReceiveStatus;
     EditText txtNotes;
     Button ViewCon, AddFile, btnOK, btnNO;
-    CheckBox Checkreceived, CheckDone,checkBoxAgree;
+    CheckBox Checkreceived, CheckDone;
     int Index;
     PURCHASE_CLASS p;
     PROJECT_CONTRACT_CLASS CONTRACT;
@@ -70,18 +67,13 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
     RecyclerView ResOrderUpdate;
     LinearLayoutManager manager;
     PurchaseUpdateAdapter adapter;
-    //String UrlUpdateAcc = "http://192.168.100.101/EmployeeManagement/UpdateSalesManagerAccept.php";
-    String UrlUpdateAcc = MyApp.MainUrl + "UpdateSalesManagerAccept";
-    // String UrlTestInsertLink = "http://192.168.100.101/EmployeeManagement/testInsertLink.php";
-    String UrlinsertImportOrderAttachement = MyApp.MainUrl + "insertImportOrderAttachement";
-   // String UrlStatusOrder = "http://192.168.100.101/EmployeeManagement/OrderStatus.php";
-    String UrlStatusOrder = MyApp.MainUrl + "OrderStatus";
-  //  String UrlOrderUpdate = "http://192.168.100.101/EmployeeManagement/OrderUpdate.php";
-    String UrlOrderUpdate = MyApp.MainUrl + "OrderUpdate";
-
+    String UrlUpdateAcc = MyApp.MainUrl + "UpdateSalesManagerAccept.php";
+    String UrlinsertImportOrderAttachement = MyApp.MainUrl + "insertImportOrderAttachement.php";
+    String UrlStatusOrder = MyApp.MainUrl + "OrderStatus.php";
+    String UrlOrderUpdate = MyApp.MainUrl + "OrderUpdate.php";
     private RequestQueue Q;
     List<USER> sendTo;
-    String MyJobTitle, EcpectedDate;
+    String MyJobTitle, ExpectedDate;
     String Status = " ";
     Loading l;
 
@@ -151,15 +143,13 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
         if (MyJobTitle.equals("Sales Manager")) {
             acceptLayout.setVisibility(View.VISIBLE);
         }
-        if (MyJobTitle.equals("Sales Man") || MyJobTitle.equals("Sales Coordinator")) {
+        if (MyJobTitle.equals("SalesMan") || MyJobTitle.equals("Sales Coordinator")) {
             acceptLayout.setVisibility(View.VISIBLE);
             btnOK.setVisibility(View.GONE);
             btnNO.setText(getResources().getString(R.string.send));
             btnNO.setBackgroundResource(R.drawable.approve_btns);
         }
-        if (p.ReceiveStatus.equals("0")) {
-            acceptLayout.setVisibility(View.VISIBLE);
-        } else {
+        if (p.ReceiveStatus.equals("1")) {
             acceptLayout.setVisibility(View.GONE);
         }
     }
@@ -226,8 +216,8 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
                 C.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                        EcpectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
-                        date.setText(EcpectedDate);
+                        ExpectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
+                        date.setText(ExpectedDate);
                     }
                 });
                 Button Cancel = (Button) D.findViewById(R.id.SelectDateDialog_cancel);
@@ -241,7 +231,7 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
                 Select.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        txtDate.setText(EcpectedDate);
+                        txtDate.setText(ExpectedDate);
                         D.dismiss();
                     }
                 });
@@ -284,7 +274,6 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
                 public void onResponse(String response) {
                     if (!response.equals("0")) {
                         l.close();
-                        Log.d("respoUbpdate", response);
                         List<FileParameters> failedFiles = new ArrayList<>();
                         for (int i = 0; i < FILES.size(); i++) {
                             int finalI = i;
@@ -337,7 +326,7 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
                             }
                             MESSAGE_DIALOG m = new MESSAGE_DIALOG(act, "ارسال", "تم الإرسال", 0);
                             setSendToList(CONTRACT.SalesMan);
-                            MyApp.sendNotificationsToGroup(sendTo, "تحديث جديد", "يوجد تحديث لطلب الشراء", MyApp.MyUser.FirstName + " " + MyApp.MyUser.LastName, CONTRACT.SalesMan, "ImportOrder", act, new VolleyCallback() {
+                            MyApp.sendNotificationsToGroup(sendTo, "تحديث جديد", "تحديث لطلب الشراء", MyApp.MyUser.FirstName + " " + MyApp.MyUser.LastName, CONTRACT.SalesMan, "ImportOrder", act, new VolleyCallback() {
                                 @Override
                                 public void onSuccess() {
                                 }
@@ -526,11 +515,10 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Calendar c = Calendar.getInstance(Locale.getDefault());
                     String Date = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
-                    Log.d("RESPoooo", "Sta " + Status);
                     Map<String, String> parm = new HashMap<String, String>();
                     parm.put("id", String.valueOf(p.id));
-                    if (EcpectedDate != null) {
-                        parm.put("ecpected_delevary_date", EcpectedDate);
+                    if (ExpectedDate != null) {
+                        parm.put("ecpected_delevary_date", ExpectedDate);
                     }
                     if (Checkreceived.isChecked()) {
                         parm.put("receive_status", Status);
@@ -615,7 +603,13 @@ public class ViewPurchaseOrderToManager extends AppCompatActivity {
             txtReceiveStatus.setText("لم يتم إستلام المواد");
             txtDateReceiveStatus.setText("لا يوجد");
         }
+
+        if (ViewPurchaseOrders.listPurchase.get(Index).EcpectedDelevaryDate.equals("null")) {
+            txtExpectedDate.setText("لم يحدد");
+            txtExpectedDate.setTextColor(getResources().getColor(R.color.gray));
+        } else {
+            txtExpectedDate.setText(ViewPurchaseOrders.listPurchase.get(Index).EcpectedDelevaryDate);
+        }
         txtDate.setText(ViewPurchaseOrders.listPurchase.get(Index).EcpectedDelevaryDate);
-        txtExpectedDate.setText(ViewPurchaseOrders.listPurchase.get(Index).EcpectedDelevaryDate);
     }
 }

@@ -85,7 +85,5 @@ public class PurchaseUpdateAdapter extends RecyclerView.Adapter<PurchaseUpdateAd
             txtOrderNotes = itemView.findViewById(R.id.txtOrderNotes);
             LinearBtnAttachment = itemView.findViewById(R.id.LinearBtnAttachment);
         }
-
-
     }
 }

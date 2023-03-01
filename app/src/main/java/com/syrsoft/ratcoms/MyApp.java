@@ -139,13 +139,11 @@ public class MyApp extends Application {
             notification.put("to", token); //registration_ids
             notification.put("data", notifcationBody);
         } catch (JSONException e) {
-            //Log.e(TAG, "onCreate: " + e.getMessage() );
         }
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_MESSAGE_URL, notification,
                 response -> Log.d("messageresponse" , response.toString()),
                 error -> {
-                   // ToastMaker.Show(1,error.getMessage() , act);
                     Log.d("messageresponse" , error.toString());
                 }){
             @Override
