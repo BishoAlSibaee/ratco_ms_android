@@ -222,9 +222,7 @@ public class USER {
     }
 
     public static USER searchUserByJobNumber(List<USER> list , int number) {
-
         USER u = null ;
-
         for (int i=0 ; i < list.size() ; i ++ ) {
             if (list.get(i).JobNumber == number ) {
                 u = list.get(i);
@@ -233,6 +231,38 @@ public class USER {
         }
         //Log.d("UsersSearch" , u.FirstName);
         return u ;
+    }
+
+    public static USER searchUserByID(List<USER> list , int number) {
+        USER u = null ;
+        for (int i=0 ; i < list.size() ; i ++ ) {
+            if (list.get(i).id == number ) {
+                u = list.get(i);
+                break;
+            }
+        }
+        //Log.d("UsersSearch" , u.FirstName);
+        return u ;
+    }
+
+    public static List<USER> getSalesEmployees(){
+        List<USER> l = new ArrayList<>();
+        if (EMPS != null && EMPS.size() != 0){
+            for (int i=0 ; i<EMPS.size();i++){
+                if(EMPS.get(i).Department.equals("Sales")){
+                    l.add(EMPS.get(i));
+                }
+            }
+        }
+        return l;
+    }
+
+    public static String[] convertListToArrayOfNames(List<USER> list){
+        String[] names = new String[list.size()];
+        for (int i=0 ; i<list.size();i++){
+            names[i] = list.get(i).FirstName+" "+list.get(i).LastName;
+        }
+        return names;
     }
 
     public  void getPermissions(VollyCallback callback , Context C) {
@@ -3354,5 +3384,6 @@ public class USER {
         res+=Token+"\n";
         return res ;
     }
+
 
 }

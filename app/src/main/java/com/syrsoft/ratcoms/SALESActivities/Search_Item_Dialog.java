@@ -104,7 +104,6 @@ public class Search_Item_Dialog {
         SearchWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -193,11 +192,9 @@ public class Search_Item_Dialog {
             P.setVisibility(View.GONE);
             ToastMaker.Show(0,C.getResources().getString(R.string.enterSearchWord),C);
         }
-
     }
 
     void show () {
         D.show();
     }
-
 }

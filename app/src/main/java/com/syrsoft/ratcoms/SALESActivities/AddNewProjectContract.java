@@ -118,8 +118,6 @@ public class AddNewProjectContract extends AppCompatActivity {
     RadioButton OldContractRB , NewContractRB ;
     String ContractType ;
     Button attachFileBtn ;
-    int itemsCounter = 0 ;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,7 +185,6 @@ public class AddNewProjectContract extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         LocationLoadingDialog = new Loading(act);
         paymentTerms = new ArrayList<PaymentTerms>();
-        ItemsLayout = (LinearLayout) findViewById(R.id.items_layout);
         ItemsList = new ArrayList<View>();
         ProjectStatusLayout = (LinearLayout) findViewById(R.id.projectStatusLayout);
     }
@@ -825,7 +822,6 @@ public class AddNewProjectContract extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAM_REQCODE) {
-
         } else if (requestCode == 6) {
             Log.d("fileselection", "here");
             if (resultCode == RESULT_OK) {
@@ -849,8 +845,6 @@ public class AddNewProjectContract extends AppCompatActivity {
                             if (cursor != null && cursor.moveToFirst()) {
                                 displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                                 FileName = displayName;
-                                Log.d("fileselection", displayName);
-                                //uploadPDF(displayName,uri);
                                 FileNameTV.setText(FileName);
                             }
                         } finally {
@@ -1033,14 +1027,23 @@ public class AddNewProjectContract extends AppCompatActivity {
             return;
         }
         if (THE_LOCATION == null && addresses == null ) {
-            ToastMaker.Show(1,"please selectLocation" ,act);
+            ToastMaker.Show(1,getResources().getString(R.string.selectLocation),act);
             return;
         }
         if (ContractDateTV == null || ContractDateTV.getText().toString().isEmpty()) {
-            ToastMaker.Show(1,"please select contract date" ,act);
+            ToastMaker.Show(1,getResources().getString(R.string.selectDate) ,act);
             ContractDateTV.setHintTextColor(Color.RED);
             return;
         }
+        if (AvailabilityET.getText() == null || AvailabilityET.getText().toString().isEmpty()) {
+            ToastMaker.Show(1, getResources().getString(R.string.enterAvaliability), act);
+            return;
+        }
+        if (WarrantyET.getText() == null || WarrantyET.getText().toString().isEmpty()) {
+            ToastMaker.Show(1,getResources().getString(R.string.enter_warranty),act);
+            return;
+        }
+
         if (HandoveredCB.isChecked() && HandoverDateET.getText() != null && !HandoverDateET.getText().toString().isEmpty()) {
             if (WarrantyET.getText() == null || WarrantyET.getText().toString().isEmpty()) {
                 WarrantyET.setHintTextColor(Color.RED);
@@ -1062,10 +1065,8 @@ public class AddNewProjectContract extends AppCompatActivity {
                     e.printStackTrace();
                     Log.d("warrantyError" , e.getMessage());
                 }
-
             }
         }
-
         if (DeliveryLocationET.getText() != null && !DeliveryLocationET.getText().toString().isEmpty()) {
             termsAndConditions.setDeliveryLocation(DeliveryLocationET.getText().toString());
         }
@@ -1095,7 +1096,6 @@ public class AddNewProjectContract extends AppCompatActivity {
         }
         int TermsCounter = 0 ;
         if (termsAndConditions != null ) {
-
             if (termsAndConditions.getDeliveryLocation() != null && !termsAndConditions.getDeliveryLocation().isEmpty()) {
                 TermsCounter++ ;
             }
@@ -1198,10 +1198,10 @@ public class AddNewProjectContract extends AppCompatActivity {
                     for (int i=0;i<ItemsList.size();i++) {
                         EditText itemName = (EditText) ItemsList.get(i).findViewById(R.id.itemUnit_name);
                         EditText itemQuantity = (EditText) ItemsList.get(i).findViewById(R.id.itemUnit_quantity);
-                        EditText itemPrice = (EditText) ItemsList.get(i).findViewById(R.id.itemUnit_price);
+                     //   EditText itemPrice = (EditText) ItemsList.get(i).findViewById(R.id.itemUnit_price);
                         String name = "" ;
                         String quantity = "" ;
-                        String price = "" ;
+//                        String price = "" ;
                         if (itemName.getText() != null && !itemName.getText().toString().isEmpty()) {
                             name = itemName.getText().toString();
                         }
@@ -1210,10 +1210,10 @@ public class AddNewProjectContract extends AppCompatActivity {
                             quantity = itemQuantity.getText().toString() ;
                         }
                         par.put("quantity"+i , quantity);
-                        if (itemPrice.getText() != null && !itemPrice.getText().toString().isEmpty()) {
-                            price = itemPrice.getText().toString() ;
-                        }
-                        par.put("price"+i , price);
+//                        if (itemPrice.getText() != null && !itemPrice.getText().toString().isEmpty()) {
+//                            price = itemPrice.getText().toString() ;
+//                        }
+ //                       par.put("price"+i , price);
                     }
                 }
 
@@ -1269,7 +1269,6 @@ public class AddNewProjectContract extends AppCompatActivity {
             B.create();
             B.show();
         }
-
     }
 
     public void selectOtherLocation(View view) {
@@ -1281,123 +1280,73 @@ public class AddNewProjectContract extends AppCompatActivity {
         saveContract();
     }
 
-    public void addNewItem(View view) {
-        if (ItemsList.size() == 0) {
-            View v = LayoutInflater.from(act).inflate(R.layout.item_unit,null);
-            EditText itemName = v.findViewById(R.id.itemUnit_name);
-            itemName.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Search_Item_Dialog D = new Search_Item_Dialog(act);
-                    D.show();
-                    return false;
-                }
-            });
-            ItemsList.add(v);
-            ItemsLayout.addView(v);
-            Search_Item_Dialog D = new Search_Item_Dialog(act);
-            D.show();
-        }
-        else {
-                EditText itemName = ItemsList.get(ItemsList.size()-1).findViewById(R.id.itemUnit_name);
-                EditText itemQuantity = ItemsList.get(ItemsList.size()-1).findViewById(R.id.itemUnit_quantity);
-                EditText itemPrice = ItemsList.get(ItemsList.size()-1).findViewById(R.id.itemUnit_price);
-                itemName.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Search_Item_Dialog D = new Search_Item_Dialog(act);
-                    D.show();
-                    return false;
-                }
-            });
-                if (itemName.getText() == null || itemName.getText().toString().isEmpty()) {
-                    ToastMaker.Show(1,"enter the current item information",act);
-                    itemName.setHintTextColor(Color.RED);
-                }
-                else if (itemQuantity.getText() == null || itemQuantity.getText().toString().isEmpty()) {
-                    ToastMaker.Show(1,"enter the current item information",act);
-                    itemQuantity.setHintTextColor(Color.RED);
-                }
-                else if (itemPrice.getText() == null || itemPrice.getText().toString().isEmpty()) {
-                    ToastMaker.Show(1,"enter the current item information",act);
-                    itemPrice.setHintTextColor(Color.RED);
-                }
-                else {
-                    View v = LayoutInflater.from(act).inflate(R.layout.item_unit,null);
-                    EditText itemNameee = v.findViewById(R.id.itemUnit_name);
-                    itemNameee.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v) {
-                            Search_Item_Dialog D = new Search_Item_Dialog(act);
-                            D.show();
-                            return false;
-                        }
-                    });
-                    ItemsList.add(v);
-                    ItemsLayout.addView(v);
-                    Search_Item_Dialog D = new Search_Item_Dialog(act);
-                    D.show();
-                }
-        }
-
-
-
-
-        Log.d("itemsCount",ItemsList.size()+" ");
-        for (int i=0;i<ItemsList.size();i++) {
-            EditText itemName = (EditText) ItemsList.get(i).findViewById(R.id.itemUnit_name);
-            EditText itemQuantity = (EditText) ItemsList.get(i).findViewById(R.id.itemUnit_quantity);
-            EditText itemPrice = (EditText) ItemsList.get(i).findViewById(R.id.itemUnit_price);
-            itemName.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Search_Item_Dialog D = new Search_Item_Dialog(act);
-                    D.show();
-                    return false;
-                }
-            });
-            if (itemName.getText() == null || itemName.getText().toString().isEmpty()) {
-                ToastMaker.Show(1,"enter the current item information",act);
-                itemName.setHintTextColor(Color.RED);
-                return;
-            }
-            if (itemQuantity.getText() == null || itemQuantity.getText().toString().isEmpty()) {
-                ToastMaker.Show(1,"enter the current item information",act);
-                itemQuantity.setHintTextColor(Color.RED);
-                return;
-            }
-            if (itemPrice.getText() == null || itemPrice.getText().toString().isEmpty()) {
-                ToastMaker.Show(1,"enter the current item information",act);
-                itemPrice.setHintTextColor(Color.RED);
-                return;
-            }
-        }
-
-
-
-//        if (ItemsList.size() == 0 ) {
+//    public void addNewItem(View view) {
+//        if (ItemsList.size() == 0) {
+//            Log.d("showItemList" , "Enter if ");
 //            View v = LayoutInflater.from(act).inflate(R.layout.item_unit,null);
-//            ItemsList.add(v);
-//            ItemsLayout.addView(v);
-//            EditText itemName = (EditText) ItemsList.get(ItemsList.size()-1).findViewById(R.id.itemUnit_name);
+//            EditText itemName = v.findViewById(R.id.itemUnit_name);
 //            itemName.setOnLongClickListener(new View.OnLongClickListener() {
 //                @Override
 //                public boolean onLongClick(View v) {
+//                    Log.d("showItemList","Enter if Long Click A");
 //                    Search_Item_Dialog D = new Search_Item_Dialog(act);
 //                    D.show();
 //                    return false;
 //                }
 //            });
+//            ItemsList.add(v);
+//            ItemsLayout.addView(v);
+//            Log.d("showItemList" , "Enter if Long Click B");
 //            Search_Item_Dialog D = new Search_Item_Dialog(act);
 //            D.show();
 //        }
 //        else {
-//            EditText itemName = (EditText) ItemsList.get(ItemsList.size()-1).findViewById(R.id.itemUnit_name);
-//            EditText itemQuantity = (EditText) ItemsList.get(ItemsList.size()-1).findViewById(R.id.itemUnit_quantity);
-//            EditText itemPrice = (EditText) ItemsList.get(ItemsList.size()).findViewById(R.id.itemUnit_price);
+//                EditText itemName = ItemsList.get(ItemsList.size()-1).findViewById(R.id.itemUnit_name);
+//                EditText itemQuantity = ItemsList.get(ItemsList.size()-1).findViewById(R.id.itemUnit_quantity);
+//                itemName.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View v) {
+//                    Log.d("showItemList" , "Enter if Long Click C");
+//                    Search_Item_Dialog D = new Search_Item_Dialog(act);
+//                    D.show();
+//                    return false;
+//                }
+//            });
+//                if (itemName.getText() == null || itemName.getText().toString().isEmpty()) {
+//                    ToastMaker.Show(1,"enter the current item information",act);
+//                    itemName.setHintTextColor(Color.RED);
+//                }
+//                else if (itemQuantity.getText() == null || itemQuantity.getText().toString().isEmpty()) {
+//                    ToastMaker.Show(1,"enter the current item information",act);
+//                    itemQuantity.setHintTextColor(Color.RED);
+//                }
+//                else {
+//                    View v = LayoutInflater.from(act).inflate(R.layout.item_unit,null);
+//                    EditText itemNameee = v.findViewById(R.id.itemUnit_name);
+//                    itemNameee.setOnLongClickListener(new View.OnLongClickListener() {
+//                        @Override
+//                        public boolean onLongClick(View v) {
+//                            Log.d("showItemList" , "Enter if Long Click D");
+//                            Search_Item_Dialog D = new Search_Item_Dialog(act);
+//                            D.show();
+//                            return false;
+//                        }
+//                    });
+//                    ItemsList.add(v);
+//                    ItemsLayout.addView(v);
+//                    Log.d("showItemList" , "Enter if Long Click E");
+//                    Search_Item_Dialog D = new Search_Item_Dialog(act);
+//                    D.show();
+//                }
+//        }
+//        Log.d("itemsCount",ItemsList.size()+" ");
+//        for (int i=0;i<ItemsList.size();i++) {
+//            EditText itemName = (EditText) ItemsList.get(i).findViewById(R.id.itemUnit_name);
+//            EditText itemQuantity = (EditText) ItemsList.get(i).findViewById(R.id.itemUnit_quantity);
 //            itemName.setOnLongClickListener(new View.OnLongClickListener() {
 //                @Override
 //                public boolean onLongClick(View v) {
+//                    Log.d("showItemList" , "Enter if Long Click F" + ItemsList.size());
 //                    Search_Item_Dialog D = new Search_Item_Dialog(act);
 //                    D.show();
 //                    return false;
@@ -1413,19 +1362,57 @@ public class AddNewProjectContract extends AppCompatActivity {
 //                itemQuantity.setHintTextColor(Color.RED);
 //                return;
 //            }
-//            if (itemPrice.getText() == null || itemPrice.getText().toString().isEmpty()) {
-//                ToastMaker.Show(1,"enter the current item information",act);
-//                itemPrice.setHintTextColor(Color.RED);
-//                return;
-//            }
-//            View v = LayoutInflater.from(act).inflate(R.layout.item_unit,null);
-//            ItemsList.add(v);
-//            ItemsLayout.addView(v);
-//            Search_Item_Dialog D = new Search_Item_Dialog(act);
-//            D.show();
 //        }
-
-    }
+////        if (ItemsList.size() == 0 ) {
+////            View v = LayoutInflater.from(act).inflate(R.layout.item_unit,null);
+////            ItemsList.add(v);
+////            ItemsLayout.addView(v);
+////            EditText itemName = (EditText) ItemsList.get(ItemsList.size()-1).findViewById(R.id.itemUnit_name);
+////            itemName.setOnLongClickListener(new View.OnLongClickListener() {
+////                @Override
+////                public boolean onLongClick(View v) {
+////                    Search_Item_Dialog D = new Search_Item_Dialog(act);
+////                    D.show();
+////                    return false;
+////                }
+////            });
+////            Search_Item_Dialog D = new Search_Item_Dialog(act);
+////            D.show();
+////        }
+////        else {
+////            EditText itemName = (EditText) ItemsList.get(ItemsList.size()-1).findViewById(R.id.itemUnit_name);
+////            EditText itemQuantity = (EditText) ItemsList.get(ItemsList.size()-1).findViewById(R.id.itemUnit_quantity);
+////            EditText itemPrice = (EditText) ItemsList.get(ItemsList.size()).findViewById(R.id.itemUnit_price);
+////            itemName.setOnLongClickListener(new View.OnLongClickListener() {
+////                @Override
+////                public boolean onLongClick(View v) {
+////                    Search_Item_Dialog D = new Search_Item_Dialog(act);
+////                    D.show();
+////                    return false;
+////                }
+////            });
+////            if (itemName.getText() == null || itemName.getText().toString().isEmpty()) {
+////                ToastMaker.Show(1,"enter the current item information",act);
+////                itemName.setHintTextColor(Color.RED);
+////                return;
+////            }
+////            if (itemQuantity.getText() == null || itemQuantity.getText().toString().isEmpty()) {
+////                ToastMaker.Show(1,"enter the current item information",act);
+////                itemQuantity.setHintTextColor(Color.RED);
+////                return;
+////            }
+////            if (itemPrice.getText() == null || itemPrice.getText().toString().isEmpty()) {
+////                ToastMaker.Show(1,"enter the current item information",act);
+////                itemPrice.setHintTextColor(Color.RED);
+////                return;
+////            }
+////            View v = LayoutInflater.from(act).inflate(R.layout.item_unit,null);
+////            ItemsList.add(v);
+////            ItemsLayout.addView(v);
+////            Search_Item_Dialog D = new Search_Item_Dialog(act);
+////            D.show();
+////        }
+//    }
 
     void recordFileLinkInTable(String Link , String Table , String Column , int ID) {
 

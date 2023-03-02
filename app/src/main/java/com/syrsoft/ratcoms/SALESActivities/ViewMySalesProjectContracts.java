@@ -49,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ViewMySalesProjectContracts extends AppCompatActivity {
-
     Activity act ;
     LinearLayout ByClientLayout , ByDateLayout ;
     RadioButton ByClientRB , ByDateRB ;
@@ -71,7 +70,6 @@ public class ViewMySalesProjectContracts extends AppCompatActivity {
     Contracts_Adapter Adapter ;
     public static List<PROJECT_CONTRACT_CLASS> ContractsList ;
     List<CLIENT_CLASS> ClientsList ;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

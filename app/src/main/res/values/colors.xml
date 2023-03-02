@@ -15,4 +15,8 @@
     <color name="gray">#7A7A7A</color>
     <color name="llll">#C3C3C3</color>
     <color name="dddd">#85878787</color>
+    <color name="ok">#28772C</color>
+    <color name="no">#580202</color>
+
+
 </resources>

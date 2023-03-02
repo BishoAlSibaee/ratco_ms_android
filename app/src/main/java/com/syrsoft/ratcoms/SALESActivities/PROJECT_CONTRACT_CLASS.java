@@ -1,14 +1,34 @@
 package com.syrsoft.ratcoms.SALESActivities;
 
+import android.content.Context;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+
+import androidx.annotation.Nullable;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.syrsoft.ratcoms.MyApp;
 import com.syrsoft.ratcoms.R;
+import com.syrsoft.ratcoms.ToastMaker;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class PROJECT_CONTRACT_CLASS {
 
@@ -175,4 +195,47 @@ public class PROJECT_CONTRACT_CLASS {
         }
         return res ;
     }
+
+    public static void getProjectById(int id, Context c, GetProjectCallback callback){
+        final PROJECT_CONTRACT_CLASS[] p = new PROJECT_CONTRACT_CLASS[1];
+        StringRequest request = new StringRequest(Request.Method.POST, MyApp.MainUrl+"getProjectContractByID.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("0")) {
+                } else if (response.equals("-1")) {
+                } else {
+                    try {
+                        JSONArray arr = new JSONArray(response);
+                        String[] resArr = new String[arr.length()];
+                        for (int i = 0; i < arr.length(); i++) {
+                            JSONObject row = arr.getJSONObject(i);
+                            p[0] = new PROJECT_CONTRACT_CLASS(row.getInt("id"), row.getInt("ClientID"), row.getString("ProjectName"), row.getString("Date"), row.getString("City"), row.getString("Address"), row.getDouble("LA"), row.getDouble("LO"), row.getString("ProjectDescription"), row.getString("ProjectManager"), row.getString("MobileNumber"), row.getInt("SalesMan"), row.getString("HandOverDate"), row.getString("WarrantyExpireDate"), row.getString("ContractLink"), row.getInt("Supplied"), row.getInt("Installed"), row.getInt("Handovered"), row.getString("SupplyDate"), row.getString("InstallDate"), row.getString("HandOverDate"));
+                        }
+                        callback.onSuccess(p[0]);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        callback.onFailed();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onFailed();
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> par = new HashMap<String, String>();
+                par.put("ID", String.valueOf(id));
+                return par;
+            }
+        };
+        Volley.newRequestQueue(c).add(request);
+    }
+}
+interface  GetProjectCallback {
+    void onSuccess(PROJECT_CONTRACT_CLASS p);
+    void onFailed();
 }
