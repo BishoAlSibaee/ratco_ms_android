@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:background="@color/teal_700"
                 android:padding="5dp"
-                app:srcCompat="@drawable/drop_down_icon" />
+                app:srcCompat="@android:drawable/arrow_down_float" />
 
             <LinearLayout
                 android:layout_width="match_parent"

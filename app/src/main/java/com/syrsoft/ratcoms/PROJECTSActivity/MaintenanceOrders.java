@@ -23,7 +23,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.syrsoft.ratcoms.Loading;
 import com.syrsoft.ratcoms.MyApp;
-import com.syrsoft.ratcoms.PROJECTSActivity.ADAPTER.MaintenanceOrders_Adapter;
 import com.syrsoft.ratcoms.PROJECTSActivity.ADAPTER.Maintenance_Order_Adapter_ForProjects;
 import com.syrsoft.ratcoms.R;
 import com.syrsoft.ratcoms.ToastMaker;
@@ -56,7 +55,7 @@ public class MaintenanceOrders extends AppCompatActivity {
         setContentView(R.layout.projects_maintenance_orders_activity);
         setActivity();
         setActivityActions();
-        setHideAndUnhideItems();
+        setHideAndUnHideItems();
     }
 
     void setActivity() {
@@ -125,7 +124,7 @@ public class MaintenanceOrders extends AppCompatActivity {
         });
     }
 
-    void setHideAndUnhideItems() {
+    void setHideAndUnHideItems() {
         if (MyApp.MyUser.isDepartmentManager) {
             Forwarded.setVisibility(View.VISIBLE);
             UnForwarded.setVisibility(View.VISIBLE);
@@ -253,10 +252,11 @@ public class MaintenanceOrders extends AppCompatActivity {
                 par.put("Department" , MyApp.MyUser.Department);
                 par.put("Status",String.valueOf(Status));
                 par.put("Forward" , String.valueOf(Forward));
-                par.put("Count" , String.valueOf(MyApp.MyUser.MyStaff.size()));
+                par.put("Count" , String.valueOf(MyApp.MyUser.MyStaff.size()+1));
                 for (int i=0;i<MyApp.MyUser.MyStaff.size();i++) {
                     par.put("To"+i , String.valueOf(MyApp.MyUser.MyStaff.get(i).JobNumber));
                 }
+                par.put("To"+MyApp.MyUser.MyStaff.size() , String.valueOf(MyApp.MyUser.JobNumber));
                 return par;
             }
         };

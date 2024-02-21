@@ -102,7 +102,7 @@ public class AdvancePayment_Adapter extends RecyclerView.Adapter<AdvancePayment_
                     }
                 }
                 else {
-                    holder.icon.setImageResource(R.drawable.drop_down_icon);
+                    holder.icon.setImageResource(android.R.drawable.arrow_down_float);
                     for (int i=0 ; i< list.get(position).Auths.size();i++) {
                         holder.layouts.get(i).setVisibility(View.GONE);
                     }

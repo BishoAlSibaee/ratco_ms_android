@@ -1,5 +1,7 @@
 package com.syrsoft.ratcoms;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -59,7 +61,7 @@ public class Ads_Adapter extends RecyclerView.Adapter<Ads_Adapter.HOLDER>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Ads_Adapter.HOLDER holder, int position)
+    public void onBindViewHolder(@NonNull Ads_Adapter.HOLDER holder, @SuppressLint("RecyclerView") int position)
     {
         holder.title.setText(list.get(position).Title);
         holder.text.setText(list.get(position).Message);

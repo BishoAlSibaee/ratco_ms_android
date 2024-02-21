@@ -353,6 +353,8 @@
     <string name="forwardedOrders">الطلبات التي تم توجيهها</string>
     <string name="unForwardedOrders">الطلبات التي لك يتم توجيهها</string>
     <string name="myAttendanceTable">جدول الحضور والانصراف</string>
+    <string name="attendAlarmTitle">حان وقت الدوام</string>
+    <string name="attendAlarmMessage">هل ترغب بتسجيل الحضور الآن</string>
 
     // Messages __________________________________________________________________________________________________________
 
@@ -473,5 +475,6 @@
     <string name="enter_warranty">ادخل الضمان (سنة)</string>
     <string name="Title">يرجى مراعاة التالي عند تقديم طلب الشراء </string>
     <string name="Agree">أوافق</string>
+    <string name="iamInVaactionNow">انا في اجازة حالياً</string>
 
 </resources>

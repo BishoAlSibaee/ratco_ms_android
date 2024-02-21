@@ -359,6 +359,8 @@
     <string name="forwardedOrders">Forwarded Orders</string>
     <string name="unForwardedOrders">UnForwarded Orders</string>
     <string name="myAttendanceTable">My Attendance Table</string>
+    <string name="attendAlarmTitle">It is Attend Time</string>
+    <string name="attendAlarmMessage">Do you want to Attend Now</string>
 
     // Messages ___________________________________________________________________________
 
@@ -482,5 +484,6 @@
     <string name="enter_warranty">Enter Warranty(YEAR)</string>
     <string name="Title">Please consider the following when placing your order</string>
     <string name="Agree">Agree</string>
+    <string name="iamInVaactionNow">I am in vacation now</string>
 
 </resources>

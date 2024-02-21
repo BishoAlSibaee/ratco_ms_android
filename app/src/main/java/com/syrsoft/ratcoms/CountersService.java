@@ -129,7 +129,7 @@ public class CountersService extends Service {
                     MyApp.ProjectsCounter = MyApp.ProjectsCounter+ORDERS.size() ;
                     MyApp.MaintenanceCounter = MyApp.MaintenanceCounter + ORDERS.size();
                     if (MainPage.isRunning) {
-                        MainPage.setCounters();
+                        //MainPage.setCounters();
                     }
                     if (Projects_Activity.isRunning) {
                         Projects_Activity.setCounters();

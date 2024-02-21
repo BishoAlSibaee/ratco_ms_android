@@ -130,6 +130,7 @@ public class ViewPurchaseOrders extends AppCompatActivity {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.d("ordersResp",e.getMessage());
                 }
                 adapter = new PurchaseOrders_Adapter(listPurchase);
                 ResOrder.setAdapter(adapter);

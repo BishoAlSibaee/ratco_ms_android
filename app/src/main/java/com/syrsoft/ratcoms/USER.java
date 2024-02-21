@@ -5,9 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -22,6 +25,10 @@ import com.syrsoft.ratcoms.HRActivities.JobTitle;
 import com.syrsoft.ratcoms.HRActivities.RESIGNATION_CLASS;
 import com.syrsoft.ratcoms.HRActivities.VACATIONSALARY_CLASS;
 import com.syrsoft.ratcoms.HRActivities.VACATION_CLASS;
+import com.syrsoft.ratcoms.HRActivities.Vacation;
+import com.syrsoft.ratcoms.Interfaces.AttendTimeCallback;
+import com.syrsoft.ratcoms.Interfaces.UserVacationTodayCallback;
+import com.syrsoft.ratcoms.Interfaces.getUserAttendance;
 import com.syrsoft.ratcoms.PROJECTSActivity.LOCAL_PURCHASE_ORDER;
 import com.syrsoft.ratcoms.PROJECTSActivity.SITE_VISIT_ORDER_class;
 import org.json.JSONArray;
@@ -30,10 +37,12 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import static com.syrsoft.ratcoms.MyApp.MainUrl;
 import static com.syrsoft.ratcoms.MyApp.MyUser;
@@ -115,6 +124,9 @@ public class USER {
     private String getMaintenanceOrdersToDirectManagerUrl = MainUrl+"getMaintenanceOrdersNumberOfDirectManager.php";
     public List<USER> MyStaff ;
     public boolean isDirectManager = false , isDepartmentManager = false ;
+    boolean isAttendToday = false;
+    boolean isAttendNow = false;
+    boolean isInVacation = false;
 
     public USER(int id, int jobNumber, String user, String firstName, String lastName, String department, String jobTitle, int directManager,int departmentManager, double workLocationLa, double workLocationLo, String mobile, String email, String pic, String IDNumber, String IDExpireDate, String birthDate, String nationality, String passportNumber, String passportExpireDate, String contractNumber, String contractStartDate, int contractDuration, String contractExpireDate , String insurance ,String bank, String bankAccount ,String bankIban ,int idsWarning , int passWarning , int contractWarning , double salary, double vacationDays, int sickDays, int emergencyDays,int vacationStatus,int vacationAlternative, String joinDate, String token) {
         this.id = id;
@@ -3340,6 +3352,7 @@ public class USER {
         }
     }
 
+    @NonNull
     @Override
     public String toString() {
         String res = "";
@@ -3385,5 +3398,145 @@ public class USER {
         return res ;
     }
 
+    void getIsUserAttendToday(RequestQueue Q,getUserAttendance callback) {
+        StringRequest request = new StringRequest(Request.Method.POST, ProjectUrls.getIsEmployeeAttendToday, response -> {
+                isAttendToday = response.equals("1");
+                callback.onResultBack(response.equals("1"));
+                }
+            , error -> callback.onError(error.toString())){
+            @NonNull
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> params = new HashMap<>();
+                params.put("EmpID", String.valueOf(id));
+                return params;
+            }
+        };
+        Q.add(request);
+    }
 
+    void getIsUserAttendYesterday(RequestQueue Q,getUserAttendance callback) {
+        StringRequest request = new StringRequest(Request.Method.POST, ProjectUrls.getIsEmployeeAttendYesterday, response -> {
+            isAttendToday = response.equals("1");
+            callback.onResultBack(response.equals("1"));
+        }
+                , error -> callback.onError(error.toString())){
+            @NonNull
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> params = new HashMap<>();
+                params.put("EmpID", String.valueOf(id));
+                return params;
+            }
+        };
+        Q.add(request);
+    }
+
+    void getIsUserAttendNow(RequestQueue Q,getUserAttendance callback) {
+        StringRequest request = new StringRequest(Request.Method.POST, ProjectUrls.getIsEmployeeAttendNow, response -> {
+            isAttendNow = response.equals("1");
+            callback.onResultBack(response.equals("1"));
+        }
+                , error -> callback.onError(error.toString())){
+            @NonNull
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> params = new HashMap<>();
+                params.put("EmpID", String.valueOf(id));
+                return params;
+            }
+        };
+        Q.add(request);
+    }
+
+    void getUserAttendTime(RequestQueue Q, AttendTimeCallback callback) {
+        StringRequest request = new StringRequest(Request.Method.POST, ProjectUrls.getUserAttendTimeUrl, response -> {
+            try {
+                JSONObject obj = new JSONObject(response);
+                callback.onSuccess(new AttendLeaveTime(obj.getString("attend"),obj.getString("leave")));
+            } catch (JSONException e) {
+                callback.onFail(e.getMessage());
+            }
+
+        }, error -> {
+            callback.onFail(error.toString());
+        }){
+            @NonNull
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> params = new HashMap<>();
+                params.put("EmpID", String.valueOf(MyUser.id));
+                return params;
+            }
+        };
+        Q.add(request);
+    }
+
+    void getIsUserInVacationToday(RequestQueue Q, UserVacationTodayCallback callback) {
+        StringRequest request = new StringRequest(Request.Method.POST, ProjectUrls.getIsEmployeeHasVacationToday
+                , response -> {
+                if (response.equals("0")) {
+                    isInVacation = false;
+                    callback.onSuccess(false,null);
+                }
+                else {
+                    try {
+                        JSONObject obj = new JSONObject(response);
+                        JSONObject vacation = obj.getJSONObject("vacation");
+                        VACATION_CLASS v = new VACATION_CLASS(vacation.getInt("id"),vacation.getInt("EmpID"),vacation.getInt("JobNumber"),vacation.getString("FName"),vacation.getString("LName"),vacation.getInt("DirecManager")
+                                ,vacation.getString("DirectManagerName"),vacation.getString("JobTitle"),vacation.getInt("OrderType"),vacation.getString("SendDate"),vacation.getString("StartDate"),vacation.getInt("VacationDays")
+                                ,vacation.getString("EndDate"),vacation.getInt("AlternativeID"),vacation.getString("AlternativeName"),vacation.getString("Location"),vacation.getString("Notes"),null,vacation.getInt("Status"),vacation.getInt("BackStatus"),vacation.getInt("VSalaryStatus"));
+                        isInVacation = true;
+                        callback.onSuccess(true,v);
+                    } catch (JSONException e) {
+                        callback.onFil(e.getMessage());
+                    }
+                }
+            }, error -> {
+            callback.onFil(error.toString());
+        }){
+            @NonNull
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> params = new HashMap<>();
+                params.put("id", String.valueOf(id));
+                return params;
+            }
+        };
+        Q.add(request);
+    }
+
+    void getIsEmployeeHasVacationYesterday(RequestQueue Q, UserVacationTodayCallback callback) {
+        StringRequest request = new StringRequest(Request.Method.POST, ProjectUrls.getIsEmployeeHasVacationYesterday
+                , response -> {
+            if (response.equals("0")) {
+                isInVacation = false;
+                callback.onSuccess(false,null);
+            }
+            else {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    JSONObject vacation = obj.getJSONObject("vacation");
+                    VACATION_CLASS v = new VACATION_CLASS(vacation.getInt("id"),vacation.getInt("EmpID"),vacation.getInt("JobNumber"),vacation.getString("FName"),vacation.getString("LName"),vacation.getInt("DirecManager")
+                            ,vacation.getString("DirectManagerName"),vacation.getString("JobTitle"),vacation.getInt("OrderType"),vacation.getString("SendDate"),vacation.getString("StartDate"),vacation.getInt("VacationDays")
+                            ,vacation.getString("EndDate"),vacation.getInt("AlternativeID"),vacation.getString("AlternativeName"),vacation.getString("Location"),vacation.getString("Notes"),null,vacation.getInt("Status"),vacation.getInt("BackStatus"),vacation.getInt("VSalaryStatus"));
+                    isInVacation = true;
+                    callback.onSuccess(true,v);
+                } catch (JSONException e) {
+                    callback.onFil(e.getMessage());
+                }
+            }
+        }, error -> {
+            callback.onFil(error.toString());
+        }){
+            @NonNull
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> params = new HashMap<>();
+                params.put("id", String.valueOf(id));
+                return params;
+            }
+        };
+        Q.add(request);
+    }
 }

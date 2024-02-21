@@ -822,10 +822,10 @@ public class AddMaintenanceOrder extends AppCompatActivity {
         }) {
             @Nullable
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 Calendar c = Calendar.getInstance(Locale.getDefault());
                 String Date = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
-                Map<String, String> par = new HashMap<String, String>();
+                Map<String, String> par = new HashMap<>();
                 par.put("ProjectID", String.valueOf(CONTRACT.id));
                 par.put("ProjectName", CONTRACT.ProjectName);
                 par.put("ClientID", String.valueOf(CONTRACT.ClientID));

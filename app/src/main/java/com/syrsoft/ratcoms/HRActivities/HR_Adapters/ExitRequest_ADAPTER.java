@@ -106,7 +106,6 @@ public class ExitRequest_ADAPTER  extends RecyclerView.Adapter<ExitRequest_ADAPT
                     }
                     status[position] = false ;
                 }
-
             }
         });
 
