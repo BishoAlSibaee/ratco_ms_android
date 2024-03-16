@@ -83,6 +83,7 @@ public class ViewMyVisitDetailes extends AppCompatActivity {
         Bundle b = getIntent().getExtras() ;
         ID = b.getInt("ItemId");
         //VISIT = MyVisitReports.Visits.get(ID);
+        Log.d("checkID" , ID + "");
         setActivity();
         getClient();
         getTheVisits();

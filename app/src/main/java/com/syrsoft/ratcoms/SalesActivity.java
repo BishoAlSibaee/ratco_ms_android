@@ -16,6 +16,7 @@ import com.syrsoft.ratcoms.SALESActivities.ClientVisitReport;
 import com.syrsoft.ratcoms.SALESActivities.Clients;
 import com.syrsoft.ratcoms.SALESActivities.DataSheets;
 import com.syrsoft.ratcoms.SALESActivities.MyVisitReports;
+import com.syrsoft.ratcoms.SALESActivities.ViewClientsLocations;
 import com.syrsoft.ratcoms.SALESActivities.ViewMySalesProjectContracts;
 import com.syrsoft.ratcoms.SALESActivities.ViewMyStaffVisitsReport;
 import com.syrsoft.ratcoms.SALESActivities.ViewPurchaseOrders;
@@ -23,7 +24,7 @@ import com.syrsoft.ratcoms.SALESActivities.ViewPurchaseOrders;
 public class SalesActivity extends AppCompatActivity {
 
     Activity act ;
-    Button viewMyStaffVisits , addNewProjectContract ,ImportOrders , addClientVisit,AddImportOrder , ViewMyClientVisits,AddClient,myClients,myContracts , btnGoBuyOrder ;
+    Button viewMyStaffVisits , addNewProjectContract ,ImportOrders , addClientVisit,AddImportOrder , ViewMyClientVisits,AddClient,myClients,myContracts , btnGoBuyOrder, ButtonViewClients ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +44,8 @@ public class SalesActivity extends AppCompatActivity {
         btnGoBuyOrder = (Button) findViewById(R.id.btnGoBuyOrder);
         myClients = findViewById(R.id.myClients);
         ImportOrders = findViewById(R.id.btnViewPurchase);
+        ButtonViewClients = findViewById(R.id.ButtonViewClients);
         setButtonsView();
-//        if (MyApp.db.getUser().JobTitle.equals("SalesMan")) {
-//            viewMyStaffVisits.setVisibility(View.GONE);
-//            addNewProjectContract.setVisibility(View.GONE);
-//        }
-//        if (MyApp.db.getUser().JobTitle.equals("Programmer")) {
-//            addNewProjectContract.setVisibility(View.VISIBLE);
-//            viewMyStaffVisits.setVisibility(View.VISIBLE);
-//        }
-//        else {
-//            addNewProjectContract.setVisibility(View.GONE);
-//        }
     }
 
     public void goToClientVisitReport(View view) {
@@ -98,6 +89,7 @@ public class SalesActivity extends AppCompatActivity {
         myClients.setVisibility(View.GONE);//24
         btnGoBuyOrder.setVisibility(View.GONE);//42
         ImportOrders.setVisibility(View.GONE);
+        ButtonViewClients.setVisibility(View.GONE);//44;
         for (int i=0;i<MyApp.MyUser.MyPermissions.size();i++) {
             if (MyApp.MyUser.MyPermissions.get(i).getId() == 26) {
                 if (MyApp.MyUser.MyPermissions.get(i).getResult()) {
@@ -144,6 +136,11 @@ public class SalesActivity extends AppCompatActivity {
                     ImportOrders.setVisibility(View.VISIBLE);
                 }
             }
+            if (MyApp.MyUser.MyPermissions.get(i).getId() == 44) {
+                if (MyApp.MyUser.MyPermissions.get(i).getResult()) {
+                    ButtonViewClients.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 
@@ -169,6 +166,11 @@ public class SalesActivity extends AppCompatActivity {
 
     public void goToViewPurchase(View view){
         Intent i = new Intent(act, ViewPurchaseOrders.class);
+        startActivity(i);
+    }
+
+    public void goToViewClients(View view){
+        Intent i =new Intent(act, ViewClientsLocations.class);
         startActivity(i);
     }
 }

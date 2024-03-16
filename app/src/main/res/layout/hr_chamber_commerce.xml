@@ -1,0 +1,1522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:background="@drawable/btns"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/purple_700"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView11"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/teal_700"
+            android:padding="5dp"
+            app:srcCompat="@android:drawable/arrow_down_float" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2110"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/teal_700"
+                    android:gravity="center"
+                    android:text="@string/order"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/textView1910"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/teal_700"
+                    android:gravity="center"
+                    android:text="@string/sendDate"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/teal_700"
+                    android:gravity="center"
+                    android:text="@string/EmployeeName"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ChamTtile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/teal_700"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ChamSendDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/teal_700"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/EmployeeName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/teal_700"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView181"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/teal_700"
+                    android:text="@string/RequestForm"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/RequestForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/teal_700"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/auth_background"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rad1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/ap1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approval1"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView26"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalResult"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalDate"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth1ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth1Res"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth1Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Punishment_Auth1Note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/purple_700"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/auth_background"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rad2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/ap2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approval2"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView260"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalResult"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView250"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalDate"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth2ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth2Res"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth2Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Punishment_Auth2Note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/purple_700"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/auth_background"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rad3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/ap3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approval3"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView2600"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalResult"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView2500"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalDate"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth3ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth3Res"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth3Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Punishment_Auth3Note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/purple_700"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/auth_background"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rad4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/ap4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approval4"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView26000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalResult"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView25000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalDate"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth4ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth4Res"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth4Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Punishment_Auth4Note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/purple_700"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/auth_background"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rad5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/ap5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approval5"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView260000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalResult"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView250000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalDate"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth5ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth5Res"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth5Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Punishment_Auth5Note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/purple_700"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/auth_background"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rad6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/ap6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approval6"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView2600000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalResult"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView2500000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalDate"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth6ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth6Res"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth6Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Punishment_Auth6Note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/purple_700"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/auth_background"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rad7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/ap7"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approval7"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView26000000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalResult"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView25000000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalDate"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth7ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth7Res"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth7Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Punishment_Auth7Note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/purple_700"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/auth_background"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rad8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/ap8"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approval8"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView260000000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalResult"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView250000000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalDate"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth8ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth8Res"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth8Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Punishment_Auth8Note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/purple_700"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/auth_background"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rad9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/ap9"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approval9"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView2600000000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalResult"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView2500000000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalDate"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth9ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth9Res"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth9Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Punishment_Auth9Note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/purple_700"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/auth_background"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rad10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/ap10"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approval10"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView26000000000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalResult"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textView25000000000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="@string/approvalDate"
+                    android:textColor="@color/purple_700"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth10ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth10Res"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/PunishmentUnit_Auth10Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple_700"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Punishment_Auth10Note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/purple_700"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

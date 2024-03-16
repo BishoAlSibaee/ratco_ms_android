@@ -355,6 +355,16 @@
     <string name="myAttendanceTable">جدول الحضور والانصراف</string>
     <string name="attendAlarmTitle">حان وقت الدوام</string>
     <string name="attendAlarmMessage">هل ترغب بتسجيل الحضور الآن</string>
+    <string name="Punishment">طلب عقوبة</string>
+    <string name="RequestChamberCommerce">طلب غرفة تجارية</string>
+    <string name="RequestForm">صيغة الطلب</string>
+    <string name="EnterRequestForm">ادخل صيغة الطلب</string>
+    <string name="OrderType1">نوع الطلب</string>
+    <string name="EnterOrderType">ادخل نوع الطلب</string>
+    <string name="ManagerName">اسم المدير</string>
+    <string name="EmployeeName">اسم الموظف</string>
+    <string name="ReportSalary">تقرير الراتب</string>
+
 
     // Messages __________________________________________________________________________________________________________
 
@@ -417,7 +427,7 @@
     <string name="underWarranty">تحت الضمان</string>
     <string name="areYouSure">هل انت متاكد</string>
     <string name="areYouSureDelete"> هل انت متاكد من الحذف</string>
-    <string name="pleaseEnterResponse">يرجى ارخال الرد</string>
+    <string name="pleaseEnterResponse">يرجى ادخال الرد</string>
     <string name="pleaseSelectDoneOrNot">اختر هل تمت الصيانة ام لا</string>
     <string name="updatesOnMaintenanceOrder">تحديث على طلب الصيانة</string>
     <string name="maintenanceDone">تمت الصيانة</string>
@@ -442,7 +452,7 @@
     5- سيتم ارسال تنبيه اليك عند التنفيذ  \n</string>
     <string name="addOnly3Files" >يمكنك اضافة ٣ ملفات فقط</string>
     <string name="mustAttachDocument" >يحب ان تقوم بارفاق مستند التسليم</string>
-    <string name="problemInGettingData" >يوجد مشكلة في جلب البيانات .. n\ هل نريد المحاولة مرة اخرى</string>
+    <string name="problemInGettingData" >يوجد مشكلة في جلب البيانات .. n\ هل تريد المحاولة مرة اخرى</string>
     <string name="problemInGettingDataُTitle" >لا يمكن الوصول للبيانات</string>
     <string name="noRatingCriterias">لا يوجد معايير تقييم</string>
     <string name="noRatesDoneYes">لا يوجد تقييمات تمت حتى الان</string>
@@ -476,5 +486,17 @@
     <string name="Title">يرجى مراعاة التالي عند تقديم طلب الشراء </string>
     <string name="Agree">أوافق</string>
     <string name="iamInVaactionNow">انا في اجازة حالياً</string>
+    <string name="ClientsLocations">مواقع العملاء</string>
+    <string name="Month">اختر الشهر</string>
+    <string name="Year">اختر السنة</string>
+    <string name="Absence">الغياب</string>
+    <string name="AbsencePenalty">خصم الغياب</string>
+    <string name="Late">التأخير</string>
+    <string name="LatePenalty">خصم التأخير</string>
+    <string name="AdvancePenalty">خصم السلف</string>
+    <string name="CustodyPenalty">خصم العهد</string>
+    <string name="Total">المجموع</string>
+    <string name="SalaryAfterPenalty">صافي الراتب</string>
+
 
 </resources>

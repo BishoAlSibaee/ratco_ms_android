@@ -10,41 +10,53 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/textView100"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="10sp" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/adsunit_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/bg"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/adsunit_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/bg"
-        android:textSize="12sp" />
+            <TextView
+                android:id="@+id/textView100"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="10sp" />
 
-    <Button
-        android:id="@+id/button20"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/transparent_btn"
-        android:text="@string/viewFile"
-        android:textAllCaps="false" />
+            <TextView
+                android:id="@+id/adsunit_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/bg"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/adsunit_img"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:padding="10dp"
-        app:srcCompat="@drawable/logow" />
+            <TextView
+                android:id="@+id/adsunit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/bg"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/button20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent_btn"
+                android:text="@string/viewFile"
+                android:textAllCaps="false" />
+
+            <ImageView
+                android:id="@+id/adsunit_img"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:padding="10dp"
+                app:srcCompat="@drawable/logow" />
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>

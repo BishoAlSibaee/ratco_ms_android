@@ -50,7 +50,6 @@ public class Ads_Adapter extends RecyclerView.Adapter<Ads_Adapter.HOLDER>
         HOLDER holder = new HOLDER(v);
         return holder ;
     }
-
     @Override
     public void onViewAttachedToWindow(@NonNull HOLDER holder) {
         super.onViewAttachedToWindow(holder);

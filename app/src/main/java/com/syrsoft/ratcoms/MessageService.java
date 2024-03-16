@@ -79,20 +79,24 @@ public class MessageService extends FirebaseMessagingService {
                                 }
 
 
-                            } else if (remoteMessage.getData().get("order").equals("Error")) {
+                            }
+                            else if (remoteMessage.getData().get("order").equals("Error")) {
                                 if (MyApp.MyUser.JobTitle.equals("Programmer")) {
                                     Intent i = new Intent(getApplicationContext(), Errors.class);
                                     showNotification(getApplicationContext(), "New Error " + remoteMessage.getData().get("title"), " on " + remoteMessage.getData().get("message"), i, RequestCode);
                                 }
-                            } else if (remoteMessage.getData().get("order").equals("MaintenanceOrder")) {
+                            }
+                            else if (remoteMessage.getData().get("order").equals("MaintenanceOrder")) {
                                 Intent i = new Intent(MyApp.app, MainPage.class);
                                 showNotification(MyApp.app, remoteMessage.getData().get("title"), remoteMessage.getData().get("message"), i, RequestCode);
                                 //resetCountersService();
-                            } else if (remoteMessage.getData().get("order").equals("MaintenanceOrderUpdates")) {
+                            }
+                            else if (remoteMessage.getData().get("order").equals("MaintenanceOrderUpdates")) {
                                 Intent i = new Intent(MyApp.app, MainPage.class);
                                 showNotification(MyApp.app, remoteMessage.getData().get("title"), remoteMessage.getData().get("message"), i, RequestCode);
                                 //resetCountersService();
-                            } else if (remoteMessage.getData().get("order").equals("NewSiteVisitOrder")) {
+                            }
+                            else if (remoteMessage.getData().get("order").equals("NewSiteVisitOrder")) {
                                 if (remoteMessage.getData().get("JobNumber").equals(String.valueOf(MyApp.MyUser.JobNumber))) {
                                     Intent i = new Intent(MyApp.app, MainPage.class);
                                     showNotification(MyApp.app, remoteMessage.getData().get("title"), "updates for your " + remoteMessage.getData().get("message") + " " + remoteMessage.getData().get("Name"), i, RequestCode);
@@ -101,7 +105,17 @@ public class MessageService extends FirebaseMessagingService {
                                     showNotification(MyApp.app, remoteMessage.getData().get("title"), remoteMessage.getData().get("message") + " " + remoteMessage.getData().get("Name"), i, RequestCode);
                                 }
 
-                            } else {
+                            }
+                            else if (remoteMessage.getData().get("order").equals("NewPunishment")) {
+                                if (remoteMessage.getData().get("JobNumber").equals(String.valueOf(MyApp.MyUser.JobNumber))) {
+                                    Intent i = new Intent(MyApp.app, MainPage.class);
+                                    showNotification(MyApp.app, remoteMessage.getData().get("title"), " New Punishment Order " + remoteMessage.getData().get("message") + " " + remoteMessage.getData().get("Name"), i, RequestCode);
+                                } else {
+                                    Intent i = new Intent(MyApp.app, MainPage.class);
+                                    showNotification(MyApp.app, remoteMessage.getData().get("title"), remoteMessage.getData().get("message") + " " + remoteMessage.getData().get("Name"), i, RequestCode);
+                                }
+                            }
+                            else {
                                 if (remoteMessage.getData().get("JobNumber") != null) {
                                     if (remoteMessage.getData().get("JobNumber").equals(String.valueOf(MyApp.MyUser.JobNumber))) {
                                         Intent i = new Intent(MyApp.app, MainPage.class);
@@ -179,6 +193,16 @@ public class MessageService extends FirebaseMessagingService {
                             showNotification(MyApp.app, remoteMessage.getData().get("title"), remoteMessage.getData().get("message") + " " + remoteMessage.getData().get("Name"), i, RequestCode);
                         }
 
+                    }
+                    else if (remoteMessage.getData().get("order").equals("NewPunishment")) {
+                        if (remoteMessage.getData().get("JobNumber").equals(String.valueOf(MyApp.MyUser.JobNumber))) {
+                            Intent i = new Intent(MyApp.app, MainPage.class);
+                            showNotification(MyApp.app, remoteMessage.getData().get("title"), " New Punishment Order " + remoteMessage.getData().get("message") + " from " + remoteMessage.getData().get("Name"), i, RequestCode);
+                        } else {
+                            Intent i = new Intent(MyApp.app, MainPage.class);
+                            USER u = USER.searchUserByJobNumber(MyApp.EMPS,Integer.parseInt(remoteMessage.getData().get("JobNumber").toString()));
+                            showNotification(MyApp.app, remoteMessage.getData().get("title"), remoteMessage.getData().get("message") + " from " + remoteMessage.getData().get("Name") +" on "+ u.FirstName+" "+u.LastName , i, RequestCode);
+                        }
                     }
                     else {
                         if (remoteMessage.getData().get("JobNumber") != null) {

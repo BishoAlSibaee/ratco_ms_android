@@ -10,6 +10,7 @@
     tools:context=".MainPage">
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -71,19 +72,100 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/adsLayout"
+                android:id="@+id/MyClientLocation"
                 android:layout_width="match_parent"
                 android:layout_height="260dp"
                 android:layout_marginTop="5dp"
-                android:background="@color/lightGray"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:id="@+id/MyClientCaption"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/test"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageViewMap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/test"
+                        android:padding="5dp"
+                        app:srcCompat="@android:drawable/arrow_down_float" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/ClientsLocations"
+                        android:textColor="@color/bg"
+                        android:textSize="14sp"
+                        android:textStyle="bold|italic" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/MapCaption"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/test"
+                    android:orientation="vertical">
+
+                    <fragment
+                        android:id="@+id/map"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        tools:context=".HRActivities.CheckEmpsAttendance" />
+
+                    <ImageView
+                        android:id="@+id/imageView123"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        app:srcCompat="@drawable/transparent_btn" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/adsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="290dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="5dp">
 
                 <LinearLayout
                     android:id="@+id/adsCaptionLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:orientation="horizontal">
+                    android:layout_height="40dp"
+                    android:background="@color/test"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageViewAds"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/test"
+                        android:padding="5dp"
+                        app:srcCompat="@android:drawable/arrow_down_float" />
 
                     <TextView
                         android:id="@+id/textView64"
@@ -92,9 +174,10 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
+                        android:paddingHorizontal="10dp"
                         android:text="@string/ads"
                         android:textColor="@color/bg"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:textStyle="bold|italic" />
 
                     <androidx.cardview.widget.CardView
@@ -122,30 +205,40 @@
 
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/adsRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="210dp" />
-
                 <LinearLayout
-                    android:id="@+id/dotsLayout"
+                    android:id="@+id/LayoutResDot"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:background="@color/test"
+                    android:padding="0dp"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/adsRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="210dp"
+                        android:paddingBottom="10dp" />
+
+                    <LinearLayout
+                        android:id="@+id/dotsLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/taskLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
+                android:layout_weight="1"
                 android:background="@color/teal_700"
                 android:orientation="vertical"
                 android:padding="10dp">
@@ -171,6 +264,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:layout_weight="1"
                 android:background="@color/lightGray"
                 android:orientation="vertical"
                 android:padding="10dp">
@@ -222,7 +316,7 @@
                         android:layout_marginEnd="30dp"
                         android:padding="5dp"
                         android:src="@drawable/bring_up_icon" />
-<!--                        app:srcCompat="@drawable/drop_down_icon" -->
+                    <!--                        app:srcCompat="@drawable/drop_down_icon" -->
 
 
                 </LinearLayout>

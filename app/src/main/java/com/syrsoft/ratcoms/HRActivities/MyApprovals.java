@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -28,16 +29,21 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.Request;
+import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.syrsoft.ratcoms.HR;
+import com.syrsoft.ratcoms.HRActivities.HR_Adapters.Chamber_Commerce_Adapter;
 import com.syrsoft.ratcoms.HRActivities.HR_Adapters.MyApproval_BONUS_REQUEST_ADAPTER;
 import com.syrsoft.ratcoms.HRActivities.HR_Adapters.MyApproval_EXIT_REQUEST_ADAPTER;
 import com.syrsoft.ratcoms.HRActivities.HR_Adapters.MyApproval_AdvancePayment_Adapter;
 import com.syrsoft.ratcoms.HRActivities.HR_Adapters.MyApproval_Custody_Adapter;
 import com.syrsoft.ratcoms.HRActivities.HR_Adapters.MyApproval_VacationSalary_Adapter;
 import com.syrsoft.ratcoms.HRActivities.HR_Adapters.MyApprovals_Backs_Adapter;
+import com.syrsoft.ratcoms.HRActivities.HR_Adapters.MyApprovals_Chamber_Adapter;
+import com.syrsoft.ratcoms.HRActivities.HR_Adapters.MyApprovals_Punishment_Adapter;
 import com.syrsoft.ratcoms.HRActivities.HR_Adapters.MyApprovals_Resignation_Adapter;
 import com.syrsoft.ratcoms.HRActivities.HR_Adapters.MyApprovals_Vacation_Adapter;
 import com.syrsoft.ratcoms.JsonToObject;
@@ -51,6 +57,7 @@ import com.syrsoft.ratcoms.ToastMaker;
 import com.syrsoft.ratcoms.USER;
 import com.syrsoft.ratcoms.VolleyCallback;
 import com.syrsoft.ratcoms.VollyCallback;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -62,55 +69,65 @@ import java.util.concurrent.Executor;
 
 public class MyApprovals extends AppCompatActivity {
 
-    public Activity act ;
-    static RecyclerView bonusRecycler,resignations , advancePayments , backToWorks , CustodyRequestsRecycler , vacations , vacationSalarys ,ExitRequestsRecycler;
-    static MyApprovals_Resignation_Adapter resignationsAdapter ;
+    public Activity act;
+    static RecyclerView bonusRecycler, resignations, advancePayments, backToWorks, CustodyRequestsRecycler, vacations, vacationSalarys, ExitRequestsRecycler, PunishmentRecycler, ChamberRecycler;
+    static MyApprovals_Resignation_Adapter resignationsAdapter;
     static MyApprovals_Vacation_Adapter vacationAdapter;
-    static MyApprovals_Backs_Adapter backsAdapter ;
-    static MyApproval_AdvancePayment_Adapter advanceAdapter ;
-    static MyApproval_VacationSalary_Adapter vacationsalary_Adapter ;
-    static MyApproval_Custody_Adapter custodyRequest_Adapter ;
-    static MyApproval_EXIT_REQUEST_ADAPTER exitRequest_Adapter ;
+    static MyApprovals_Backs_Adapter backsAdapter;
+    static MyApproval_AdvancePayment_Adapter advanceAdapter;
+    static MyApprovals_Punishment_Adapter punishmentAdapter;
+    static MyApprovals_Chamber_Adapter chamberAdapter;
+    static MyApproval_VacationSalary_Adapter vacationsalary_Adapter;
+    static MyApproval_Custody_Adapter custodyRequest_Adapter;
+    static MyApproval_EXIT_REQUEST_ADAPTER exitRequest_Adapter;
     static MyApproval_BONUS_REQUEST_ADAPTER bonusRequest_Adapter;
-    static List<RESIGNATION_CLASS> resignationsList ;
-    static List<VACATION_CLASS> vacationslist ;
-    static List<BACKTOWORK_CLASS> backList ;
-    static List<ADVANCEPAYMENT_CLASS> advanceList ;
-    static List<VACATIONSALARY_CLASS> vacationSalaryList ;
-    static List<CUSTODY_REQUEST_CLASS> custodyRequestList ;
-    static List<EXIT_REQUEST_CLASS> exiteList ;
-    public static List<BONUS> bonusList ;
-    private RadioButton done , undone ;
-    public static int Status = 0 ;
-    static String getResignationsForApprovalUrl = MyApp.MainUrl+"getResignationsForApproval.php" ;
-    static String getExitRequestsForApprovUrl = MyApp.MainUrl+"getExitRequestForApproval.php" ;
-    static String getVacationsForApprovalUrl = MyApp.MainUrl+ "getVacationsForApproval.php";
+    static List<RESIGNATION_CLASS> resignationsList;
+    static List<VACATION_CLASS> vacationslist;
+    static List<BACKTOWORK_CLASS> backList;
+    static List<ADVANCEPAYMENT_CLASS> advanceList;
+    static List<PUNISHMENT_CLASS> punishmentList;
+    static List<CHAMBER_COMMERCE_CLASS> chamberList;
+    static List<VACATIONSALARY_CLASS> vacationSalaryList;
+    static List<CUSTODY_REQUEST_CLASS> custodyRequestList;
+    static List<EXIT_REQUEST_CLASS> exiteList;
+    public static List<BONUS> bonusList;
+    private RadioButton done, undone;
+    public static int Status = 0;
+    static String getResignationsForApprovalUrl = MyApp.MainUrl + "getResignationsForApproval.php";
+    static String getExitRequestsForApprovUrl = MyApp.MainUrl + "getExitRequestForApproval.php";
+    static String getVacationsForApprovalUrl = MyApp.MainUrl + "getVacationsForApproval.php";
     static String getBonusRequestsForApprovUrl = MyApp.MainUrl + "getBonusRequestsForApprovals.php";
-    static String getBacksForApprovalUrl = MyApp.MainUrl+"getBacksForApproval.php";
-    static String getAdvanceApprovalsUrl = MyApp.MainUrl+"getAdvancePaymentsForApproval.php";
-    static String getVacationSalaryRequestsForApprove = MyApp.MainUrl+"getVacationsalaryForApproval.php";
-    static String getCustodyForApprovalURL = MyApp.MainUrl+"getRequestCustodyForApproval.php" ;
-    static String[] approveOrderUrl = new String[]{MyApp.MainUrl+"responseAdvancePaymentOrder.php",MyApp.MainUrl+"responseResignation.php",MyApp.MainUrl+"responseVacation.php",MyApp.MainUrl+"responseVacationSalary.php",MyApp.MainUrl+"responseBack.php",MyApp.MainUrl+"responseCustodyRequest.php",MyApp.MainUrl+"responseExitRequest.php",MyApp.MainUrl+"responseBonusRequests.php"} ;
-    static String LoginUrl = MyApp.MainUrl+"appLoginEmployees.php" ;
-    public static List<String> tokens = new ArrayList<>() ;
+    static String getBacksForApprovalUrl = MyApp.MainUrl + "getBacksForApproval.php";
+    static String getAdvanceApprovalsUrl = MyApp.MainUrl + "getAdvancePaymentsForApproval.php";
+    static String getPunishmentApprovalsUrl = "https://ratco-solutions.com/RatcoManagementSystem/NewOptions/getRequestDiscountForApproval.php";
+    static String getVacationSalaryRequestsForApprove = MyApp.MainUrl + "getVacationsalaryForApproval.php";
+    static String getRequestChamberCommerceForApproval = "https://ratco-solutions.com/RatcoManagementSystem/NewOptions/getRequestChamberCommerceForApproval.php";
+
+    static String getCustodyForApprovalURL = MyApp.MainUrl + "getRequestCustodyForApproval.php";
+    static String[] approveOrderUrl = new String[]{MyApp.MainUrl + "responseAdvancePaymentOrder.php", MyApp.MainUrl + "responseResignation.php", MyApp.MainUrl + "responseVacation.php", MyApp.MainUrl + "responseVacationSalary.php", MyApp.MainUrl + "responseBack.php", MyApp.MainUrl + "responseCustodyRequest.php", MyApp.MainUrl + "responseExitRequest.php", MyApp.MainUrl + "responseBonusRequests.php"};
+    static String approveOrderPunishment = "https://ratco-solutions.com/RatcoManagementSystem/NewOptions/responseRequestDiscount.php?";
+
+    static String responseRequestChamberCommerce = "https://ratco-solutions.com/RatcoManagementSystem/NewOptions/responseRequestChamberCommerce.php";
+
+    static String LoginUrl = MyApp.MainUrl + "appLoginEmployees.php";
+    public static List<String> tokens = new ArrayList<>();
     static BiometricPrompt biometricPrompt;
     static BiometricPrompt.PromptInfo promptInfo;
-    public static boolean biometricAvailable = false ;
-    private static Object THE_ORDER ;
-    public static boolean AorR ;
-    static String Notes ;
-    static JobTitle DirectManagerObject ;
-    public static List<List<USER>> BonusOrdersAuthUsers,VacationOrdersAuthUsers,ExitOrdersAuthUsers,ResignationOrdersAuthUsers,VacationSalaryOrdersAuthUsers,CustodyOrdersAuthUsers , BacksOrdersAuthUsers,AdvancesOrdersAuthUsers ;
-    public static int POSITION = 0 ;
-    public static boolean isRunning = false ;
-    private LinearLayout BonusCaption,ExitCaption,ResignationCaption , VacationCaption , VacationSalaryCaption , CustodyCaption , BackCaption , AdvanceCaption ,SpinnersLayout,VacationLayout,VSLayout,AdvanceLayout,ResignationLayout,BackLayout,CustodyLayout,ExitLayout,BonusLayout ;
-    private Spinner OrderTypeSpinner , EmployeesSpinner ;
-    String[] ordertypes ;
-    String SelectedOrderType , START , END ;
-    USER SelectedUser ;
-    List<USER> XX ;
-    SharedPreferences prefs ;
-
+    public static boolean biometricAvailable = false;
+    private static Object THE_ORDER;
+    public static boolean AorR;
+    static String Notes;
+    static JobTitle DirectManagerObject;
+    public static List<List<USER>> BonusOrdersAuthUsers, VacationOrdersAuthUsers, ExitOrdersAuthUsers, ResignationOrdersAuthUsers, VacationSalaryOrdersAuthUsers, CustodyOrdersAuthUsers, BacksOrdersAuthUsers, AdvancesOrdersAuthUsers, PunishmentOrdersAuthUsers, ChemberOrdersAuthUsers;
+    public static int POSITION = 0;
+    public static boolean isRunning = false;
+    private LinearLayout BonusCaption, ExitCaption, ResignationCaption, VacationCaption, VacationSalaryCaption, CustodyCaption, BackCaption, AdvanceCaption, SpinnersLayout, VacationLayout, VSLayout, AdvanceLayout, ResignationLayout, BackLayout, CustodyLayout, ExitLayout, BonusLayout, PunishmentCaption, PunishmentLayout, ChamberLayout, ChamberCaption, LinearByEmp, LinearByOrder;
+    private Spinner OrderTypeSpinner, EmployeesSpinner;
+    String[] ordertypes;
+    String SelectedOrderType, START, END;
+    USER SelectedUser;
+    List<USER> XX;
+    SharedPreferences prefs;
 
 
     @Override
@@ -122,20 +139,21 @@ public class MyApprovals extends AppCompatActivity {
             Intent i = new Intent(getBaseContext(), Login.class);
             startActivity(i);
         }
-        isRunning = true ;
+        isRunning = true;
         setActivity();
         setActivityActions();
+        Log.d("punishmentApprove", "start " + MyApp.EMPS.size());
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        isRunning = false ;
+        isRunning = false;
     }
 
     void setActivity() {
-        act = this ;
-        ordertypes = new String[] {"All",getResources().getString(R.string.vacation),getResources().getString(R.string.vacationSalary),getResources().getString(R.string.advancePayment),getResources().getString(R.string.resignation),getResources().getString(R.string.backtowork),getResources().getString(R.string.requestCustody),getResources().getString(R.string.requestBonus)} ;
+        act = this;
+        ordertypes = new String[]{"All", getResources().getString(R.string.vacation), getResources().getString(R.string.vacationSalary), getResources().getString(R.string.advancePayment), getResources().getString(R.string.resignation), getResources().getString(R.string.backtowork), getResources().getString(R.string.requestCustody), getResources().getString(R.string.requestBonus), getResources().getString(R.string.Punishment), getResources().getString(R.string.RequestChamberCommerce)};
         VacationLayout = findViewById(R.id.VacationLayout);
         VSLayout = findViewById(R.id.VacationSalaryLayout);
         AdvanceLayout = findViewById(R.id.AdvanceLayout);
@@ -144,11 +162,15 @@ public class MyApprovals extends AppCompatActivity {
         BackLayout = findViewById(R.id.BackLayout);
         CustodyLayout = findViewById(R.id.CustodyLayout);
         BonusLayout = findViewById(R.id.BonusLayout);
+        PunishmentLayout = findViewById(R.id.PunishmentLayout);
+        ChamberLayout = findViewById(R.id.ChamberLayout);
         ResignationCaption = findViewById(R.id.ResignationCaption);
         VacationCaption = findViewById(R.id.VacationCaption);
         VacationSalaryCaption = findViewById(R.id.VacationSalaryCaption);
         CustodyCaption = findViewById(R.id.CustodyCaption);
         BackCaption = findViewById(R.id.BackCaption);
+        PunishmentCaption = findViewById(R.id.PunishmentCaption);
+        ChamberCaption = findViewById(R.id.ChamberCaption);
         AdvanceCaption = findViewById(R.id.AdvanceCaption);
         ExitCaption = findViewById(R.id.ExitCaption);
         BonusCaption = findViewById(R.id.BonusCaption);
@@ -157,44 +179,49 @@ public class MyApprovals extends AppCompatActivity {
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(act, R.layout.spinner_item, ordertypes);
         OrderTypeSpinner.setAdapter(typesAdapter);
         EmployeesSpinner = findViewById(R.id.Emps_Spinner);
+        LinearByOrder = findViewById(R.id.LinearByOrder);
+        LinearByEmp = findViewById(R.id.LinearByEmp);
         XX = new ArrayList<>();
-        String[] emps ;
-        if (MyApp.MyUser.JobTitle.equals("Manager") || MyApp.MyUser.JobTitle.equals("Sales Manager")|| MyApp.MyUser.JobTitle.equals("Accountant")) {
-            emps = new String[MyApp.EMPS.size()+1];
+        String[] emps;
+        if (MyApp.MyUser.JobTitle.equals("Manager") || MyApp.MyUser.JobTitle.equals("Sales Manager") || MyApp.MyUser.JobTitle.equals("Accountant")) {
+            emps = new String[MyApp.EMPS.size() + 1];
             emps[0] = "All";
-            for (USER u :MyApp.EMPS) {
+            for (USER u : MyApp.EMPS) {
                 XX.add(u);
             }
-            for (int i=0;i<XX.size();i++) {
-                emps[i+1] = XX.get(i).FirstName+" "+XX.get(i).LastName ;
+            for (int i = 0; i < XX.size(); i++) {
+                emps[i + 1] = XX.get(i).FirstName + " " + XX.get(i).LastName;
             }
             ArrayAdapter<String> empsArr = new ArrayAdapter<>(act, R.layout.spinner_item, emps);
             EmployeesSpinner.setAdapter(empsArr);
-        }
-        else {
-            for (int i=0;i<MyApp.EMPS.size();i++) {
+        } else {
+            for (int i = 0; i < MyApp.EMPS.size(); i++) {
                 if (MyApp.EMPS.get(i).DirectManager == MyApp.MyUser.JobNumber) {
                     XX.add(MyApp.EMPS.get(i));
                 }
             }
-            emps = new String[XX.size()+1];
+            emps = new String[XX.size() + 1];
             emps[0] = "All";
-            for (int i=0;i<XX.size();i++) {
-                emps[i+1] = XX.get(i).FirstName+" "+XX.get(i).LastName ;
+            for (int i = 0; i < XX.size(); i++) {
+                emps[i + 1] = XX.get(i).FirstName + " " + XX.get(i).LastName;
             }
-            ArrayAdapter<String> empsArr = new ArrayAdapter<>(act,R.layout.spinner_item,emps);
+            ArrayAdapter<String> empsArr = new ArrayAdapter<>(act, R.layout.spinner_item, emps);
             EmployeesSpinner.setAdapter(empsArr);
         }
         SpinnersLayout.setVisibility(View.GONE);
         TextView ResignationMarker = findViewById(R.id.ResignationMarkerText);
-        TextView VacationMarker = findViewById(R.id.VMarkerText) ;
-        TextView VSMarker = findViewById(R.id.VSMarkerText) ;
-        TextView ExitMarker = findViewById(R.id.ExitMarkerText) ;
+        TextView VacationMarker = findViewById(R.id.VMarkerText);
+        TextView VSMarker = findViewById(R.id.VSMarkerText);
+        TextView ExitMarker = findViewById(R.id.ExitMarkerText);
         TextView CustodyMarker = findViewById(R.id.CustodyMarkerText);
-        TextView BackMarker  = findViewById(R.id.BackMarkerText);
+        TextView BackMarker = findViewById(R.id.BackMarkerText);
         TextView AdvanceMarker = findViewById(R.id.AdvanceMarkerText);
         TextView BonusMarker = findViewById(R.id.BonusMarkerText);
-        DirectManagerObject = new JobTitle(4,"Direct Manager",9,"المدير المباشر");
+        TextView PunishmentMarkerText = findViewById(R.id.PunishmentMarkerText);
+        TextView ChamberMarkerText = findViewById(R.id.ChamberMarkerText);
+
+
+        DirectManagerObject = new JobTitle(4, "Direct Manager", 9, "المدير المباشر");
         bonusRecycler = findViewById(R.id.MyApprovals_Bonus_Recycler);
         bonusRecycler.setNestedScrollingEnabled(false);
         bonusRecycler.setVisibility(View.GONE);
@@ -219,6 +246,12 @@ public class MyApprovals extends AppCompatActivity {
         CustodyRequestsRecycler = findViewById(R.id.Custody_Recycler);
         CustodyRequestsRecycler.setNestedScrollingEnabled(false);
         CustodyRequestsRecycler.setVisibility(View.GONE);
+        PunishmentRecycler = findViewById(R.id.MyApprovals_Punishment_Recycler);
+        PunishmentRecycler.setNestedScrollingEnabled(false);
+        PunishmentRecycler.setVisibility(View.GONE);
+        ChamberRecycler = findViewById(R.id.MyApprovals_Chamber_Recycler);
+        ChamberRecycler.setNestedScrollingEnabled(false);
+        ChamberRecycler.setVisibility(View.GONE);
         resignationsList = new ArrayList<>();
         vacationslist = new ArrayList<>();
         backList = new ArrayList<>();
@@ -227,6 +260,8 @@ public class MyApprovals extends AppCompatActivity {
         custodyRequestList = new ArrayList<>();
         exiteList = new ArrayList<>();
         bonusList = new ArrayList<>();
+        punishmentList = new ArrayList<>();
+        chamberList = new ArrayList<>();
         VacationOrdersAuthUsers = new ArrayList<>();
         ResignationOrdersAuthUsers = new ArrayList<>();
         VacationSalaryOrdersAuthUsers = new ArrayList<>();
@@ -234,6 +269,8 @@ public class MyApprovals extends AppCompatActivity {
         BacksOrdersAuthUsers = new ArrayList<>();
         AdvancesOrdersAuthUsers = new ArrayList<>();
         ExitOrdersAuthUsers = new ArrayList<>();
+        PunishmentOrdersAuthUsers = new ArrayList<>();
+        ChemberOrdersAuthUsers = new ArrayList<>();
         RecyclerView.LayoutManager resignationsManager = new LinearLayoutManager(act, LinearLayoutManager.VERTICAL, false);
         RecyclerView.LayoutManager vacationsManager = new LinearLayoutManager(act, LinearLayoutManager.VERTICAL, false);
         RecyclerView.LayoutManager backsManager = new LinearLayoutManager(act, LinearLayoutManager.VERTICAL, false);
@@ -242,6 +279,8 @@ public class MyApprovals extends AppCompatActivity {
         RecyclerView.LayoutManager custodyManager = new LinearLayoutManager(act, LinearLayoutManager.VERTICAL, false);
         RecyclerView.LayoutManager exitManager = new LinearLayoutManager(act, LinearLayoutManager.VERTICAL, false);
         RecyclerView.LayoutManager bonusManager = new LinearLayoutManager(act, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager punishmentManager = new LinearLayoutManager(act, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager chamberManager = new LinearLayoutManager(act, LinearLayoutManager.VERTICAL, false);
         bonusRecycler.setLayoutManager(bonusManager);
         resignations.setLayoutManager(resignationsManager);
         vacations.setLayoutManager(vacationsManager);
@@ -250,18 +289,22 @@ public class MyApprovals extends AppCompatActivity {
         vacationSalarys.setLayoutManager(vacationsalaryManager);
         CustodyRequestsRecycler.setLayoutManager(custodyManager);
         ExitRequestsRecycler.setLayoutManager(exitManager);
+        PunishmentRecycler.setLayoutManager(punishmentManager);
+        ChamberRecycler.setLayoutManager(chamberManager);
         resignationsAdapter = new MyApprovals_Resignation_Adapter(resignationsList);
         vacationAdapter = new MyApprovals_Vacation_Adapter(vacationslist);
         backsAdapter = new MyApprovals_Backs_Adapter(backList);
         advanceAdapter = new MyApproval_AdvancePayment_Adapter(advanceList);
         vacationsalary_Adapter = new MyApproval_VacationSalary_Adapter(vacationSalaryList);
         custodyRequest_Adapter = new MyApproval_Custody_Adapter(custodyRequestList);
+        punishmentAdapter = new MyApprovals_Punishment_Adapter(punishmentList);
+        chamberAdapter = new MyApprovals_Chamber_Adapter(chamberList);
         done = findViewById(R.id.radioButton2);
         done.setChecked(false);
         done.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked){
+            if (isChecked) {
                 undone.setChecked(false);
-                Status = 1 ;
+                Status = 1;
                 SpinnersLayout.setVisibility(View.VISIBLE);
                 EmployeesSpinner.setSelection(0);
                 ResignationMarker.setText(String.valueOf(resignationsList.size()));
@@ -288,24 +331,31 @@ public class MyApprovals extends AppCompatActivity {
                 BonusMarker.setText(String.valueOf(bonusList.size()));
                 bonusRequest_Adapter = new MyApproval_BONUS_REQUEST_ADAPTER(bonusList);
                 bonusRecycler.setAdapter(bonusRequest_Adapter);
-            }
-            else{
+                PunishmentMarkerText.setText(String.valueOf(punishmentList.size()));
+                punishmentAdapter = new MyApprovals_Punishment_Adapter(punishmentList);
+                PunishmentRecycler.setAdapter(punishmentAdapter);
+                ChamberMarkerText.setText(String.valueOf(chamberList.size()));
+                chamberAdapter = new MyApprovals_Chamber_Adapter(chamberList);
+                ChamberRecycler.setAdapter(chamberAdapter);
+            } else {
                 undone.setChecked(true);
-                Status = 0 ;
+                Status = 0;
                 SpinnersLayout.setVisibility(View.GONE);
             }
         });
         undone = findViewById(R.id.radioButton);
         undone.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked){
+            if (isChecked) {
                 done.setChecked(false);
-                Status = 0 ;
+                Status = 0;
                 VacationLayout.setVisibility(View.VISIBLE);
                 VSLayout.setVisibility(View.VISIBLE);
                 AdvanceLayout.setVisibility(View.VISIBLE);
                 ResignationLayout.setVisibility(View.VISIBLE);
                 BackLayout.setVisibility(View.VISIBLE);
                 CustodyLayout.setVisibility(View.VISIBLE);
+                PunishmentLayout.setVisibility(View.VISIBLE);
+                ChamberLayout.setVisibility(View.VISIBLE);
                 getResignationsForApprove(act);
                 getVacationsForApprove(act);
                 getBacksForApprove(act);
@@ -314,14 +364,15 @@ public class MyApprovals extends AppCompatActivity {
                 getCustodyRequests(act);
                 getExitRequests(act);
                 getBonusRequests(act);
-            }
-            else{
+                getPunishmentForApprove(act);
+                getChamberForApprove(act);
+            } else {
                 done.setChecked(true);
-                Status = 1 ;
+                Status = 1;
             }
         });
         undone.setChecked(true);
-        if (tokens.size()>0){
+        if (tokens.size() > 0) {
             Log.d("targetTokens", tokens.toString());
         }
         Executor executor = ContextCompat.getMainExecutor(act);
@@ -332,9 +383,9 @@ public class MyApprovals extends AppCompatActivity {
                                               @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 Toast.makeText(getApplicationContext(),
-                        "Authentication error: " + errString, Toast.LENGTH_SHORT)
+                                "Authentication error: " + errString, Toast.LENGTH_SHORT)
                         .show();
-                confermByPassword(THE_ORDER,act);
+                confermByPassword(THE_ORDER, act);
             }
 
             @Override
@@ -344,10 +395,9 @@ public class MyApprovals extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         "Authentication succeeded!", Toast.LENGTH_SHORT).show();
                 if (AorR) {
-                    approveOrder(THE_ORDER,act);
-                }
-                else {
-                    rejectOrder(THE_ORDER,act);
+                    approveOrder(THE_ORDER, act);
+                } else {
+                    rejectOrder(THE_ORDER, act);
                 }
 
             }
@@ -356,7 +406,7 @@ public class MyApprovals extends AppCompatActivity {
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
                 Toast.makeText(getApplicationContext(), "Authentication failed",
-                        Toast.LENGTH_SHORT)
+                                Toast.LENGTH_SHORT)
                         .show();
             }
         });
@@ -369,7 +419,7 @@ public class MyApprovals extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //Fingerprint API only available on from Android 6.0 (M)
             FingerprintManager fingerprintManager = (FingerprintManager) act.getSystemService(Context.FINGERPRINT_SERVICE);
-            if (fingerprintManager != null ) {
+            if (fingerprintManager != null) {
                 // User hasn't enrolled any fingerprints to authenticate with
                 // Everything is ready for fingerprint authentication
                 if (!fingerprintManager.isHardwareDetected()) {
@@ -381,75 +431,87 @@ public class MyApprovals extends AppCompatActivity {
         }
     }
 
-    void  setActivityActions () {
+    void setActivityActions() {
         ResignationCaption.setOnClickListener(v -> {
             if (resignations.getVisibility() == View.VISIBLE) {
                 resignations.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 resignations.setVisibility(View.VISIBLE);
             }
         });
         VacationCaption.setOnClickListener(v -> {
             if (vacations.getVisibility() == View.VISIBLE) {
                 vacations.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 vacations.setVisibility(View.VISIBLE);
             }
         });
         VacationSalaryCaption.setOnClickListener(v -> {
             if (vacationSalarys.getVisibility() == View.VISIBLE) {
                 vacationSalarys.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 vacationSalarys.setVisibility(View.VISIBLE);
             }
         });
         CustodyCaption.setOnClickListener(v -> {
             if (CustodyRequestsRecycler.getVisibility() == View.VISIBLE) {
                 CustodyRequestsRecycler.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 CustodyRequestsRecycler.setVisibility(View.VISIBLE);
             }
         });
         BackCaption.setOnClickListener(v -> {
             if (backToWorks.getVisibility() == View.VISIBLE) {
                 backToWorks.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 backToWorks.setVisibility(View.VISIBLE);
             }
         });
         AdvanceCaption.setOnClickListener(v -> {
             if (advancePayments.getVisibility() == View.VISIBLE) {
                 advancePayments.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 advancePayments.setVisibility(View.VISIBLE);
             }
         });
         ExitCaption.setOnClickListener(v -> {
             if (ExitRequestsRecycler.getVisibility() == View.VISIBLE) {
                 ExitRequestsRecycler.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 ExitRequestsRecycler.setVisibility(View.VISIBLE);
             }
         });
         BonusCaption.setOnClickListener(v -> {
             if (bonusRecycler.getVisibility() == View.VISIBLE) {
                 bonusRecycler.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 bonusRecycler.setVisibility(View.VISIBLE);
+            }
+        });
+        PunishmentCaption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (PunishmentRecycler.getVisibility() == View.VISIBLE) {
+                    PunishmentRecycler.setVisibility(View.GONE);
+                } else {
+                    PunishmentRecycler.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        ChamberCaption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ChamberRecycler.getVisibility() == View.VISIBLE) {
+                    ChamberRecycler.setVisibility(View.GONE);
+                } else {
+                    ChamberRecycler.setVisibility(View.VISIBLE);
+                }
             }
         });
         OrderTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SelectedOrderType = ordertypes[position] ;
+                SelectedOrderType = ordertypes[position];
                 if (SelectedOrderType.equals(getResources().getString(R.string.vacation))) {
                     VacationLayout.setVisibility(View.VISIBLE);
                     VSLayout.setVisibility(View.GONE);
@@ -459,8 +521,9 @@ public class MyApprovals extends AppCompatActivity {
                     CustodyLayout.setVisibility(View.GONE);
                     ExitLayout.setVisibility(View.GONE);
                     BonusLayout.setVisibility(View.GONE);
-                }
-                else if (SelectedOrderType.equals(getString(R.string.vacationSalary))) {
+                    PunishmentLayout.setVisibility(View.GONE);
+                    ChamberLayout.setVisibility(View.GONE);
+                } else if (SelectedOrderType.equals(getString(R.string.vacationSalary))) {
                     VacationLayout.setVisibility(View.GONE);
                     VSLayout.setVisibility(View.VISIBLE);
                     AdvanceLayout.setVisibility(View.GONE);
@@ -469,8 +532,9 @@ public class MyApprovals extends AppCompatActivity {
                     CustodyLayout.setVisibility(View.GONE);
                     ExitLayout.setVisibility(View.GONE);
                     BonusLayout.setVisibility(View.GONE);
-                }
-                else if (SelectedOrderType.equals(getResources().getString(R.string.advancePayment))) {
+                    PunishmentLayout.setVisibility(View.GONE);
+                    ChamberLayout.setVisibility(View.GONE);
+                } else if (SelectedOrderType.equals(getResources().getString(R.string.advancePayment))) {
                     VacationLayout.setVisibility(View.GONE);
                     VSLayout.setVisibility(View.GONE);
                     AdvanceLayout.setVisibility(View.VISIBLE);
@@ -479,8 +543,10 @@ public class MyApprovals extends AppCompatActivity {
                     CustodyLayout.setVisibility(View.GONE);
                     ExitLayout.setVisibility(View.GONE);
                     BonusLayout.setVisibility(View.GONE);
-                }
-                else if (SelectedOrderType.equals(getResources().getString(R.string.resignation))) {
+                    PunishmentLayout.setVisibility(View.GONE);
+                    ChamberLayout.setVisibility(View.GONE);
+
+                } else if (SelectedOrderType.equals(getResources().getString(R.string.resignation))) {
                     VacationLayout.setVisibility(View.GONE);
                     VSLayout.setVisibility(View.GONE);
                     AdvanceLayout.setVisibility(View.GONE);
@@ -489,8 +555,10 @@ public class MyApprovals extends AppCompatActivity {
                     CustodyLayout.setVisibility(View.GONE);
                     ExitLayout.setVisibility(View.GONE);
                     BonusLayout.setVisibility(View.GONE);
-                }
-                else if (SelectedOrderType.equals(getResources().getString(R.string.backtowork))) {
+                    PunishmentLayout.setVisibility(View.GONE);
+                    ChamberLayout.setVisibility(View.GONE);
+
+                } else if (SelectedOrderType.equals(getResources().getString(R.string.backtowork))) {
                     VacationLayout.setVisibility(View.GONE);
                     VSLayout.setVisibility(View.GONE);
                     AdvanceLayout.setVisibility(View.GONE);
@@ -499,8 +567,10 @@ public class MyApprovals extends AppCompatActivity {
                     CustodyLayout.setVisibility(View.GONE);
                     ExitLayout.setVisibility(View.GONE);
                     BonusLayout.setVisibility(View.GONE);
-                }
-                else if (SelectedOrderType.equals(getResources().getString(R.string.requestCustody))) {
+                    PunishmentLayout.setVisibility(View.GONE);
+                    ChamberLayout.setVisibility(View.GONE);
+
+                } else if (SelectedOrderType.equals(getResources().getString(R.string.requestCustody))) {
                     VacationLayout.setVisibility(View.GONE);
                     VSLayout.setVisibility(View.GONE);
                     AdvanceLayout.setVisibility(View.GONE);
@@ -509,8 +579,10 @@ public class MyApprovals extends AppCompatActivity {
                     CustodyLayout.setVisibility(View.VISIBLE);
                     ExitLayout.setVisibility(View.GONE);
                     BonusLayout.setVisibility(View.GONE);
-                }
-                else if (SelectedOrderType.equals("All")) {
+                    PunishmentLayout.setVisibility(View.GONE);
+                    ChamberLayout.setVisibility(View.GONE);
+
+                } else if (SelectedOrderType.equals("All")) {
                     VacationLayout.setVisibility(View.VISIBLE);
                     VSLayout.setVisibility(View.VISIBLE);
                     AdvanceLayout.setVisibility(View.VISIBLE);
@@ -519,8 +591,10 @@ public class MyApprovals extends AppCompatActivity {
                     CustodyLayout.setVisibility(View.VISIBLE);
                     ExitLayout.setVisibility(View.VISIBLE);
                     BonusLayout.setVisibility(View.VISIBLE);
-                }
-                else if ( SelectedOrderType.equals(getResources().getString(R.string.exitRequest))) {
+                    PunishmentLayout.setVisibility(View.VISIBLE);
+                    ChamberLayout.setVisibility(View.VISIBLE);
+
+                } else if (SelectedOrderType.equals(getResources().getString(R.string.exitRequest))) {
                     VacationLayout.setVisibility(View.GONE);
                     VSLayout.setVisibility(View.GONE);
                     AdvanceLayout.setVisibility(View.GONE);
@@ -529,8 +603,10 @@ public class MyApprovals extends AppCompatActivity {
                     CustodyLayout.setVisibility(View.GONE);
                     ExitLayout.setVisibility(View.VISIBLE);
                     BonusLayout.setVisibility(View.GONE);
-                }
-                else if ( SelectedOrderType.equals(getResources().getString(R.string.requestBonus))) {
+                    PunishmentLayout.setVisibility(View.GONE);
+                    ChamberLayout.setVisibility(View.GONE);
+
+                } else if (SelectedOrderType.equals(getResources().getString(R.string.requestBonus))) {
                     VacationLayout.setVisibility(View.GONE);
                     VSLayout.setVisibility(View.GONE);
                     AdvanceLayout.setVisibility(View.GONE);
@@ -539,7 +615,33 @@ public class MyApprovals extends AppCompatActivity {
                     CustodyLayout.setVisibility(View.GONE);
                     ExitLayout.setVisibility(View.GONE);
                     BonusLayout.setVisibility(View.VISIBLE);
+                    PunishmentLayout.setVisibility(View.GONE);
+                    ChamberLayout.setVisibility(View.GONE);
+
+                } else if (SelectedOrderType.equals(getResources().getString(R.string.Punishment))) {
+                    VacationLayout.setVisibility(View.GONE);
+                    VSLayout.setVisibility(View.GONE);
+                    AdvanceLayout.setVisibility(View.GONE);
+                    ResignationLayout.setVisibility(View.GONE);
+                    BackLayout.setVisibility(View.GONE);
+                    CustodyLayout.setVisibility(View.GONE);
+                    ExitLayout.setVisibility(View.GONE);
+                    BonusLayout.setVisibility(View.GONE);
+                    PunishmentLayout.setVisibility(View.VISIBLE);
+                    ChamberLayout.setVisibility(View.GONE);
+                } else if (SelectedOrderType.equals(getResources().getString(R.string.RequestChamberCommerce))) {
+                    VacationLayout.setVisibility(View.GONE);
+                    VSLayout.setVisibility(View.GONE);
+                    AdvanceLayout.setVisibility(View.GONE);
+                    ResignationLayout.setVisibility(View.GONE);
+                    BackLayout.setVisibility(View.GONE);
+                    CustodyLayout.setVisibility(View.GONE);
+                    ExitLayout.setVisibility(View.GONE);
+                    BonusLayout.setVisibility(View.GONE);
+                    PunishmentLayout.setVisibility(View.GONE);
+                    ChamberLayout.setVisibility(View.VISIBLE);
                 }
+
             }
 
             @Override
@@ -550,9 +652,9 @@ public class MyApprovals extends AppCompatActivity {
         EmployeesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position != 0 ) {
-                    SelectedUser = XX.get(position-1);
-                    Log.d("FilterProblem",SelectedUser.FirstName +" "+custodyRequestList.size());
+                if (position != 0) {
+                    SelectedUser = XX.get(position - 1);
+                    Log.d("FilterProblem", SelectedUser.FirstName + " " + custodyRequestList.size());
                     if (vacationslist.size() != 0) {
                         List<VACATION_CLASS> vv = new ArrayList<>();
                         for (int i = 0; i < vacationslist.size(); i++) {
@@ -561,10 +663,10 @@ public class MyApprovals extends AppCompatActivity {
                             }
                         }
 
-                            MyApprovals_Vacation_Adapter adapter = new MyApprovals_Vacation_Adapter(vv);
-                            vacations.setAdapter(adapter);
-                            TextView VacationMarker = findViewById(R.id.VMarkerText) ;
-                            VacationMarker.setText(String.valueOf(vv.size()));
+                        MyApprovals_Vacation_Adapter adapter = new MyApprovals_Vacation_Adapter(vv);
+                        vacations.setAdapter(adapter);
+                        TextView VacationMarker = findViewById(R.id.VMarkerText);
+                        VacationMarker.setText(String.valueOf(vv.size()));
 
                     }
                     if (vacationSalaryList.size() > 0) {
@@ -575,86 +677,114 @@ public class MyApprovals extends AppCompatActivity {
                             }
                         }
 
-                            MyApproval_VacationSalary_Adapter adapter = new MyApproval_VacationSalary_Adapter(vss);
-                            vacationSalarys.setAdapter(adapter);
-                            TextView VSMarker = findViewById(R.id.VSMarkerText) ;
-                            VSMarker.setText(String.valueOf(vss.size()));
+                        MyApproval_VacationSalary_Adapter adapter = new MyApproval_VacationSalary_Adapter(vss);
+                        vacationSalarys.setAdapter(adapter);
+                        TextView VSMarker = findViewById(R.id.VSMarkerText);
+                        VSMarker.setText(String.valueOf(vss.size()));
 
                     }
-                    if (advanceList.size()>0) {
+                    if (advanceList.size() > 0) {
                         List<ADVANCEPAYMENT_CLASS> ad = new ArrayList<>();
-                        for ( int i=0; i < advanceList.size() ; i++ ) {
+                        for (int i = 0; i < advanceList.size(); i++) {
                             if (advanceList.get(i).EmpID == SelectedUser.id) {
                                 ad.add(advanceList.get(i));
                             }
                         }
 
-                            MyApproval_AdvancePayment_Adapter adap = new MyApproval_AdvancePayment_Adapter(ad);
-                            advancePayments.setAdapter(adap);
-                            TextView AdvanceMarker = findViewById(R.id.AdvanceMarkerText);
-                            AdvanceMarker.setText(String.valueOf(ad.size()));
+                        MyApproval_AdvancePayment_Adapter adap = new MyApproval_AdvancePayment_Adapter(ad);
+                        advancePayments.setAdapter(adap);
+                        TextView AdvanceMarker = findViewById(R.id.AdvanceMarkerText);
+                        AdvanceMarker.setText(String.valueOf(ad.size()));
                     }
-                    if (resignationsList.size()>0) {
+                    if (resignationsList.size() > 0) {
                         List<RESIGNATION_CLASS> rs = new ArrayList<>();
-                        for (int i=0;i<resignationsList.size();i++) {
+                        for (int i = 0; i < resignationsList.size(); i++) {
                             if (resignationsList.get(i).EmpID == SelectedUser.id) {
                                 rs.add(resignationsList.get(i));
                             }
                         }
 
-                            MyApprovals_Resignation_Adapter ad = new MyApprovals_Resignation_Adapter(rs);
-                            resignations.setAdapter(ad);
-                            TextView ResignationMarker = findViewById(R.id.ResignationMarkerText);
-                            ResignationMarker.setText(String.valueOf(rs.size()));
+                        MyApprovals_Resignation_Adapter ad = new MyApprovals_Resignation_Adapter(rs);
+                        resignations.setAdapter(ad);
+                        TextView ResignationMarker = findViewById(R.id.ResignationMarkerText);
+                        ResignationMarker.setText(String.valueOf(rs.size()));
 
                     }
-                    if (backList.size()>0) {
+                    if (backList.size() > 0) {
                         List<BACKTOWORK_CLASS> bk = new ArrayList<>();
-                        for(int i=0;i<backList.size();i++) {
+                        for (int i = 0; i < backList.size(); i++) {
                             if (backList.get(i).EmpID == SelectedUser.id) {
                                 bk.add(backList.get(i));
                             }
                         }
 
-                            MyApprovals_Backs_Adapter ada = new MyApprovals_Backs_Adapter(bk);
-                            backToWorks.setAdapter(ada);
-                            TextView BackMarker  = findViewById(R.id.BackMarkerText);
-                            BackMarker.setText(String.valueOf(bk.size()));
+                        MyApprovals_Backs_Adapter ada = new MyApprovals_Backs_Adapter(bk);
+                        backToWorks.setAdapter(ada);
+                        TextView BackMarker = findViewById(R.id.BackMarkerText);
+                        BackMarker.setText(String.valueOf(bk.size()));
 
                     }
-                    if (custodyRequestList.size()>0) {
+                    if (custodyRequestList.size() > 0) {
                         List<CUSTODY_REQUEST_CLASS> cs = new ArrayList<>();
-                        for (int i=0 ; i < custodyRequestList.size();i++) {
-                            Log.d("FilterProblem",custodyRequestList.get(i).JobNumber +" "+ SelectedUser.JobNumber);
+                        for (int i = 0; i < custodyRequestList.size(); i++) {
+                            Log.d("FilterProblem", custodyRequestList.get(i).JobNumber + " " + SelectedUser.JobNumber);
                             if (custodyRequestList.get(i).JobNumber == SelectedUser.JobNumber) {
                                 cs.add(custodyRequestList.get(i));
                             }
                         }
-                        Log.d("FilterProblem",cs.size()+"");
+                        Log.d("FilterProblem", cs.size() + "");
 
-                            MyApproval_Custody_Adapter adapterr = new MyApproval_Custody_Adapter(cs);
-                            CustodyRequestsRecycler.setAdapter(adapterr);
-                            TextView CustodyMarker = findViewById(R.id.CustodyMarkerText);
-                            CustodyMarker.setText(String.valueOf(cs.size()));
+                        MyApproval_Custody_Adapter adapterr = new MyApproval_Custody_Adapter(cs);
+                        CustodyRequestsRecycler.setAdapter(adapterr);
+                        TextView CustodyMarker = findViewById(R.id.CustodyMarkerText);
+                        CustodyMarker.setText(String.valueOf(cs.size()));
 
                     }
-                    if (exiteList.size()>0) {
+                    if (exiteList.size() > 0) {
                         List<EXIT_REQUEST_CLASS> ex = new ArrayList<>();
-                        for (int i=0 ; i < exiteList.size();i++) {
-                            Log.d("FilterProblem",exiteList.get(i).JobNumber +" "+ SelectedUser.JobNumber);
+                        for (int i = 0; i < exiteList.size(); i++) {
+                            Log.d("FilterProblem", exiteList.get(i).JobNumber + " " + SelectedUser.JobNumber);
                             if (exiteList.get(i).JobNumber == SelectedUser.JobNumber) {
                                 ex.add(exiteList.get(i));
                             }
                         }
-                        Log.d("FilterProblem",ex.size()+"");
+                        Log.d("FilterProblem", ex.size() + "");
 
                         MyApproval_EXIT_REQUEST_ADAPTER adapterr = new MyApproval_EXIT_REQUEST_ADAPTER(ex);
                         ExitRequestsRecycler.setAdapter(adapterr);
-                        TextView ExitMarker = findViewById(R.id.ExitMarkerText) ;
+                        TextView ExitMarker = findViewById(R.id.ExitMarkerText);
                         ExitMarker.setText(String.valueOf(ex.size()));
                     }
-                }
-                else {
+                    if (punishmentList.size() > 0) {
+                        List<PUNISHMENT_CLASS> pu = new ArrayList<>();
+                        for (int i = 0; i < punishmentList.size(); i++) {
+                            Log.d("FilterProblem", punishmentList.get(i).JobNumber + " " + SelectedUser.JobNumber);
+                            if (punishmentList.get(i).JobNumber == SelectedUser.JobNumber) {
+                                pu.add(punishmentList.get(i));
+                            }
+                        }
+                        Log.d("FilterProblem", pu.size() + "");
+
+                        MyApprovals_Punishment_Adapter adapterr = new MyApprovals_Punishment_Adapter(pu);
+                        PunishmentRecycler.setAdapter(adapterr);
+                        TextView PunishmentMarker = findViewById(R.id.PunishmentMarkerText);
+                        PunishmentMarker.setText(String.valueOf(pu.size()));
+                    }
+                    if (chamberList.size() > 0) {
+                        List<CHAMBER_COMMERCE_CLASS> C = new ArrayList<>();
+                        for (int i = 0; i < chamberList.size(); i++) {
+                            Log.d("FilterProblem", chamberList.get(i).JobNumber + " " + SelectedUser.JobNumber);
+                            if (chamberList.get(i).JobNumber == SelectedUser.JobNumber) {
+                                C.add(chamberList.get(i));
+                            }
+                        }
+                        Log.d("FilterProblem", C.size() + "");
+                        MyApprovals_Chamber_Adapter adapterr = new MyApprovals_Chamber_Adapter(C);
+                        ChamberRecycler.setAdapter(adapterr);
+                        TextView chMarker = findViewById(R.id.ChamberMarkerText);
+                        chMarker.setText(String.valueOf(C.size()));
+                    }
+                } else {
                     MyApprovals_Vacation_Adapter adapter = new MyApprovals_Vacation_Adapter(vacationslist);
                     vacations.setAdapter(adapter);
                     MyApproval_VacationSalary_Adapter adapt = new MyApproval_VacationSalary_Adapter(vacationSalaryList);
@@ -667,14 +797,20 @@ public class MyApprovals extends AppCompatActivity {
                     backToWorks.setAdapter(ada);
                     MyApproval_Custody_Adapter adapterr = new MyApproval_Custody_Adapter(custodyRequestList);
                     CustodyRequestsRecycler.setAdapter(adapterr);
+                    MyApprovals_Punishment_Adapter puAd = new MyApprovals_Punishment_Adapter(punishmentList);
+                    PunishmentRecycler.setAdapter(puAd);
+                    MyApprovals_Chamber_Adapter ca = new MyApprovals_Chamber_Adapter(chamberList);
+                    ChamberRecycler.setAdapter(ca);
                     TextView ResignationMarker = findViewById(R.id.ResignationMarkerText);
-                    TextView VacationMarker = findViewById(R.id.VMarkerText) ;
-                    TextView VSMarker = findViewById(R.id.VSMarkerText) ;
-                    TextView ExitMarker = findViewById(R.id.ExitMarkerText) ;
+                    TextView VacationMarker = findViewById(R.id.VMarkerText);
+                    TextView VSMarker = findViewById(R.id.VSMarkerText);
+                    TextView ExitMarker = findViewById(R.id.ExitMarkerText);
                     TextView CustodyMarker = findViewById(R.id.CustodyMarkerText);
-                    TextView BackMarker  = findViewById(R.id.BackMarkerText);
+                    TextView BackMarker = findViewById(R.id.BackMarkerText);
                     TextView AdvanceMarker = findViewById(R.id.AdvanceMarkerText);
                     TextView BonusMarker = findViewById(R.id.BonusMarkerText);
+                    TextView PunMarker = findViewById(R.id.PunishmentMarkerText);
+                    TextView ChamberMarker = findViewById(R.id.ChamberMarkerText);
                     VacationMarker.setText(String.valueOf(vacationslist.size()));
                     VSMarker.setText(String.valueOf(vacationSalaryList.size()));
                     AdvanceMarker.setText(String.valueOf(advanceList.size()));
@@ -683,12 +819,13 @@ public class MyApprovals extends AppCompatActivity {
                     CustodyMarker.setText(String.valueOf(custodyRequestList.size()));
                     ExitMarker.setText(String.valueOf(exiteList.size()));
                     BonusMarker.setText(String.valueOf(bonusList.size()));
+                    PunMarker.setText(String.valueOf(punishmentList.size()));
+                    ChamberMarker.setText(String.valueOf(chamberList.size()));
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         TextView startDateTV = findViewById(R.id.startDate);
@@ -702,7 +839,7 @@ public class MyApprovals extends AppCompatActivity {
             CalendarView C = D.findViewById(R.id.SelectDateDialog_calender);
             TextView date = D.findViewById(R.id.SelectDateDialog_dateTv);
             C.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-                START = year+"-"+(month+1)+"-"+dayOfMonth;
+                START = year + "-" + (month + 1) + "-" + dayOfMonth;
                 date.setText(START);
             });
             Button Cancel = D.findViewById(R.id.SelectDateDialog_cancel);
@@ -715,7 +852,7 @@ public class MyApprovals extends AppCompatActivity {
             D.show();
         });
         Calendar c = Calendar.getInstance(Locale.getDefault());
-        String x = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DAY_OF_MONTH);
+        String x = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
         endDateTV.setText(x);
         endDateTV.setOnClickListener(v -> {
             Dialog D = new Dialog(act);
@@ -726,7 +863,7 @@ public class MyApprovals extends AppCompatActivity {
             CalendarView C = D.findViewById(R.id.SelectDateDialog_calender);
             TextView date = D.findViewById(R.id.SelectDateDialog_dateTv);
             C.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-                END = year+"-"+(month+1)+"-"+dayOfMonth;
+                END = year + "-" + (month + 1) + "-" + dayOfMonth;
                 date.setText(END);
             });
             Button Cancel = D.findViewById(R.id.SelectDateDialog_cancel);
@@ -750,32 +887,31 @@ public class MyApprovals extends AppCompatActivity {
 
     }
 
-    static void getDoneResignations(String start ,String end,VollyCallback callback) {
+    static void getDoneResignations(String start, String end, VollyCallback callback) {
         resignationsList = new ArrayList<>();
         StringRequest request = new StringRequest(Request.Method.POST, getResignationsForApprovalUrl, response -> {
-            Log.d("resignationsResp" , response);
+            Log.d("resignationsResp", response);
             if (!response.equals("0")) {
-                List<Object> list = JsonToObject.translate(response, RESIGNATION_CLASS.class,MyApp.app);
+                List<Object> list = JsonToObject.translate(response, RESIGNATION_CLASS.class, MyApp.app);
                 resignationsList.clear();
-                for (int i=0;i<list.size();i++){
+                for (int i = 0; i < list.size(); i++) {
                     RESIGNATION_CLASS r = (RESIGNATION_CLASS) list.get(i);
                     resignationsList.add(r);
                 }
                 Collections.reverse(resignationsList);
                 callback.onSuccess("done");
-            }
-            else {
+            } else {
                 callback.onSuccess("done");
             }
 
-        }, error -> callback.onFailed("error")){
+        }, error -> callback.onFailed("error")) {
             @Override
             protected Map<String, String> getParams() {
 
-                Map<String,String> par = new HashMap<>();
-                par.put("status",String.valueOf(1) );
-                par.put("Start",start);
-                par.put("End",end);
+                Map<String, String> par = new HashMap<>();
+                par.put("status", String.valueOf(1));
+                par.put("Start", start);
+                par.put("End", end);
                 return par;
             }
         };
@@ -784,45 +920,40 @@ public class MyApprovals extends AppCompatActivity {
 
     static void setTheListsOfAuthUsersOFResignations(VollyCallback callback) {
         ResignationOrdersAuthUsers = new ArrayList<>();
-        for ( int i=0; i<resignationsList.size();i++) {
+        for (int i = 0; i < resignationsList.size(); i++) {
             List<USER> ll = new ArrayList<>();
             for (int j = 0; j < MyApp.ResignationsAuthsJobtitles.size(); j++) {
                 if (MyApp.ResignationsAuthsJobtitles.get(j).JobTitle.equals("Direct Manager")) {
-                    USER directManager = USER.searchUserByJobNumber(MyApp.EMPS,resignationsList.get(i).DirectManager);
-                    if (directManager != null ) {
+                    USER directManager = USER.searchUserByJobNumber(MyApp.EMPS, resignationsList.get(i).DirectManager);
+                    if (directManager != null) {
                         if (directManager.VacationStatus == 0) {
                             ll.add(directManager);
-                        }
-                        else if (directManager.VacationStatus == 1) {
-                            USER alternative = USER.searchUserByJobNumber(MyApp.EMPS,directManager.VacationAlternative);
+                        } else if (directManager.VacationStatus == 1) {
+                            USER alternative = USER.searchUserByJobNumber(MyApp.EMPS, directManager.VacationAlternative);
                             if (alternative != null) {
                                 ll.add(alternative);
                             }
                         }
                     }
-                }
-                else if (MyApp.ResignationsAuthsJobtitles.get(j).JobTitle.equals("Department Manager")) {
-                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS,USER.searchUserByJobNumber(MyApp.EMPS,resignationsList.get(i).JobNumber).DepartmentManager);
-                    if (departmentM != null ) {
+                } else if (MyApp.ResignationsAuthsJobtitles.get(j).JobTitle.equals("Department Manager")) {
+                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS, resignationsList.get(i).JobNumber).DepartmentManager);
+                    if (departmentM != null) {
                         if (departmentM.VacationStatus == 0) {
                             ll.add(departmentM);
-                        }
-                        else if (departmentM.VacationStatus == 1) {
-                            USER alternative = USER.searchUserByJobNumber(MyApp.EMPS,departmentM.VacationAlternative);
+                        } else if (departmentM.VacationStatus == 1) {
+                            USER alternative = USER.searchUserByJobNumber(MyApp.EMPS, departmentM.VacationAlternative);
                             if (alternative != null) {
                                 ll.add(alternative);
                             }
                         }
                     }
-                }
-                else {
-                    USER x = USER.searchUserByJobtitle(MyApp.EMPS,MyApp.ResignationsAuthsJobtitles.get(j).JobTitle);
-                    if ( x != null) {
-                        if (x.VacationStatus == 0 ) {
+                } else {
+                    USER x = USER.searchUserByJobtitle(MyApp.EMPS, MyApp.ResignationsAuthsJobtitles.get(j).JobTitle);
+                    if (x != null) {
+                        if (x.VacationStatus == 0) {
                             ll.add(x);
-                        }
-                        else if (x.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,x.VacationAlternative);
+                        } else if (x.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, x.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
@@ -834,8 +965,8 @@ public class MyApprovals extends AppCompatActivity {
         }
 
         int[] toRemoveRows = new int[resignationsList.size()];
-        for (int i =0 ; i < ResignationOrdersAuthUsers.size();i++) {
-            boolean s = false ;
+        for (int i = 0; i < ResignationOrdersAuthUsers.size(); i++) {
+            boolean s = false;
             for (USER u : ResignationOrdersAuthUsers.get(i)) {
                 if (u.JobNumber == MyApp.MyUser.JobNumber) {
                     s = true;
@@ -843,66 +974,62 @@ public class MyApprovals extends AppCompatActivity {
                 }
             }
             if (!s) {
-                toRemoveRows[i]=1;
-            }
-            else {
-                toRemoveRows[i] = -1 ;
+                toRemoveRows[i] = 1;
+            } else {
+                toRemoveRows[i] = -1;
             }
         }
         try {
-            int removed = 0 ;
+            int removed = 0;
             for (int i = 0; i < toRemoveRows.length; i++) {
                 if (toRemoveRows[i] == 1) {
-                    resignationsList.remove(i-removed);
-                    ResignationOrdersAuthUsers.remove(i-removed);
+                    resignationsList.remove(i - removed);
+                    ResignationOrdersAuthUsers.remove(i - removed);
                     removed++;
                 }
             }
-        }
-        catch (Exception e)
-        {
-            Log.d("error",e.getMessage());
+        } catch (Exception e) {
+            Log.d("error", e.getMessage());
         }
         callback.onSuccess("done");
     }
 
     // ____________________________________________________________________________
 
-    static void getVacationsForApprove(Activity a){
+    static void getVacationsForApprove(Activity a) {
         if (USER.vacationslist != null) {
-            TextView VacationMarker = a.findViewById(R.id.VMarkerText) ;
+            TextView VacationMarker = a.findViewById(R.id.VMarkerText);
             VacationMarker.setText(String.valueOf(USER.vacationslist.size()));
             vacationAdapter = new MyApprovals_Vacation_Adapter(USER.vacationslist);
             vacations.setAdapter(vacationAdapter);
         }
     }
 
-    static void getDoneVacations(String start ,String end,VollyCallback callback){
+    static void getDoneVacations(String start, String end, VollyCallback callback) {
         vacationslist = new ArrayList<>();
         StringRequest request = new StringRequest(Request.Method.POST, getVacationsForApprovalUrl, response -> {
-            if (!response.equals("0")){
-                List<Object> list = JsonToObject.translate(response, VACATION_CLASS.class,MyApp.app);
+            if (!response.equals("0")) {
+                List<Object> list = JsonToObject.translate(response, VACATION_CLASS.class, MyApp.app);
                 vacationslist.clear();
-                for (int i=0;i<list.size();i++){
+                for (int i = 0; i < list.size(); i++) {
                     VACATION_CLASS r = (VACATION_CLASS) list.get(i);
                     vacationslist.add(r);
                 }
                 //vacations.setAdapter(vacationAdapter);
                 Collections.reverse(vacationslist);
                 callback.onSuccess("done");
-            }
-            else {
+            } else {
                 callback.onSuccess("done");
             }
 
-        }, error -> callback.onFailed("error")){
+        }, error -> callback.onFailed("error")) {
             @Override
             protected Map<String, String> getParams() {
 
-                Map<String,String> par = new HashMap<>();
-                par.put("status",String.valueOf(1) );
-                par.put("Start",start);
-                par.put("End",end);
+                Map<String, String> par = new HashMap<>();
+                par.put("status", String.valueOf(1));
+                par.put("Start", start);
+                par.put("End", end);
                 return par;
             }
         };
@@ -911,45 +1038,40 @@ public class MyApprovals extends AppCompatActivity {
 
     static void setTheListsOfAuthUsersOFVacations(VollyCallback callback) {
         VacationOrdersAuthUsers = new ArrayList<>();
-        for ( int i=0; i<vacationslist.size();i++) {
+        for (int i = 0; i < vacationslist.size(); i++) {
             List<USER> ll = new ArrayList<>();
             for (int j = 0; j < MyApp.VacationsAuthJobtitles.size(); j++) {
                 if (MyApp.VacationsAuthJobtitles.get(j).JobTitle.equals("Direct Manager")) {
-                    USER directManager = USER.searchUserByJobNumber(MyApp.EMPS,vacationslist.get(i).DirectManager);
-                    if (directManager != null ) {
-                        if (directManager.VacationStatus == 0 ) {
+                    USER directManager = USER.searchUserByJobNumber(MyApp.EMPS, vacationslist.get(i).DirectManager);
+                    if (directManager != null) {
+                        if (directManager.VacationStatus == 0) {
                             ll.add(directManager);
-                        }
-                        else if (directManager.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,directManager.VacationAlternative);
+                        } else if (directManager.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, directManager.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else if (MyApp.VacationsAuthJobtitles.get(j).JobTitle.equals("Department Manager")) {
-                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS,USER.searchUserByJobNumber(MyApp.EMPS,vacationslist.get(i).JobNumber).DepartmentManager);
-                    if (departmentM != null ) {
-                        if (departmentM.VacationStatus == 0 ) {
+                } else if (MyApp.VacationsAuthJobtitles.get(j).JobTitle.equals("Department Manager")) {
+                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS, vacationslist.get(i).JobNumber).DepartmentManager);
+                    if (departmentM != null) {
+                        if (departmentM.VacationStatus == 0) {
                             ll.add(departmentM);
-                        }
-                        else if (departmentM.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,departmentM.VacationAlternative);
+                        } else if (departmentM.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, departmentM.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else {
-                    USER user = USER.searchUserByJobtitle(MyApp.EMPS,MyApp.VacationsAuthJobtitles.get(j).JobTitle);
+                } else {
+                    USER user = USER.searchUserByJobtitle(MyApp.EMPS, MyApp.VacationsAuthJobtitles.get(j).JobTitle);
                     if (user != null) {
                         if (user.VacationStatus == 0) {
                             ll.add(user);
-                        }
-                        else if (user.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,user.VacationAlternative);
+                        } else if (user.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, user.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
@@ -960,31 +1082,31 @@ public class MyApprovals extends AppCompatActivity {
             VacationOrdersAuthUsers.add(ll);
         }
         int[] toRemoveRows = new int[vacationslist.size()];
-        for (int i =0 ; i < vacationslist.size();i++) {
-            boolean s = false ;
+        for (int i = 0; i < vacationslist.size(); i++) {
+            boolean s = false;
             for (USER u : VacationOrdersAuthUsers.get(i)) {
                 if (u.JobNumber == MyApp.MyUser.JobNumber) {
-                    s = true ;
+                    s = true;
                 }
             }
             if (!s) {
-                toRemoveRows[i] = 1 ;
-            }
-            else {
-                toRemoveRows[i] = -1 ;
+                toRemoveRows[i] = 1;
+            } else {
+                toRemoveRows[i] = -1;
             }
         }
         try {
             int removed = 0;
             for (int i = 0; i < toRemoveRows.length; i++) {
                 if (toRemoveRows[i] == 1) {
-                    vacationslist.remove(i-removed);
-                    VacationOrdersAuthUsers.remove(i-removed);
+                    vacationslist.remove(i - removed);
+                    VacationOrdersAuthUsers.remove(i - removed);
                     removed++;
                 }
             }
+        } catch (Exception e) {
+            Log.d("error", e.getMessage());
         }
-        catch (Exception e){Log.d("error",e.getMessage());}
         callback.onSuccess("done");
     }
 
@@ -999,31 +1121,29 @@ public class MyApprovals extends AppCompatActivity {
         }
     }
 
-    static void getDoneBacks(String start ,String end,VollyCallback callback){
+    static void getDoneBacks(String start, String end, VollyCallback callback) {
         backList = new ArrayList<>();
         StringRequest request = new StringRequest(Request.Method.POST, getBacksForApprovalUrl, response -> {
-            if (!response.equals("0")){
-                List<Object> list = JsonToObject.translate(response, BACKTOWORK_CLASS.class,MyApp.app);
+            if (!response.equals("0")) {
+                List<Object> list = JsonToObject.translate(response, BACKTOWORK_CLASS.class, MyApp.app);
                 backList.clear();
-                for (int i=0;i<list.size();i++){
+                for (int i = 0; i < list.size(); i++) {
                     BACKTOWORK_CLASS r = (BACKTOWORK_CLASS) list.get(i);
                     backList.add(r);
                 }
                 Collections.reverse(backList);
                 callback.onSuccess("done");
-            }
-            else {
+            } else {
                 callback.onSuccess("done");
             }
 
-        }, error -> callback.onFailed("error")){
+        }, error -> callback.onFailed("error")) {
             @Override
             protected Map<String, String> getParams() {
-
-                Map<String,String> par = new HashMap<>();
-                par.put("status",String.valueOf(1) );
-                par.put("Start",start);
-                par.put("End",end);
+                Map<String, String> par = new HashMap<>();
+                par.put("status", String.valueOf(1));
+                par.put("Start", start);
+                par.put("End", end);
                 return par;
             }
         };
@@ -1032,45 +1152,40 @@ public class MyApprovals extends AppCompatActivity {
 
     static void setTheListsOfAuthUsersOFBacks(VollyCallback callback) {
         BacksOrdersAuthUsers = new ArrayList<>();
-        for ( int i=0; i<backList.size();i++) {
+        for (int i = 0; i < backList.size(); i++) {
             List<USER> ll = new ArrayList<>();
             for (int j = 0; j < MyApp.BacksAuthJobtitles.size(); j++) {
                 if (MyApp.BacksAuthJobtitles.get(j).JobTitle.equals("Direct Manager")) {
-                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS,backList.get(i).DirectManager);
-                    if (direct != null ) {
-                        if (direct.VacationStatus == 0 ) {
+                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS, backList.get(i).DirectManager);
+                    if (direct != null) {
+                        if (direct.VacationStatus == 0) {
                             ll.add(direct);
-                        }
-                        else if (direct.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,direct.VacationAlternative);
+                        } else if (direct.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, direct.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else if (MyApp.BacksAuthJobtitles.get(j).JobTitle.equals("Department Manager")) {
-                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS,backList.get(i).JobNumber).DepartmentManager);
-                    if (departmentM != null ) {
-                        if (departmentM.VacationStatus == 0 ) {
+                } else if (MyApp.BacksAuthJobtitles.get(j).JobTitle.equals("Department Manager")) {
+                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS, backList.get(i).JobNumber).DepartmentManager);
+                    if (departmentM != null) {
+                        if (departmentM.VacationStatus == 0) {
                             ll.add(departmentM);
-                        }
-                        else if (departmentM.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,departmentM.VacationAlternative);
+                        } else if (departmentM.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, departmentM.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else {
-                    USER user = USER.searchUserByJobtitle(MyApp.EMPS,MyApp.BacksAuthJobtitles.get(j).JobTitle);
+                } else {
+                    USER user = USER.searchUserByJobtitle(MyApp.EMPS, MyApp.BacksAuthJobtitles.get(j).JobTitle);
                     if (user != null) {
-                        if (user.VacationStatus == 0 ) {
+                        if (user.VacationStatus == 0) {
                             ll.add(user);
-                        }
-                        else if (user.VacationStatus == 1) {
-                            USER alt  = USER.searchUserByJobNumber(MyApp.EMPS,user.VacationAlternative);
+                        } else if (user.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, user.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
@@ -1081,71 +1196,70 @@ public class MyApprovals extends AppCompatActivity {
             BacksOrdersAuthUsers.add(ll);
         }
         int[] rowsToRemove = new int[backList.size()];
-        for (int i =0 ; i < BacksOrdersAuthUsers.size();i++) {
-            boolean s = false ;
+        for (int i = 0; i < BacksOrdersAuthUsers.size(); i++) {
+            boolean s = false;
             for (USER u : BacksOrdersAuthUsers.get(i)) {
                 if (u.JobNumber == MyApp.MyUser.JobNumber) {
-                    s = true ;
+                    s = true;
                 }
             }
             if (!s) {
-                rowsToRemove[i] = 1 ;
-            }
-            else {
-                rowsToRemove[i] = -1 ;
+                rowsToRemove[i] = 1;
+            } else {
+                rowsToRemove[i] = -1;
             }
         }
         try {
-            int removed = 0 ;
+            int removed = 0;
             for (int i = 0; i < rowsToRemove.length; i++) {
                 if (rowsToRemove[i] == 1) {
-                    BacksOrdersAuthUsers.remove(i-removed);
-                    backList.remove(i-removed);
-                    removed++ ;
+                    BacksOrdersAuthUsers.remove(i - removed);
+                    backList.remove(i - removed);
+                    removed++;
                 }
             }
+        } catch (Exception e) {
+            Log.d("error", e.getMessage());
         }
-        catch (Exception e){Log.d("error",e.getMessage());}
         callback.onSuccess("done");
     }
 
     // ________________________________________________________________________
 
     static void getAdvanceForApprove(Activity a) {
-            if (USER.advanceList != null) {
-                TextView AdvanceMarker = a.findViewById(R.id.AdvanceMarkerText);
-                AdvanceMarker.setText(String.valueOf(USER.advanceList.size()));
-                advanceAdapter = new MyApproval_AdvancePayment_Adapter(USER.advanceList);
-                advancePayments.setAdapter(advanceAdapter);
-            }
+        if (USER.advanceList != null) {
+            TextView AdvanceMarker = a.findViewById(R.id.AdvanceMarkerText);
+            AdvanceMarker.setText(String.valueOf(USER.advanceList.size()));
+            advanceAdapter = new MyApproval_AdvancePayment_Adapter(USER.advanceList);
+            advancePayments.setAdapter(advanceAdapter);
+        }
     }
 
-    static void getDoneAdvance(String start ,String end,VollyCallback callback){
+    static void getDoneAdvance(String start, String end, VollyCallback callback) {
         advanceList = new ArrayList<>();
-        StringRequest request = new StringRequest(Request.Method.POST, getAdvanceApprovalsUrl , response -> {
-            if (!response.equals("0")){
-                List<Object> list = JsonToObject.translate(response, ADVANCEPAYMENT_CLASS.class,MyApp.app);
-                Log.d("advanceResponse" , list.size()+"");
+        StringRequest request = new StringRequest(Request.Method.POST, getAdvanceApprovalsUrl, response -> {
+            if (!response.equals("0")) {
+                List<Object> list = JsonToObject.translate(response, ADVANCEPAYMENT_CLASS.class, MyApp.app);
+                Log.d("advanceResponse", list.size() + "");
                 advanceList.clear();
-                for (int i=0;i<list.size();i++){
-                    ADVANCEPAYMENT_CLASS r =(ADVANCEPAYMENT_CLASS) list.get(i);
+                for (int i = 0; i < list.size(); i++) {
+                    ADVANCEPAYMENT_CLASS r = (ADVANCEPAYMENT_CLASS) list.get(i);
                     advanceList.add(r);
                 }
-                Log.d("advanceResponse" , advanceList.size()+"");
+                Log.d("advanceResponse", advanceList.size() + "");
                 Collections.reverse(advanceList);
                 callback.onSuccess("done");
-            }
-            else {
+            } else {
                 callback.onSuccess("done");
             }
 
-        }, error -> callback.onFailed("error")){
+        }, error -> callback.onFailed("error")) {
             @Override
             protected Map<String, String> getParams() {
-                Map <String,String> par = new HashMap<>();
-                par.put("status",String.valueOf(1) );
-                par.put("Start",start);
-                par.put("End",end);
+                Map<String, String> par = new HashMap<>();
+                par.put("status", String.valueOf(1));
+                par.put("Start", start);
+                par.put("End", end);
                 return par;
             }
         };
@@ -1154,17 +1268,16 @@ public class MyApprovals extends AppCompatActivity {
 
     static void setTheListsOfAuthUsersOFAdvance(VollyCallback callback) {
         AdvancesOrdersAuthUsers = new ArrayList<>();
-        for ( int i=0; i<advanceList.size();i++) {
+        for (int i = 0; i < advanceList.size(); i++) {
             List<USER> ll = new ArrayList<>();
             for (int j = 0; j < MyApp.AdvancePaymentsAuthJobtitles.size(); j++) {
                 if (MyApp.AdvancePaymentsAuthJobtitles.get(j).JobTitle.equals("Direct Manager")) {
-                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS,advanceList.get(i).DirectManager);
-                    if (direct != null ) {
+                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS, advanceList.get(i).DirectManager);
+                    if (direct != null) {
                         if (direct.VacationStatus == 0) {
                             ll.add(direct);
-                        }
-                        else if (direct.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,direct.VacationAlternative);
+                        } else if (direct.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, direct.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
@@ -1172,90 +1285,317 @@ public class MyApprovals extends AppCompatActivity {
                     }
                 }
                 if (MyApp.AdvancePaymentsAuthJobtitles.get(j).JobTitle.equals("Department Manager")) {
-                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS,USER.searchUserByJobNumber(MyApp.EMPS,advanceList.get(i).JobNumber).DepartmentManager);
-                    if (departmentM != null ) {
+                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS, advanceList.get(i).JobNumber).DepartmentManager);
+                    if (departmentM != null) {
                         if (departmentM.VacationStatus == 0) {
                             ll.add(departmentM);
-                        }
-                        else if (departmentM.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,departmentM.VacationAlternative);
+                        } else if (departmentM.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, departmentM.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else {
-                    if (USER.searchUserByJobtitle(MyApp.EMPS,MyApp.AdvancePaymentsAuthJobtitles.get(j).JobTitle) != null) {
-                        ll.add(USER.searchUserByJobtitle(MyApp.EMPS,MyApp.AdvancePaymentsAuthJobtitles.get(j).JobTitle));
+                } else {
+                    if (USER.searchUserByJobtitle(MyApp.EMPS, MyApp.AdvancePaymentsAuthJobtitles.get(j).JobTitle) != null) {
+                        ll.add(USER.searchUserByJobtitle(MyApp.EMPS, MyApp.AdvancePaymentsAuthJobtitles.get(j).JobTitle));
                     }
                 }
             }
             AdvancesOrdersAuthUsers.add(ll);
         }
         int[] rowsToRemove = new int[advanceList.size()];
-        for (int i =0 ; i < AdvancesOrdersAuthUsers.size();i++) {
-            boolean s = false ;
+        for (int i = 0; i < AdvancesOrdersAuthUsers.size(); i++) {
+            boolean s = false;
             for (USER u : AdvancesOrdersAuthUsers.get(i)) {
                 if (u.JobNumber == MyApp.MyUser.JobNumber) {
-                    s = true ;
+                    s = true;
                 }
             }
             if (!s) {
-                rowsToRemove[i] = 1 ;
-            }
-            else {
-                rowsToRemove[i] = -1 ;
+                rowsToRemove[i] = 1;
+            } else {
+                rowsToRemove[i] = -1;
             }
         }
         try {
-            int removed = 0 ;
+            int removed = 0;
             for (int i = 0; i < rowsToRemove.length; i++) {
                 if (rowsToRemove[i] == 1) {
-                    AdvancesOrdersAuthUsers.remove(i-removed);
-                    advanceList.remove(i-removed);
-                    removed++ ;
+                    AdvancesOrdersAuthUsers.remove(i - removed);
+                    advanceList.remove(i - removed);
+                    removed++;
                 }
             }
+        } catch (Exception e) {
+            Log.d("error", e.getMessage());
         }
-        catch (Exception e){Log.d("error",e.getMessage());}
         callback.onSuccess("done");
     }
 
     // _______________________________________________________________________
 
+    // ________________________________________________________________________
+
+    static void getPunishmentForApprove(Activity a) {
+        if (USER.PenaltiesList != null) {
+            TextView PunishmentMarker = a.findViewById(R.id.PunishmentMarkerText);
+            PunishmentMarker.setText(String.valueOf(USER.PenaltiesList.size()));
+            punishmentAdapter = new MyApprovals_Punishment_Adapter(USER.PenaltiesList);
+            PunishmentRecycler.setAdapter(punishmentAdapter);
+            Log.d("punishmentApprove", "done in ForApprove END " + MyApp.EMPS.size());
+
+        }
+    }
+
+    static void getDonePunishment(String start, String end, VollyCallback callback) {
+        Log.d("PunishmentResponse", "ENTER");
+
+        punishmentList = new ArrayList<>();
+        StringRequest request = new StringRequest(Request.Method.POST, getPunishmentApprovalsUrl, response -> {
+            Log.d("PunishmentResponse", response + "respo");
+
+            if (!response.equals("0")) {
+                List<Object> list = JsonToObject.translate(response, PUNISHMENT_CLASS.class, MyApp.app);
+                Log.d("PunishmentResponse", list.size() + "List1");
+                punishmentList.clear();
+                for (int i = 0; i < list.size(); i++) {
+                    PUNISHMENT_CLASS r = (PUNISHMENT_CLASS) list.get(i);
+                    punishmentList.add(r);
+                }
+                Log.d("PunishmentResponse", punishmentList.size() + "List2");
+                Collections.reverse(punishmentList);
+                callback.onSuccess("done");
+            } else {
+                callback.onSuccess("done");
+            }
+
+        }, error -> callback.onFailed("error")) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> par = new HashMap<>();
+                par.put("Status", String.valueOf(1));
+                par.put("Start", start);
+                par.put("End", end);
+                return par;
+            }
+        };
+        Volley.newRequestQueue(MyApp.app).add(request);
+    }
+
+    static void setTheListsOfAuthUsersOFPunishment(VollyCallback callback) {
+        PunishmentOrdersAuthUsers = new ArrayList<>();
+        for (int i = 0; i < punishmentList.size(); i++) {
+            List<USER> ll = new ArrayList<>();
+            for (int j = 0; j < MyApp.PunishmentAuthJobtitles.size(); j++) {
+                if (MyApp.PunishmentAuthJobtitles.get(j).JobTitle.equals("Direct Manager")) {
+                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS, punishmentList.get(i).DirectManager);
+                    if (direct != null) {
+                        if (direct.VacationStatus == 0) {
+                            ll.add(direct);
+                        } else if (direct.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, direct.VacationAlternative);
+                            if (alt != null) {
+                                ll.add(alt);
+                            }
+                        }
+                    }
+                }
+                if (MyApp.PunishmentAuthJobtitles.get(j).JobTitle.equals("Department Manager")) {
+                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS, punishmentList.get(i).JobNumber).DepartmentManager);
+                    if (departmentM != null) {
+                        if (departmentM.VacationStatus == 0) {
+                            ll.add(departmentM);
+                        } else if (departmentM.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, departmentM.VacationAlternative);
+                            if (alt != null) {
+                                ll.add(alt);
+                            }
+                        }
+                    }
+                } else {
+                    if (USER.searchUserByJobtitle(MyApp.EMPS, MyApp.PunishmentAuthJobtitles.get(j).JobTitle) != null) {
+                        ll.add(USER.searchUserByJobtitle(MyApp.EMPS, MyApp.PunishmentAuthJobtitles.get(j).JobTitle));
+                    }
+                }
+            }
+            PunishmentOrdersAuthUsers.add(ll);
+        }
+        int[] rowsToRemove = new int[punishmentList.size()];
+        for (int i = 0; i < PunishmentOrdersAuthUsers.size(); i++) {
+            boolean s = false;
+            for (USER u : PunishmentOrdersAuthUsers.get(i)) {
+                if (u.JobNumber == MyApp.MyUser.JobNumber) {
+                    s = true;
+                }
+            }
+            if (!s) {
+                rowsToRemove[i] = 1;
+            } else {
+                rowsToRemove[i] = -1;
+            }
+        }
+        try {
+            int removed = 0;
+            for (int i = 0; i < rowsToRemove.length; i++) {
+                if (rowsToRemove[i] == 1) {
+                    PunishmentOrdersAuthUsers.remove(i - removed);
+                    punishmentList.remove(i - removed);
+                    removed++;
+                }
+            }
+        } catch (Exception e) {
+            Log.d("error", e.getMessage());
+        }
+        callback.onSuccess("done");
+    }
+    // ________________________________________________________________________
+
+    // ________________________________________________________________________
+
+    static void getChamberForApprove(Activity a) {
+        if (USER.chamberCommerceAuthUsers != null) {
+            TextView ChamberMarkerText = a.findViewById(R.id.ChamberMarkerText);
+            ChamberMarkerText.setText(String.valueOf(USER.chamberCommerceList.size()));
+            chamberAdapter = new MyApprovals_Chamber_Adapter(USER.chamberCommerceList);
+            ChamberRecycler.setAdapter(chamberAdapter);
+        }
+    }
+
+    static void getDoneChamber(String start, String end, VollyCallback callback) {
+        Log.d("chamberResponse1", "ENTER");
+
+        chamberList = new ArrayList<>();
+        StringRequest request = new StringRequest(Request.Method.POST, getRequestChamberCommerceForApproval, response -> {
+            Log.d("chamberResponse1", response + "respo");
+
+            if (!response.equals("0")) {
+                List<Object> list = JsonToObject.translate(response, CHAMBER_COMMERCE_CLASS.class, MyApp.app);
+                Log.d("chamberResponse1", list.size() + "List1");
+                chamberList.clear();
+                for (int i = 0; i < list.size(); i++) {
+                    CHAMBER_COMMERCE_CLASS C = (CHAMBER_COMMERCE_CLASS) list.get(i);
+                    chamberList.add(C);
+                }
+                Log.d("chamberResponse1", chamberList.size() + "List2");
+                Collections.reverse(chamberList);
+                callback.onSuccess("done");
+            } else {
+                callback.onSuccess("done");
+            }
+
+        }, error -> callback.onFailed("error")) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> par = new HashMap<>();
+                par.put("Status", String.valueOf(1));
+                par.put("Start", start);
+                par.put("End", end);
+                return par;
+            }
+        };
+        Volley.newRequestQueue(MyApp.app).add(request);
+    }
+
+    static void setTheListsOfAuthUsersOFChamber(VollyCallback callback) {
+        ChemberOrdersAuthUsers = new ArrayList<>();
+        for (int i = 0; i < chamberList.size(); i++) {
+            List<USER> ll = new ArrayList<>();
+            for (int j = 0; j < MyApp.ChamberAuthJobtitles.size(); j++) {
+                if (MyApp.ChamberAuthJobtitles.get(j).JobTitle.equals("Direct Manager")) {
+                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS, chamberList.get(i).DirectManager);
+                    if (direct != null) {
+                        if (direct.VacationStatus == 0) {
+                            ll.add(direct);
+                        } else if (direct.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, direct.VacationAlternative);
+                            if (alt != null) {
+                                ll.add(alt);
+                            }
+                        }
+                    }
+                }
+                if (MyApp.ChamberAuthJobtitles.get(j).JobTitle.equals("Department Manager")) {
+                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS, chamberList.get(i).JobNumber).DepartmentManager);
+                    if (departmentM != null) {
+                        if (departmentM.VacationStatus == 0) {
+                            ll.add(departmentM);
+                        } else if (departmentM.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, departmentM.VacationAlternative);
+                            if (alt != null) {
+                                ll.add(alt);
+                            }
+                        }
+                    }
+                } else {
+                    if (USER.searchUserByJobtitle(MyApp.EMPS, MyApp.ChamberAuthJobtitles.get(j).JobTitle) != null) {
+                        ll.add(USER.searchUserByJobtitle(MyApp.EMPS, MyApp.ChamberAuthJobtitles.get(j).JobTitle));
+                    }
+                }
+            }
+            ChemberOrdersAuthUsers.add(ll);
+        }
+        int[] rowsToRemove = new int[chamberList.size()];
+        for (int i = 0; i < ChemberOrdersAuthUsers.size(); i++) {
+            boolean s = false;
+            for (USER u : ChemberOrdersAuthUsers.get(i)) {
+                if (u.JobNumber == MyApp.MyUser.JobNumber) {
+                    s = true;
+                }
+            }
+            if (!s) {
+                rowsToRemove[i] = 1;
+            } else {
+                rowsToRemove[i] = -1;
+            }
+        }
+        try {
+            int removed = 0;
+            for (int i = 0; i < rowsToRemove.length; i++) {
+                if (rowsToRemove[i] == 1) {
+                    ChemberOrdersAuthUsers.remove(i - removed);
+                    chamberList.remove(i - removed);
+                    removed++;
+                }
+            }
+        } catch (Exception e) {
+            Log.d("error", e.getMessage());
+        }
+        callback.onSuccess("done");
+    }
+    // ________________________________________________________________________
+
     static void getVacationSalaryRequests(Activity a) {
         if (USER.vacationSalaryList != null) {
-            TextView VSMarker = a.findViewById(R.id.VSMarkerText) ;
+            TextView VSMarker = a.findViewById(R.id.VSMarkerText);
             VSMarker.setText(String.valueOf(USER.vacationSalaryList.size()));
             vacationsalary_Adapter = new MyApproval_VacationSalary_Adapter(USER.vacationSalaryList);
             vacationSalarys.setAdapter(vacationsalary_Adapter);
         }
     }
 
-    static void getDoneVacationSalaryRequests(String start ,String end,VollyCallback callback){
+    static void getDoneVacationSalaryRequests(String start, String end, VollyCallback callback) {
         vacationSalaryList = new ArrayList<>();
-        StringRequest request = new StringRequest(Request.Method.POST, getVacationSalaryRequestsForApprove , response -> {
-            if (!response.equals("0")){
-                List<Object> list = JsonToObject.translate(response, VACATIONSALARY_CLASS.class,MyApp.app);
+        StringRequest request = new StringRequest(Request.Method.POST, getVacationSalaryRequestsForApprove, response -> {
+            if (!response.equals("0")) {
+                List<Object> list = JsonToObject.translate(response, VACATIONSALARY_CLASS.class, MyApp.app);
                 vacationSalaryList.clear();
-                for (int i=0;i<list.size();i++){
-                    VACATIONSALARY_CLASS r =(VACATIONSALARY_CLASS) list.get(i);
+                for (int i = 0; i < list.size(); i++) {
+                    VACATIONSALARY_CLASS r = (VACATIONSALARY_CLASS) list.get(i);
                     vacationSalaryList.add(r);
                 }
                 Collections.reverse(vacationSalaryList);
                 callback.onSuccess("done");
-            }
-            else {
+            } else {
                 callback.onSuccess("done");
             }
-        }, error -> callback.onFailed("error")){
+        }, error -> callback.onFailed("error")) {
             @Override
             protected Map<String, String> getParams() {
-                Map <String,String> par = new HashMap<>();
-                par.put("status",String.valueOf(1) );
-                par.put("Start",start);
-                par.put("End",end);
+                Map<String, String> par = new HashMap<>();
+                par.put("status", String.valueOf(1));
+                par.put("Start", start);
+                par.put("End", end);
                 return par;
             }
         };
@@ -1264,45 +1604,40 @@ public class MyApprovals extends AppCompatActivity {
 
     static void setTheListsOfAuthUsersOFVSalary(VollyCallback callback) {
         VacationSalaryOrdersAuthUsers = new ArrayList<>();
-        for ( int i=0; i<vacationSalaryList.size();i++) {
+        for (int i = 0; i < vacationSalaryList.size(); i++) {
             List<USER> ll = new ArrayList<>();
             for (int j = 0; j < MyApp.VacationSalaryAuthJobtitles.size(); j++) {
                 if (MyApp.VacationSalaryAuthJobtitles.get(j).JobTitle.equals("Direct Manager")) {
-                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS,vacationSalaryList.get(i).DirectManager);
-                    if (direct != null ) {
+                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS, vacationSalaryList.get(i).DirectManager);
+                    if (direct != null) {
                         if (direct.VacationStatus == 0) {
                             ll.add(direct);
-                        }
-                        else if (direct.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,direct.VacationAlternative);
+                        } else if (direct.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, direct.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else if (MyApp.VacationSalaryAuthJobtitles.get(j).JobTitle.equals("Department Manager")) {
-                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS,USER.searchUserByJobNumber(MyApp.EMPS,vacationSalaryList.get(i).JobNumber).DepartmentManager);
-                    if (departmentM != null ) {
+                } else if (MyApp.VacationSalaryAuthJobtitles.get(j).JobTitle.equals("Department Manager")) {
+                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS, vacationSalaryList.get(i).JobNumber).DepartmentManager);
+                    if (departmentM != null) {
                         if (departmentM.VacationStatus == 0) {
                             ll.add(departmentM);
-                        }
-                        else if (departmentM.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,departmentM.VacationAlternative);
+                        } else if (departmentM.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, departmentM.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else {
-                    USER user = USER.searchUserByJobtitle(MyApp.EMPS,MyApp.VacationSalaryAuthJobtitles.get(j).JobTitle);
-                    if ( user!= null) {
+                } else {
+                    USER user = USER.searchUserByJobtitle(MyApp.EMPS, MyApp.VacationSalaryAuthJobtitles.get(j).JobTitle);
+                    if (user != null) {
                         if (user.VacationStatus == 0) {
                             ll.add(user);
-                        }
-                        else if (user.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,user.VacationAlternative);
+                        } else if (user.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, user.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
@@ -1312,72 +1647,71 @@ public class MyApprovals extends AppCompatActivity {
             }
             VacationSalaryOrdersAuthUsers.add(ll);
         }
-        int[] rowaToRemove = new int[vacationSalaryList.size()] ;
-        for (int i =0 ; i < VacationSalaryOrdersAuthUsers.size();i++) {
-            boolean s = false ;
+        int[] rowaToRemove = new int[vacationSalaryList.size()];
+        for (int i = 0; i < VacationSalaryOrdersAuthUsers.size(); i++) {
+            boolean s = false;
             for (USER u : VacationSalaryOrdersAuthUsers.get(i)) {
                 if (u.JobNumber == MyApp.MyUser.JobNumber) {
-                    s = true ;
+                    s = true;
                 }
             }
             if (!s) {
-                rowaToRemove[i] = 1 ;
-            }
-            else {
+                rowaToRemove[i] = 1;
+            } else {
                 rowaToRemove[i] = -1;
             }
         }
         try {
-            int removed = 0 ;
+            int removed = 0;
             for (int i = 0; i < rowaToRemove.length; i++) {
                 if (rowaToRemove[i] == 1) {
-                    vacationSalaryList.remove(i-removed);
-                    VacationSalaryOrdersAuthUsers.remove(i-removed);
-                    removed++ ;
+                    vacationSalaryList.remove(i - removed);
+                    VacationSalaryOrdersAuthUsers.remove(i - removed);
+                    removed++;
                 }
             }
+        } catch (Exception e) {
+            Log.d("error", e.getMessage());
         }
-        catch (Exception e){Log.d("error",e.getMessage());}
         callback.onSuccess("done");
     }
 
     // _________________________________________________________________________
 
-    static void getCustodyRequests(Activity a){
-        if (USER.custodyRequestList != null ) {
-            TextView CustodyMarker =  a.findViewById(R.id.CustodyMarkerText);
+    static void getCustodyRequests(Activity a) {
+        if (USER.custodyRequestList != null) {
+            TextView CustodyMarker = a.findViewById(R.id.CustodyMarkerText);
             CustodyMarker.setText(String.valueOf(USER.custodyRequestList.size()));
             custodyRequest_Adapter = new MyApproval_Custody_Adapter(USER.custodyRequestList);
             CustodyRequestsRecycler.setAdapter(custodyRequest_Adapter);
         }
     }
 
-    static void getDoneCustodyRequests(String start ,String end,VollyCallback callback){
+    static void getDoneCustodyRequests(String start, String end, VollyCallback callback) {
         custodyRequestList = new ArrayList<>();
-        StringRequest request = new StringRequest(Request.Method.POST, getCustodyForApprovalURL , response -> {
-            if (!response.equals("0")){
-                List<Object> list = JsonToObject.translate(response, CUSTODY_REQUEST_CLASS.class,MyApp.app);
-                Log.d("custodyAResponse" , list.size()+"");
+        StringRequest request = new StringRequest(Request.Method.POST, getCustodyForApprovalURL, response -> {
+            if (!response.equals("0")) {
+                List<Object> list = JsonToObject.translate(response, CUSTODY_REQUEST_CLASS.class, MyApp.app);
+                Log.d("custodyAResponse", list.size() + "");
 
-                for (int i=0;i<list.size();i++){
-                    CUSTODY_REQUEST_CLASS r =(CUSTODY_REQUEST_CLASS) list.get(i);
+                for (int i = 0; i < list.size(); i++) {
+                    CUSTODY_REQUEST_CLASS r = (CUSTODY_REQUEST_CLASS) list.get(i);
                     custodyRequestList.add(r);
                 }
                 //Log.d("AcustodyAResponse" , custodyRequestList.size()+" "+MyApp.EMPS.size());
                 Collections.reverse(custodyRequestList);
                 callback.onSuccess("done");
-            }
-            else {
+            } else {
                 callback.onSuccess("done");
             }
 
-        }, error -> callback.onFailed("error")){
+        }, error -> callback.onFailed("error")) {
             @Override
             protected Map<String, String> getParams() {
-                Map <String,String> par = new HashMap<>();
-                par.put("status",String.valueOf(1) );
-                par.put("Start",start);
-                par.put("End",end);
+                Map<String, String> par = new HashMap<>();
+                par.put("status", String.valueOf(1));
+                par.put("Start", start);
+                par.put("End", end);
                 return par;
             }
         };
@@ -1386,45 +1720,40 @@ public class MyApprovals extends AppCompatActivity {
 
     static void setTheListsOfAuthUsersOFCustody(VollyCallback callback) {
         CustodyOrdersAuthUsers = new ArrayList<>();
-        for ( int i=0; i<custodyRequestList.size();i++) {
+        for (int i = 0; i < custodyRequestList.size(); i++) {
             List<USER> ll = new ArrayList<>();
             for (int j = 0; j < MyApp.RequestCustodyAuthsJobTitles.size(); j++) {
                 if (MyApp.RequestCustodyAuthsJobTitles.get(j).JobTitle.equals("Direct Manager")) {
-                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS,custodyRequestList.get(i).DirectManager);
-                    if (direct != null ) {
+                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS, custodyRequestList.get(i).DirectManager);
+                    if (direct != null) {
                         if (direct.VacationStatus == 0) {
                             ll.add(direct);
-                        }
-                        else if (direct.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,direct.VacationAlternative);
+                        } else if (direct.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, direct.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else if (MyApp.RequestCustodyAuthsJobTitles.get(j).JobTitle.equals("Department Manager")) {
-                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS,USER.searchUserByJobNumber(MyApp.EMPS,custodyRequestList.get(i).JobNumber).DepartmentManager);
-                    if (departmentM != null ) {
+                } else if (MyApp.RequestCustodyAuthsJobTitles.get(j).JobTitle.equals("Department Manager")) {
+                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS, custodyRequestList.get(i).JobNumber).DepartmentManager);
+                    if (departmentM != null) {
                         if (departmentM.VacationStatus == 0) {
                             ll.add(departmentM);
-                        }
-                        else if (departmentM.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,departmentM.VacationAlternative);
+                        } else if (departmentM.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, departmentM.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else {
-                    USER user = USER.searchUserByJobtitle(MyApp.EMPS,MyApp.RequestCustodyAuthsJobTitles.get(j).JobTitle);
-                    if ( user != null) {
+                } else {
+                    USER user = USER.searchUserByJobtitle(MyApp.EMPS, MyApp.RequestCustodyAuthsJobTitles.get(j).JobTitle);
+                    if (user != null) {
                         if (user.VacationStatus == 0) {
                             ll.add(user);
-                        }
-                        else if (user.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,user.VacationAlternative);
+                        } else if (user.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, user.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
@@ -1435,71 +1764,68 @@ public class MyApprovals extends AppCompatActivity {
             CustodyOrdersAuthUsers.add(ll);
         }
         int[] rowsToRemove = new int[custodyRequestList.size()];
-        for (int i =0 ; i < CustodyOrdersAuthUsers.size();i++) {
-            boolean s = false ;
+        for (int i = 0; i < CustodyOrdersAuthUsers.size(); i++) {
+            boolean s = false;
             for (USER u : CustodyOrdersAuthUsers.get(i)) {
                 if (u.JobNumber == MyApp.MyUser.JobNumber) {
-                    s = true ;
+                    s = true;
                 }
             }
             if (!s) {
                 rowsToRemove[i] = 1;
-            }
-            else {
-                rowsToRemove[i] = -1 ;
+            } else {
+                rowsToRemove[i] = -1;
             }
         }
         try {
-            int removed = 0 ;
+            int removed = 0;
             for (int i = 0; i < rowsToRemove.length; i++) {
                 if (rowsToRemove[i] == 1) {
-                    custodyRequestList.remove(i-removed);
-                    CustodyOrdersAuthUsers.remove(i-removed);
+                    custodyRequestList.remove(i - removed);
+                    CustodyOrdersAuthUsers.remove(i - removed);
                     removed++;
                 }
             }
-        }
-        catch (Exception e){
-            Log.d("error",e.getMessage());
+        } catch (Exception e) {
+            Log.d("error", e.getMessage());
         }
         callback.onSuccess("done");
     }
 
     //_________________________________________________________________________
 
-    static void getExitRequests(Activity a){
+    static void getExitRequests(Activity a) {
         if (USER.exiteList != null) {
-            TextView ExitMarker = a.findViewById(R.id.ExitMarkerText) ;
+            TextView ExitMarker = a.findViewById(R.id.ExitMarkerText);
             ExitMarker.setText(String.valueOf(USER.exiteList.size()));
             exitRequest_Adapter = new MyApproval_EXIT_REQUEST_ADAPTER(USER.exiteList);
             ExitRequestsRecycler.setAdapter(exitRequest_Adapter);
         }
     }
 
-    static void getDoneExitRequests(String start ,String end,VollyCallback callback) {
+    static void getDoneExitRequests(String start, String end, VollyCallback callback) {
 
         exiteList = new ArrayList<>();
         StringRequest request = new StringRequest(Request.Method.POST, getExitRequestsForApprovUrl, response -> {
-            if (!response.equals("0")){
-                List<Object> list = JsonToObject.translate(response, EXIT_REQUEST_CLASS.class,MyApp.app);
-                for (int i=0;i<list.size();i++){
-                    EXIT_REQUEST_CLASS r =(EXIT_REQUEST_CLASS) list.get(i);
+            if (!response.equals("0")) {
+                List<Object> list = JsonToObject.translate(response, EXIT_REQUEST_CLASS.class, MyApp.app);
+                for (int i = 0; i < list.size(); i++) {
+                    EXIT_REQUEST_CLASS r = (EXIT_REQUEST_CLASS) list.get(i);
                     exiteList.add(r);
                 }
                 Collections.reverse(exiteList);
                 callback.onSuccess("done");
-            }
-            else {
+            } else {
                 callback.onSuccess("done");
             }
 
-        }, error -> Log.e("exitAResponse" , error.toString())){
+        }, error -> Log.e("exitAResponse", error.toString())) {
             @Override
             protected Map<String, String> getParams() {
-                Map <String,String> par = new HashMap<>();
-                par.put("status",String.valueOf(1) );
-                par.put("Start",start);
-                par.put("End",end);
+                Map<String, String> par = new HashMap<>();
+                par.put("status", String.valueOf(1));
+                par.put("Start", start);
+                par.put("End", end);
                 return par;
             }
         };
@@ -1508,45 +1834,40 @@ public class MyApprovals extends AppCompatActivity {
 
     static void setTheListsOfAuthUsersOFExit(VollyCallback callback) {
         ExitOrdersAuthUsers = new ArrayList<>();
-        for ( int i=0; i<exiteList.size();i++) {
+        for (int i = 0; i < exiteList.size(); i++) {
             List<USER> ll = new ArrayList<>();
             for (int j = 0; j < MyApp.ExitAuthsJobTitles.size(); j++) {
                 if (MyApp.ExitAuthsJobTitles.get(j).JobTitle.equals("Direct Manager")) {
-                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS,exiteList.get(i).DirectManager);
-                    if ( direct != null ) {
+                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS, exiteList.get(i).DirectManager);
+                    if (direct != null) {
                         if (direct.VacationStatus == 0) {
                             ll.add(direct);
-                        }
-                        else if (direct.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,direct.VacationAlternative);
+                        } else if (direct.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, direct.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else if (MyApp.ExitAuthsJobTitles.get(j).JobTitle.equals("Department Manager")) {
-                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS,USER.searchUserByJobNumber(MyApp.EMPS,exiteList.get(i).JobNumber).DepartmentManager);
-                    if ( departmentM != null ) {
+                } else if (MyApp.ExitAuthsJobTitles.get(j).JobTitle.equals("Department Manager")) {
+                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS, exiteList.get(i).JobNumber).DepartmentManager);
+                    if (departmentM != null) {
                         if (departmentM.VacationStatus == 0) {
                             ll.add(departmentM);
-                        }
-                        else if (departmentM.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,departmentM.VacationAlternative);
+                        } else if (departmentM.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, departmentM.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else {
-                    USER user =  USER.searchUserByJobtitle(MyApp.EMPS,MyApp.ExitAuthsJobTitles.get(j).JobTitle);
-                    if ( user != null) {
+                } else {
+                    USER user = USER.searchUserByJobtitle(MyApp.EMPS, MyApp.ExitAuthsJobTitles.get(j).JobTitle);
+                    if (user != null) {
                         if (user.VacationStatus == 0) {
                             ll.add(user);
-                        }
-                        else if (user.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,user.VacationAlternative);
+                        } else if (user.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, user.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
@@ -1557,39 +1878,37 @@ public class MyApprovals extends AppCompatActivity {
             ExitOrdersAuthUsers.add(ll);
         }
         int[] rowsToRemove = new int[exiteList.size()];
-        for (int i =0 ; i < ExitOrdersAuthUsers.size();i++) {
-            boolean s = false ;
+        for (int i = 0; i < ExitOrdersAuthUsers.size(); i++) {
+            boolean s = false;
             for (USER u : ExitOrdersAuthUsers.get(i)) {
                 if (u.JobNumber == MyApp.MyUser.JobNumber) {
-                    s = true ;
+                    s = true;
                 }
             }
             if (!s) {
                 rowsToRemove[i] = 1;
-            }
-            else {
-                rowsToRemove[i] = -1 ;
+            } else {
+                rowsToRemove[i] = -1;
             }
         }
         try {
-            int removed = 0 ;
+            int removed = 0;
             for (int i = 0; i < rowsToRemove.length; i++) {
                 if (rowsToRemove[i] == 1) {
-                    exiteList.remove(i-removed);
-                    ExitOrdersAuthUsers.remove(i-removed);
+                    exiteList.remove(i - removed);
+                    ExitOrdersAuthUsers.remove(i - removed);
                     removed++;
                 }
             }
-        }
-        catch (Exception e){
-            Log.d("error",e.getMessage());
+        } catch (Exception e) {
+            Log.d("error", e.getMessage());
         }
         callback.onSuccess("done");
     }
 
     //___________________________________________________
 
-    static void getBonusRequests(Activity a){
+    static void getBonusRequests(Activity a) {
         if (USER.bonusList != null) {
             TextView BonusMarker = a.findViewById(R.id.BonusMarkerText);
             BonusMarker.setText(String.valueOf(USER.bonusList.size()));
@@ -1598,31 +1917,30 @@ public class MyApprovals extends AppCompatActivity {
         }
     }
 
-    static void getDoneBonusRequests(String start ,String end,VollyCallback callback) {
+    static void getDoneBonusRequests(String start, String end, VollyCallback callback) {
         bonusList = new ArrayList<>();
         StringRequest request = new StringRequest(Request.Method.POST, getBonusRequestsForApprovUrl, response -> {
-            Log.d("BonusResponse" , response);
-            if (!response.equals("0")){
-                List<Object> list = JsonToObject.translate(response, BONUS.class,MyApp.app);
-                for (int i=0;i<list.size();i++){
-                    BONUS r =(BONUS) list.get(i);
+            Log.d("BonusResponse", response);
+            if (!response.equals("0")) {
+                List<Object> list = JsonToObject.translate(response, BONUS.class, MyApp.app);
+                for (int i = 0; i < list.size(); i++) {
+                    BONUS r = (BONUS) list.get(i);
                     bonusList.add(r);
                 }
-                Log.d("BonusResponse" , bonusList.size()+" ");
+                Log.d("BonusResponse", bonusList.size() + " ");
                 Collections.reverse(bonusList);
                 callback.onSuccess("done");
-            }
-            else {
+            } else {
                 callback.onSuccess("done");
             }
 
-        }, error -> Log.d("BonusResponse" , error.toString())){
+        }, error -> Log.d("BonusResponse", error.toString())) {
             @Override
             protected Map<String, String> getParams() {
-                Map <String,String> par = new HashMap<>();
-                par.put("status",String.valueOf(1) );
-                par.put("Start",start);
-                par.put("End",end);
+                Map<String, String> par = new HashMap<>();
+                par.put("status", String.valueOf(1));
+                par.put("Start", start);
+                par.put("End", end);
                 return par;
             }
         };
@@ -1630,47 +1948,42 @@ public class MyApprovals extends AppCompatActivity {
     }
 
     static void setTheListsOfAuthUsersOFBonus(VollyCallback callback) {
-        Log.d("BonusResponse" , bonusList.size()+" bonusList");
+        Log.d("BonusResponse", bonusList.size() + " bonusList");
         BonusOrdersAuthUsers = new ArrayList<>();
-        for ( int i=0; i<bonusList.size();i++) {
+        for (int i = 0; i < bonusList.size(); i++) {
             List<USER> ll = new ArrayList<>();
             for (int j = 0; j < MyApp.BonusAuthsJobTitles.size(); j++) {
                 if (MyApp.BonusAuthsJobTitles.get(j).JobTitle.equals("Direct Manager")) {
-                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS,bonusList.get(i).JobNumber).DirectManager);
-                    if ( direct != null ) {
+                    USER direct = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS, bonusList.get(i).JobNumber).DirectManager);
+                    if (direct != null) {
                         if (direct.VacationStatus == 0) {
                             ll.add(direct);
-                        }
-                        else if (direct.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,direct.VacationAlternative);
+                        } else if (direct.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, direct.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else if (MyApp.BonusAuthsJobTitles.get(j).JobTitle.equals("Department Manager")) {
-                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS,bonusList.get(i).JobNumber).DepartmentManager);
-                    if ( departmentM != null ) {
+                } else if (MyApp.BonusAuthsJobTitles.get(j).JobTitle.equals("Department Manager")) {
+                    USER departmentM = USER.searchUserByJobNumber(MyApp.EMPS, USER.searchUserByJobNumber(MyApp.EMPS, bonusList.get(i).JobNumber).DepartmentManager);
+                    if (departmentM != null) {
                         if (departmentM.VacationStatus == 0) {
                             ll.add(departmentM);
-                        }
-                        else if (departmentM.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,departmentM.VacationAlternative);
+                        } else if (departmentM.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, departmentM.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
                         }
                     }
-                }
-                else {
-                    USER user =  USER.searchUserByJobtitle(MyApp.EMPS,MyApp.BonusAuthsJobTitles.get(j).JobTitle);
-                    if ( user != null) {
+                } else {
+                    USER user = USER.searchUserByJobtitle(MyApp.EMPS, MyApp.BonusAuthsJobTitles.get(j).JobTitle);
+                    if (user != null) {
                         if (user.VacationStatus == 0) {
                             ll.add(user);
-                        }
-                        else if (user.VacationStatus == 1) {
-                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS,user.VacationAlternative);
+                        } else if (user.VacationStatus == 1) {
+                            USER alt = USER.searchUserByJobNumber(MyApp.EMPS, user.VacationAlternative);
                             if (alt != null) {
                                 ll.add(alt);
                             }
@@ -1680,47 +1993,46 @@ public class MyApprovals extends AppCompatActivity {
             }
             BonusOrdersAuthUsers.add(ll);
         }
-        Log.d("BonusResponse" , " usersLists"+BonusOrdersAuthUsers.size());
+        Log.d("BonusResponse", " usersLists" + BonusOrdersAuthUsers.size());
         int[] rowsToRemove = new int[bonusList.size()];
-        for (int i =0 ; i < BonusOrdersAuthUsers.size();i++) {
-            boolean s = false ;
+        for (int i = 0; i < BonusOrdersAuthUsers.size(); i++) {
+            boolean s = false;
             for (USER u : BonusOrdersAuthUsers.get(i)) {
                 if (u.JobNumber == MyApp.MyUser.JobNumber) {
-                    s = true ;
+                    s = true;
                 }
             }
             if (!s) {
                 //CustodyOrdersAuthUsers.remove(i);
                 rowsToRemove[i] = 1;
-            }
-            else {
-                rowsToRemove[i] = -1 ;
+            } else {
+                rowsToRemove[i] = -1;
             }
         }
         try {
-            int removed = 0 ;
+            int removed = 0;
             for (int i = 0; i < rowsToRemove.length; i++) {
                 if (rowsToRemove[i] == 1) {
-                    bonusList.remove(i-removed);
-                    BonusOrdersAuthUsers.remove(i-removed);
+                    bonusList.remove(i - removed);
+                    BonusOrdersAuthUsers.remove(i - removed);
                     removed++;
                 }
             }
-        }
-        catch (Exception e){Log.d("error",e.getMessage());
+        } catch (Exception e) {
+            Log.d("error", e.getMessage());
         }
         callback.onSuccess("done");
     }
 
-    public static void  showBiometricAuth(Object O , String Note ) {
+    public static void showBiometricAuth(Object O, String Note) {
         biometricPrompt.authenticate(promptInfo);
-        Log.d("objectName" , O.getClass().getName());
-        THE_ORDER = O ;
-        Notes = Note ;
+        Log.d("objectName", O.getClass().getName());
+        THE_ORDER = O;
+        Notes = Note;
     }
 
-    public static void  confermByPassword (Object O , Activity a) {
-        THE_ORDER = O ;
+    public static void confermByPassword(Object O, Activity a) {
+        THE_ORDER = O;
         Dialog d = new Dialog(a);
         d.setContentView(R.layout.conferm_by_password);
         EditText pass = d.findViewById(R.id.confermByPassword_pass);
@@ -1729,33 +2041,29 @@ public class MyApprovals extends AppCompatActivity {
         cancel.setOnClickListener(v -> d.dismiss());
         ok.setOnClickListener(v -> {
             if (pass.getText() == null || pass.getText().toString().isEmpty()) {
-                ToastMaker.Show(1,"enter password",a);
+                ToastMaker.Show(1, "enter password", a);
                 return;
             }
             Loading l = new Loading(a);
             StringRequest loginrequest = new StringRequest(Request.Method.POST, LoginUrl, response -> {
                 l.close();
-                Log.d("LoginResponse" , response);
-                if (response.equals("0")){
-                    ToastMaker.Show(1,"Wrong Username Or Password ",a);
-                }
-                else
-                {
+                Log.d("LoginResponse", response);
+                if (response.equals("0")) {
+                    ToastMaker.Show(1, "Wrong Username Or Password ", a);
+                } else {
                     d.dismiss();
                     if (AorR) {
-                        approveOrder(THE_ORDER,a);
-                    }
-                    else {
-                        rejectOrder(THE_ORDER,a);
+                        approveOrder(THE_ORDER, a);
+                    } else {
+                        rejectOrder(THE_ORDER, a);
                     }
                 }
-            }, error -> l.close())
-            {
+            }, error -> l.close()) {
                 @Override
                 protected Map<String, String> getParams() {
-                    Map<String ,String> pars = new HashMap<>();
-                    pars.put("user" , MyApp.MyUser.User);
-                    pars.put("password" , pass.getText().toString());
+                    Map<String, String> pars = new HashMap<>();
+                    pars.put("user", MyApp.MyUser.User);
+                    pars.put("password", pass.getText().toString());
                     return pars;
                 }
             };
@@ -1764,9 +2072,9 @@ public class MyApprovals extends AppCompatActivity {
         d.show();
     }
 
-    public static void  confermByPassword (Object O , String note , Activity a) {
-        THE_ORDER = O ;
-        Notes = note ;
+    public static void confermByPassword(Object O, String note, Activity a) {
+        THE_ORDER = O;
+        Notes = note;
         Dialog d = new Dialog(a);
         d.setContentView(R.layout.conferm_by_password);
         EditText pass = d.findViewById(R.id.confermByPassword_pass);
@@ -1775,36 +2083,32 @@ public class MyApprovals extends AppCompatActivity {
         cancel.setOnClickListener(v -> d.dismiss());
         ok.setOnClickListener(v -> {
             if (pass.getText() == null || pass.getText().toString().isEmpty()) {
-                ToastMaker.Show(1,"enter password",a);
+                ToastMaker.Show(1, "enter password", a);
                 return;
             }
             Loading l = new Loading(a);
             StringRequest loginrequest = new StringRequest(Request.Method.POST, LoginUrl, response -> {
                 l.close();
-                Log.d("LoginResponse" , response);
-                if (response.equals("0")){
-                    ToastMaker.Show(1,"Wrong Username Or Password ",a);
-                }
-                else
-                {
+                Log.d("LoginResponse", response);
+                if (response.equals("0")) {
+                    ToastMaker.Show(1, "Wrong Username Or Password ", a);
+                } else {
                     d.dismiss();
                     if (AorR) {
-                        approveOrder(THE_ORDER,a);
-                    }
-                    else {
-                        rejectOrder(THE_ORDER,a);
+                        approveOrder(THE_ORDER, a);
+                    } else {
+                        rejectOrder(THE_ORDER, a);
                     }
                 }
             }, error -> {
                 //ToastMaker.Show(1,error.getMessage(),act);
                 l.close();
-            })
-            {
+            }) {
                 @Override
                 protected Map<String, String> getParams() {
-                    Map<String ,String> pars = new HashMap<>();
-                    pars.put("user" , MyApp.MyUser.User);
-                    pars.put("password" , pass.getText().toString());
+                    Map<String, String> pars = new HashMap<>();
+                    pars.put("user", MyApp.MyUser.User);
+                    pars.put("password", pass.getText().toString());
                     return pars;
                 }
             };
@@ -1814,23 +2118,23 @@ public class MyApprovals extends AppCompatActivity {
     }
 
     static void approveOrder(Object O, Activity a) {
-        Log.d("className",O.getClass().getName());
+        Log.d("className", O.getClass().getName());
         if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.ADVANCEPAYMENT_CLASS")) {
-            ADVANCEPAYMENT_CLASS A = (ADVANCEPAYMENT_CLASS) O ;
-            int index = 0 ;
+            ADVANCEPAYMENT_CLASS A = (ADVANCEPAYMENT_CLASS) O;
+            int index = 0;
             if (MyApp.AdvancesOrdersAuthUsers != null && MyApp.AdvancesOrdersAuthUsers.size() > 0) {
-                for(int i = 0; i< MyApp.AdvancesOrdersAuthUsers.get(POSITION).size(); i++) {
-                    if (MyApp.MyUser.JobNumber == MyApp.AdvancesOrdersAuthUsers.get(POSITION).get(i).JobNumber && A.Auths.get(i).getAuth() == 0 ) {
-                        index = i+1 ;
+                for (int i = 0; i < MyApp.AdvancesOrdersAuthUsers.get(POSITION).size(); i++) {
+                    if (MyApp.MyUser.JobNumber == MyApp.AdvancesOrdersAuthUsers.get(POSITION).get(i).JobNumber && A.Auths.get(i).getAuth() == 0) {
+                        index = i + 1;
                         break;
                     }
                 }
                 int finalIndex = index;
-                if (finalIndex > 0 ) {
-                    boolean status = true ;
-                    for (int i=0;i<(finalIndex-1);i++) {
-                        if (A.Auths.get(i).getAuth() == 0 ){
-                            status = false ;
+                if (finalIndex > 0) {
+                    boolean status = true;
+                    for (int i = 0; i < (finalIndex - 1); i++) {
+                        if (A.Auths.get(i).getAuth() == 0) {
+                            status = false;
                         }
                     }
                     if (status) {
@@ -1840,23 +2144,26 @@ public class MyApprovals extends AppCompatActivity {
                             l.close();
                             if (response.equals("1")) {
                                 new MESSAGE_DIALOG(a, "Approval Saved", "Approval Saved");
-                                resetCountersService(() -> MyApprovals.getAdvanceForApprove(a),a);
-                                for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                    if (A.EmpID == MyApp.EMPS.get(i).id) {
-                                        MyApp.CloudMessage(a.getResources().getString(R.string.advancePayment), a.getResources().getString(R.string.advancePayment), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesAdvancePayment", a);
-                                        break;
+                                resetCountersService(new VolleyCallback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        getAdvanceForApprove(a);
+                                        for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                            if (A.EmpID == MyApp.EMPS.get(i).id) {
+                                                MyApp.CloudMessage(a.getResources().getString(R.string.advancePayment), a.getResources().getString(R.string.advancePayment), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesAdvancePayment", a);
+                                                break;
+                                            }
+                                        }
                                     }
-
-                                }
+                                }, a);
                                 MyApp.sendNotificationsToGroup(MyApp.AdvancesOrdersAuthUsers.get(POSITION), a.getResources().getString(R.string.advancePayment), a.getResources().getString(R.string.advancePayment), A.FName + " " + A.LName, A.JobNumber, "NewUpdatesAdvancePayment", a, () -> {
                                 });
-                            }
-                            else {
+                            } else {
                                 new MESSAGE_DIALOG(a, "Error", "Saving Failed");
                             }
                         }, error -> {
                             l.close();
-                            new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed "+error.toString());
+                            new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed " + error.toString());
                         }) {
                             @Override
                             protected Map<String, String> getParams() {
@@ -1873,31 +2180,28 @@ public class MyApprovals extends AppCompatActivity {
                             }
                         };
                         Volley.newRequestQueue(a).add(request);
+                    } else {
+                        ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", a);
                     }
-                    else {
-                        ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",a);
-                    }
-                }
-                else {
-                    ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",a);
+                } else {
+                    ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", a);
                 }
             }
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.RESIGNATION_CLASS")) {
-            RESIGNATION_CLASS A = (RESIGNATION_CLASS) O ;
-            int index = 0 ;
-            for(int i = 0; i< MyApp.ResignationOrdersAuthUsers.get(POSITION).size(); i++) {
-                if (MyApp.MyUser.JobNumber == MyApp.ResignationOrdersAuthUsers.get(POSITION).get(i).JobNumber && A.Auths.get(i).getAuth() == 0 ) {
-                    index = i+1 ;
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.RESIGNATION_CLASS")) {
+            RESIGNATION_CLASS A = (RESIGNATION_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.ResignationOrdersAuthUsers.get(POSITION).size(); i++) {
+                if (MyApp.MyUser.JobNumber == MyApp.ResignationOrdersAuthUsers.get(POSITION).get(i).JobNumber && A.Auths.get(i).getAuth() == 0) {
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
-            if (finalIndex > 0 ) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (A.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+            if (finalIndex > 0) {
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (A.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
@@ -1907,18 +2211,22 @@ public class MyApprovals extends AppCompatActivity {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(a, "Approval Saved", "Approval Saved");
-                            resetCountersService(() -> MyApprovals.getResignationsForApprove(a),a);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (A.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(a.getResources().getString(R.string.resignation), a.getResources().getString(R.string.resignation), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesResignation", a);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getResignationsForApprove(a);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (A.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(a.getResources().getString(R.string.resignation), a.getResources().getString(R.string.resignation), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesResignation", a);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, a);
                             MyApp.sendNotificationsToGroup(USER.ResignationOrdersAuthUsers.get(POSITION), a.getResources().getString(R.string.resignation), a.getResources().getString(R.string.resignation), A.FName + " " + A.LName, A.JobNumber, "NewUpdatesResignation", a, () -> {
 
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(a, "Error", "Approval Save Failed");
                         }
                     }, error -> {
@@ -1940,31 +2248,28 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(a).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", a);
                 }
-                else {
-                        ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",a);
-                    }
-            }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",a);
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", a);
             }
 
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.VACATION_CLASS")) {
-            VACATION_CLASS A = (VACATION_CLASS) O ;
-            int index = 0 ;
-            for(int i=0;i<MyApp.VacationOrdersAuthUsers.get(POSITION).size();i++) {
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.VACATION_CLASS")) {
+            VACATION_CLASS A = (VACATION_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.VacationOrdersAuthUsers.get(POSITION).size(); i++) {
                 if (MyApp.MyUser.JobNumber == MyApp.VacationOrdersAuthUsers.get(POSITION).get(i).JobNumber && A.Auths.get(i).getAuth() == 0) {
-                    index = i+1 ;
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
-            if (finalIndex>0) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (A.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+            if (finalIndex > 0) {
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (A.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
@@ -1973,21 +2278,25 @@ public class MyApprovals extends AppCompatActivity {
                     StringRequest request = new StringRequest(Request.Method.POST, approveOrderUrl[2], response -> {
                         l.close();
                         if (response.equals("1")) {
-                            resetCountersService(() -> MyApprovals.getVacationsForApprove(a),a);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (A.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(a.getResources().getString(R.string.vacation), a.getResources().getString(R.string.vacation), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesLeave", a);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getVacationsForApprove(a);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (A.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(a.getResources().getString(R.string.vacation), a.getResources().getString(R.string.vacation), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesLeave", a);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
-                             MyApp.sendNotificationsToGroup(MyApp.VacationOrdersAuthUsers.get(POSITION), a.getResources().getString(R.string.vacation), a.getResources().getString(R.string.vacation), A.FName + " " + A.LName, A.JobNumber, "NewUpdatesLeave", a, () -> new MESSAGE_DIALOG(a, "Approval Saved", "Approval Saved"));
-                        }
-                        else {
-                           new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed try again");
+                            }, a);
+                            MyApp.sendNotificationsToGroup(MyApp.VacationOrdersAuthUsers.get(POSITION), a.getResources().getString(R.string.vacation), a.getResources().getString(R.string.vacation), A.FName + " " + A.LName, A.JobNumber, "NewUpdatesLeave", a, () -> new MESSAGE_DIALOG(a, "Approval Saved", "Approval Saved"));
+                        } else {
+                            new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed try again");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
@@ -2004,31 +2313,28 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(a).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", a);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",a);
-                }
-            }
-            else {
+            } else {
                 ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", a);
             }
 
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.VACATIONSALARY_CLASS")) {
-            VACATIONSALARY_CLASS A = (VACATIONSALARY_CLASS) O ;
-            int index = 0 ;
-            for(int i=0;i<MyApp.VacationSalaryOrdersAuthUsers.get(POSITION).size();i++) {
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.VACATIONSALARY_CLASS")) {
+            VACATIONSALARY_CLASS A = (VACATIONSALARY_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.VacationSalaryOrdersAuthUsers.get(POSITION).size(); i++) {
                 if (MyApp.MyUser.JobNumber == MyApp.VacationSalaryOrdersAuthUsers.get(POSITION).get(i).JobNumber && A.Auths.get(i).getAuth() == 0) {
-                    index = i+1 ;
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
-            if (finalIndex > 0 ) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (A.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+            if (finalIndex > 0) {
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (A.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
@@ -2038,30 +2344,34 @@ public class MyApprovals extends AppCompatActivity {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(a, "Approval Saved", "Approval Saved");
-                            resetCountersService(() -> MyApprovals.getVacationSalaryRequests(a),a);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (A.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(a.getResources().getString(R.string.vacationSalary), a.getResources().getString(R.string.vacationSalary), MyApp.MyUser.FirstName + " " + MyApp.MyUser.LastName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesVacationSalary", a);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getVacationSalaryRequests(a);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (A.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(a.getResources().getString(R.string.vacationSalary), a.getResources().getString(R.string.vacationSalary), MyApp.MyUser.FirstName + " " + MyApp.MyUser.LastName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesVacationSalary", a);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, a);
                             MyApp.sendNotificationsToGroup(MyApp.VacationSalaryOrdersAuthUsers.get(POSITION), a.getResources().getString(R.string.vacationSalary), a.getResources().getString(R.string.vacationSalary), A.FirstName + " " + A.LastName, A.JobNumber, "NewUpdatesVacationSalary", a, () -> {
 
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed ");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
                             Calendar c = Calendar.getInstance(Locale.getDefault());
                             Map<String, String> par = new HashMap<>();
                             par.put("orderID", String.valueOf(A.id));
-                            par.put("VID" , String.valueOf(A.VacationID));
+                            par.put("VID", String.valueOf(A.VacationID));
                             par.put("AuthId", String.valueOf(MyApp.MyUser.id));
                             par.put("Index", String.valueOf(finalIndex));
                             par.put("Response", "1");
@@ -2072,31 +2382,28 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(a).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", a);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",a);
-                }
-            }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",a);
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", a);
             }
 
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.BACKTOWORK_CLASS")) {
-            BACKTOWORK_CLASS A = (BACKTOWORK_CLASS) O ;
-            int index = 0 ;
-            for(int i = 0; i< MyApp.BacksOrdersAuthUsers.get(POSITION).size(); i++) {
-                if (MyApp.MyUser.JobNumber == MyApp.BacksOrdersAuthUsers.get(POSITION).get(i).JobNumber && A.Auths.get(i).getAuth() == 0 ) {
-                    index = i+1 ;
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.BACKTOWORK_CLASS")) {
+            BACKTOWORK_CLASS A = (BACKTOWORK_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.BacksOrdersAuthUsers.get(POSITION).size(); i++) {
+                if (MyApp.MyUser.JobNumber == MyApp.BacksOrdersAuthUsers.get(POSITION).get(i).JobNumber && A.Auths.get(i).getAuth() == 0) {
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
             if (finalIndex > 0) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (A.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (A.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
@@ -2106,24 +2413,26 @@ public class MyApprovals extends AppCompatActivity {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(a, "Approval Saved", "Approval Saved");
-                            resetCountersService(() -> MyApprovals.getBacksForApprove(a),a);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (A.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(a.getResources().getString(R.string.backtowork), a.getResources().getString(R.string.backtowork), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesBackToWork", a);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getBacksForApprove(a);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (A.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(a.getResources().getString(R.string.backtowork), a.getResources().getString(R.string.backtowork), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesBackToWork", a);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, a);
                             MyApp.sendNotificationsToGroup(MyApp.BacksOrdersAuthUsers.get(POSITION), a.getResources().getString(R.string.backtowork), a.getResources().getString(R.string.backtowork), A.FName + " " + A.LName, A.JobNumber, "NewUpdatesBackToWork", a, () -> {
-
-
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed ");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
@@ -2140,31 +2449,28 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(a).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", a);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",a);
-                }
-            }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",a);
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", a);
             }
 
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.CUSTODY_REQUEST_CLASS")) {
-            CUSTODY_REQUEST_CLASS C = (CUSTODY_REQUEST_CLASS) O ;
-            int index = 0 ;
-            for(int i=0;i<MyApp.CustodyOrdersAuthUsers.get(POSITION).size();i++) {
-                if (MyApp.MyUser.JobNumber == MyApp.CustodyOrdersAuthUsers.get(POSITION).get(i).JobNumber && C.Auths.get(i).getAuth() == 0 ) {
-                    index = i+1 ;
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.CUSTODY_REQUEST_CLASS")) {
+            CUSTODY_REQUEST_CLASS C = (CUSTODY_REQUEST_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.CustodyOrdersAuthUsers.get(POSITION).size(); i++) {
+                if (MyApp.MyUser.JobNumber == MyApp.CustodyOrdersAuthUsers.get(POSITION).get(i).JobNumber && C.Auths.get(i).getAuth() == 0) {
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
-            if (finalIndex > 0 ) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (C.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+            if (finalIndex > 0) {
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (C.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
@@ -2174,24 +2480,26 @@ public class MyApprovals extends AppCompatActivity {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(a, "Approval Saved", "Approval Saved");
-                            resetCountersService(() -> MyApprovals.getCustodyRequests(a),a);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (C.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(a.getResources().getString(R.string.requestCustody), a.getResources().getString(R.string.requestCustody), C.FirstName + " " + C.LastName, C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesCustodyRequest", a);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getCustodyRequests(a);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (C.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(a.getResources().getString(R.string.requestCustody), a.getResources().getString(R.string.requestCustody), C.FirstName + " " + C.LastName, C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesCustodyRequest", a);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, a);
                             MyApp.sendNotificationsToGroup(MyApp.CustodyOrdersAuthUsers.get(POSITION), a.getResources().getString(R.string.requestCustody), a.getResources().getString(R.string.requestCustody), C.FirstName + " " + C.LastName, C.JobNumber, "NewUpdatesCustodyRequest", a, () -> {
-
-
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed ");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
@@ -2208,30 +2516,27 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(a).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", a);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",a);
-                }
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", a);
             }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",a);
-            }
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.EXIT_REQUEST_CLASS")) {
-            EXIT_REQUEST_CLASS C = (EXIT_REQUEST_CLASS) O ;
-            int index = 0 ;
-            for(int i=0;i<MyApp.ExitOrdersAuthUsers.get(POSITION).size();i++) {
-                if (MyApp.MyUser.JobNumber == MyApp.ExitOrdersAuthUsers.get(POSITION).get(i).JobNumber && C.Auths.get(i).getAuth() == 0 ) {
-                    index = i+1 ;
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.EXIT_REQUEST_CLASS")) {
+            EXIT_REQUEST_CLASS C = (EXIT_REQUEST_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.ExitOrdersAuthUsers.get(POSITION).size(); i++) {
+                if (MyApp.MyUser.JobNumber == MyApp.ExitOrdersAuthUsers.get(POSITION).get(i).JobNumber && C.Auths.get(i).getAuth() == 0) {
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
-            if (finalIndex > 0 ) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (C.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+            if (finalIndex > 0) {
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (C.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
@@ -2241,23 +2546,26 @@ public class MyApprovals extends AppCompatActivity {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(a, "Approval Saved", "Approval Saved");
-                            resetCountersService(() -> MyApprovals.getExitRequests(a),a);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (C.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(a.getResources().getString(R.string.exitRequest), a.getResources().getString(R.string.exitRequest), C.Name, C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesExitRequest", a);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getExitRequests(a);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (C.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(a.getResources().getString(R.string.exitRequest), a.getResources().getString(R.string.exitRequest), C.Name, C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesExitRequest", a);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, a);
                             MyApp.sendNotificationsToGroup(MyApp.ExitOrdersAuthUsers.get(POSITION), a.getResources().getString(R.string.exitRequest), a.getResources().getString(R.string.exitRequest), C.Name, C.JobNumber, "NewUpdatesExitRequest", a, () -> {
-
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed Try again");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
@@ -2274,56 +2582,57 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(a).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", a);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",a);
-                }
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", a);
             }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",a);
-            }
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.BONUS")) {
-            BONUS C = (BONUS) O ;
-            int index = 0 ;
-            for(int i=0;i<MyApp.BonusOrdersAuthUsers.get(POSITION).size();i++) {
-                if (MyApp.MyUser.JobNumber == MyApp.BonusOrdersAuthUsers.get(POSITION).get(i).JobNumber && C.Accs.get(i).getAcc() == 0 ) {
-                    index = i+1 ;
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.BONUS")) {
+            BONUS C = (BONUS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.BonusOrdersAuthUsers.get(POSITION).size(); i++) {
+                if (MyApp.MyUser.JobNumber == MyApp.BonusOrdersAuthUsers.get(POSITION).get(i).JobNumber && C.Accs.get(i).getAcc() == 0) {
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
-            if (finalIndex > 0 ) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (C.Accs.get(i).getAcc() == 0 ){
-                        status = false ;
+            if (finalIndex > 0) {
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (C.Accs.get(i).getAcc() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
                     Loading l = new Loading(a);
                     l.show();
                     StringRequest request = new StringRequest(Request.Method.POST, approveOrderUrl[7], response -> {
-                        Log.d("approveResponse" , response);
+                        Log.d("approveResponse", response);
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(a, "Approval Saved", "Approval Saved");
-                            resetCountersService(() -> MyApprovals.getBonusRequests(a),a);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (C.JobNumber == MyApp.EMPS.get(i).JobNumber) {
-                                    MyApp.CloudMessage(a.getResources().getString(R.string.requestBonus), a.getResources().getString(R.string.requestBonus), C.Name, C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesBonusRequest", a);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getBonusRequests(a);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (C.JobNumber == MyApp.EMPS.get(i).JobNumber) {
+                                            MyApp.CloudMessage(a.getResources().getString(R.string.requestBonus), a.getResources().getString(R.string.requestBonus), C.Name, C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesBonusRequest", a);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, a);
                             MyApp.sendNotificationsToGroup(MyApp.BonusOrdersAuthUsers.get(POSITION), a.getResources().getString(R.string.requestBonus), a.getResources().getString(R.string.requestBonus), C.Name, C.JobNumber, "NewUpdatesBonusRequest", a, () -> {
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed Try again");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
@@ -2340,34 +2649,172 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(a).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", a);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",a);
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", a);
+            }
+        }
+        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.PUNISHMENT_CLASS")) {
+            PUNISHMENT_CLASS P = (PUNISHMENT_CLASS) O;
+            int index = 0;
+            if (MyApp.PenaltyOrdersAuthUsers != null && MyApp.PenaltyOrdersAuthUsers.size() > 0) {
+                for (int i = 0; i < MyApp.PenaltyOrdersAuthUsers.get(POSITION).size(); i++) {
+                    if (MyApp.MyUser.JobNumber == MyApp.PenaltyOrdersAuthUsers.get(POSITION).get(i).JobNumber && P.Auths.get(i).getAuth() == 0) {
+                        index = i + 1;
+                        break;
+                    }
+                }
+                int finalIndex = index;
+                if (finalIndex > 0) {
+                    boolean status = true;
+                    for (int i = 0; i < (finalIndex - 1); i++) {
+                        if (P.Auths.get(i).getAuth() == 0) {
+                            status = false;
+                        }
+                    }
+                    if (status) {
+                        Loading l = new Loading(a);
+                        l.show();
+                        StringRequest request = new StringRequest(Request.Method.POST, approveOrderPunishment, response -> {
+                            l.close();
+                            if (response.equals("1")) {
+                                new MESSAGE_DIALOG(a, "Approval Saved", "Approval Saved");
+                                resetCountersService(new VolleyCallback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        getPunishmentForApprove(a);
+                                        for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                            Log.d("punishmentApprove", P.EmpID + " " + MyApp.EMPS.get(i).id + " " + P.EmployeeJobNumber + " " + MyApp.EMPS.get(i).JobNumber);
+                                            if (P.EmpID == MyApp.EMPS.get(i).id || P.EmployeeJobNumber == MyApp.EMPS.get(i).JobNumber) {
+                                                Log.d("punishmentApprove", "found " + MyApp.EMPS.get(i).id);
+                                                MyApp.CloudMessage(a.getResources().getString(R.string.Punishment), a.getResources().getString(R.string.Punishment), P.FName + " " + P.LName, P.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesPunishment", a);
+                                            }
+                                        }
+                                    }
+                                }, a);
+                                MyApp.sendNotificationsToGroup(MyApp.PenaltyOrdersAuthUsers.get(POSITION), a.getResources().getString(R.string.Punishment), a.getResources().getString(R.string.Punishment), P.FName + " " + P.LName, P.JobNumber, "NewUpdatesPunishment", a, () -> {
+                                });
+                            } else {
+                                new MESSAGE_DIALOG(a, "Error", "Saving Failed");
+                            }
+                        }, error -> {
+                            l.close();
+                            new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed " + error.toString());
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() {
+                                Calendar c = Calendar.getInstance(Locale.getDefault());
+                                Map<String, String> par = new HashMap<>();
+                                par.put("orderID", String.valueOf(P.id));
+                                par.put("AuthId", String.valueOf(MyApp.MyUser.id));
+                                par.put("Index", String.valueOf(finalIndex));
+                                par.put("Response", "1");
+                                par.put("Time", String.valueOf(c.getTimeInMillis()));
+                                par.put("total", String.valueOf(USER.penaltyOrdersAuthUsers.get(POSITION).size()));
+                                par.put("Notes", Notes);
+                                return par;
+                            }
+                        };
+                        Volley.newRequestQueue(a).add(request);
+                    } else {
+                        ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", a);
+                    }
+                } else {
+                    ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", a);
                 }
             }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",a);
+        }
+        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.CHAMBER_COMMERCE_CLASS")) {
+            CHAMBER_COMMERCE_CLASS C = (CHAMBER_COMMERCE_CLASS) O;
+            int index = 0;
+            if (MyApp.ChamberOrdersAuthUsers != null && MyApp.ChamberOrdersAuthUsers.size() > 0) {
+                for (int i = 0; i < MyApp.ChamberOrdersAuthUsers.get(POSITION).size(); i++) {
+                    if (MyApp.MyUser.JobNumber == MyApp.ChamberOrdersAuthUsers.get(POSITION).get(i).JobNumber && C.Auths.get(i).getAuth() == 0) {
+                        index = i + 1;
+                        break;
+                    }
+                }
+                int finalIndex = index;
+                if (finalIndex > 0) {
+                    boolean status = true;
+                    for (int i = 0; i < (finalIndex - 1); i++) {
+                        if (C.Auths.get(i).getAuth() == 0) {
+                            status = false;
+                        }
+                    }
+                    if (status) {
+                        Loading l = new Loading(a);
+                        l.show();
+                        StringRequest request = new StringRequest(Request.Method.POST, responseRequestChamberCommerce, response -> {
+                            l.close();
+                            if (response.equals("1")) {
+                                new MESSAGE_DIALOG(a, "Approval Saved", "Approval Saved");
+                                resetCountersService(new VolleyCallback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        getChamberForApprove(a);
+                                        for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                            if (C.EmpID == MyApp.EMPS.get(i).id) {
+                                                MyApp.CloudMessage(a.getResources().getString(R.string.RequestChamberCommerce), a.getResources().getString(R.string.RequestChamberCommerce), C.FName + " " + C.LName, C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesPunishment", a);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }, a);
+
+                                MyApp.sendNotificationsToGroup(MyApp.PenaltyOrdersAuthUsers.get(POSITION), a.getResources().getString(R.string.RequestChamberCommerce), a.getResources().getString(R.string.RequestChamberCommerce), C.FName + " " + C.LName, C.JobNumber, "NewUpdatesRequestChamberCommerce", a, () -> {
+                                });
+                            } else {
+                                new MESSAGE_DIALOG(a, "Error", "Saving Failed");
+                            }
+                        }, error -> {
+                            l.close();
+                            new MESSAGE_DIALOG(a, "Approval Save Failed", "Approval Save Failed " + error.toString());
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() {
+                                Calendar c = Calendar.getInstance(Locale.getDefault());
+                                Map<String, String> par = new HashMap<>();
+                                par.put("orderID", String.valueOf(C.id));
+                                par.put("AuthId", String.valueOf(MyApp.MyUser.id));
+                                par.put("Index", String.valueOf(finalIndex));
+                                par.put("Response", "1");
+                                par.put("Time", String.valueOf(c.getTimeInMillis()));
+                                par.put("total", String.valueOf(USER.chamberCommerceAuthUsers.get(POSITION).size()));
+                                par.put("Notes", Notes);
+                                return par;
+                            }
+                        };
+                        Volley.newRequestQueue(a).add(request);
+                    } else {
+                        ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", a);
+                    }
+                } else {
+                    ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", a);
+                }
             }
         }
     }
 
-    static void rejectOrder(Object O,Activity act) {
-        Log.d("className",O.getClass().getName());
+    static void rejectOrder(Object O, Activity act) {
+        Log.d("className", O.getClass().getName());
         if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.ADVANCEPAYMENT_CLASS")) {
-            ADVANCEPAYMENT_CLASS A = (ADVANCEPAYMENT_CLASS) O ;
-            int index = 0 ;
-            for(int i = 0; i< MyApp.AdvancesOrdersAuthUsers.get(POSITION).size(); i++) {
+            ADVANCEPAYMENT_CLASS A = (ADVANCEPAYMENT_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.AdvancesOrdersAuthUsers.get(POSITION).size(); i++) {
                 if (MyApp.MyUser.id == MyApp.AdvancesOrdersAuthUsers.get(POSITION).get(i).id && A.Auths.get(i).getAuth() == 0) {
-                    index = i+1 ;
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
-            if (finalIndex>0) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (A.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+            if (finalIndex > 0) {
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (A.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
@@ -2377,23 +2824,26 @@ public class MyApprovals extends AppCompatActivity {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(act, "Reject Saved", "Reject Saved");
-                            resetCountersService(() -> MyApprovals.getAdvanceForApprove(act),act);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (A.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(act.getResources().getString(R.string.advancePayment), act.getResources().getString(R.string.advancePayment), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesAdvancePayment", act);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getAdvanceForApprove(act);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (A.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(act.getResources().getString(R.string.advancePayment), act.getResources().getString(R.string.advancePayment), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesAdvancePayment", act);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, act);
                             MyApp.sendNotificationsToGroup(MyApp.AdvancesOrdersAuthUsers.get(POSITION), act.getResources().getString(R.string.advancePayment), act.getResources().getString(R.string.advancePayment), A.FName + " " + A.LName, A.JobNumber, "NewUpdatesAdvancePayment", act, () -> {
-
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed ");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
@@ -2410,57 +2860,58 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(act).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", act);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",act);
-                }
-            }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",act);
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", act);
             }
 
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.RESIGNATION_CLASS")) {
-            RESIGNATION_CLASS A = (RESIGNATION_CLASS) O ;
-            int index = 0 ;
-            for(int i=0;i<MyApp.ResignationOrdersAuthUsers.get(POSITION).size();i++) {
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.RESIGNATION_CLASS")) {
+            RESIGNATION_CLASS A = (RESIGNATION_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.ResignationOrdersAuthUsers.get(POSITION).size(); i++) {
                 if (MyApp.MyUser.id == MyApp.ResignationOrdersAuthUsers.get(POSITION).get(i).id && A.Auths.get(i).getAuth() == 0) {
                     //Auth a = new Auth();
-                    index = i+1 ;
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
             if (finalIndex > 0) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (A.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (A.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
-                    Loading l = new Loading(act); l.show();
+                    Loading l = new Loading(act);
+                    l.show();
                     StringRequest request = new StringRequest(Request.Method.POST, approveOrderUrl[1], response -> {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(act, "Reject Saved", "Reject Saved");
-                            resetCountersService(() -> MyApprovals.getResignationsForApprove(act),act);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (A.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(act.getResources().getString(R.string.resignation), act.getResources().getString(R.string.resignation), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesResignation", act);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getResignationsForApprove(act);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (A.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(act.getResources().getString(R.string.resignation), act.getResources().getString(R.string.resignation), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesResignation", act);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, act);
                             MyApp.sendNotificationsToGroup(MyApp.ResignationOrdersAuthUsers.get(POSITION), act.getResources().getString(R.string.resignation), act.getResources().getString(R.string.resignation), A.FName + " " + A.LName, A.JobNumber, "NewUpdatesResignation", act, () -> {
-
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed ");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
@@ -2477,32 +2928,29 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(act).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", act);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",act);
-                }
-            }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",act);
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", act);
             }
 
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.VACATION_CLASS")) {
-            VACATION_CLASS A = (VACATION_CLASS) O ;
-            int index = 0 ;
-            for(int i=0;i<MyApp.VacationOrdersAuthUsers.get(POSITION).size();i++) {
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.VACATION_CLASS")) {
+            VACATION_CLASS A = (VACATION_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.VacationOrdersAuthUsers.get(POSITION).size(); i++) {
                 if (MyApp.MyUser.id == MyApp.VacationOrdersAuthUsers.get(POSITION).get(i).id && A.Auths.get(i).getAuth() == 0) {
                     //Auth a = new Auth();
-                    index = i+1 ;
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
-            if (finalIndex > 0 ) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (A.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+            if (finalIndex > 0) {
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (A.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
@@ -2512,22 +2960,26 @@ public class MyApprovals extends AppCompatActivity {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(act, "Approval Saved", "Approval Saved");
-                            resetCountersService(() -> MyApprovals.getVacationsForApprove(act),act);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (A.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(act.getResources().getString(R.string.vacation), act.getResources().getString(R.string.vacation), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesLeave", act);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getVacationsForApprove(act);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (A.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(act.getResources().getString(R.string.vacation), act.getResources().getString(R.string.vacation), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesLeave", act);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, act);
                             MyApp.sendNotificationsToGroup(MyApp.VacationOrdersAuthUsers.get(POSITION), act.getResources().getString(R.string.vacation), act.getResources().getString(R.string.vacation), A.FName + " " + A.LName, A.JobNumber, "NewUpdatesLeave", act, () -> {
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed ");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
@@ -2544,32 +2996,29 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(act).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", act);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",act);
-                }
-            }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",act);
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", act);
             }
 
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.VACATIONSALARY_CLASS")) {
-            VACATIONSALARY_CLASS A = (VACATIONSALARY_CLASS) O ;
-            int index = 0 ;
-            for(int i=0;i<MyApp.VacationSalaryOrdersAuthUsers.get(POSITION).size();i++) {
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.VACATIONSALARY_CLASS")) {
+            VACATIONSALARY_CLASS A = (VACATIONSALARY_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.VacationSalaryOrdersAuthUsers.get(POSITION).size(); i++) {
                 if (MyApp.MyUser.id == MyApp.VacationSalaryOrdersAuthUsers.get(POSITION).get(i).id && A.Auths.get(i).getAuth() == 0) {
                     //Auth a = new Auth();
-                    index = i+1 ;
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
-            if (finalIndex > 0 ) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (A.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+            if (finalIndex > 0) {
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (A.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
@@ -2579,28 +3028,32 @@ public class MyApprovals extends AppCompatActivity {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(act, "Reject Saved", "Reject Saved");
-                            resetCountersService(() -> MyApprovals.getVacationSalaryRequests(act),act);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (A.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(act.getResources().getString(R.string.vacationSalary), act.getResources().getString(R.string.vacationSalary), MyApp.MyUser.FirstName + " " + MyApp.MyUser.LastName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesVacationSalary", act);
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getVacationSalaryRequests(act);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (A.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(act.getResources().getString(R.string.vacationSalary), act.getResources().getString(R.string.vacationSalary), MyApp.MyUser.FirstName + " " + MyApp.MyUser.LastName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesVacationSalary", act);
+                                        }
+                                    }
                                 }
-                            }
+                            }, act);
                             MyApp.sendNotificationsToGroup(MyApp.VacationSalaryOrdersAuthUsers.get(POSITION), act.getResources().getString(R.string.vacationSalary), act.getResources().getString(R.string.vacationSalary), A.FirstName + " " + A.LastName, A.JobNumber, "NewUpdatesVacationSalary", act, () -> {
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed ");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
                             Calendar c = Calendar.getInstance(Locale.getDefault());
                             Map<String, String> par = new HashMap<>();
                             par.put("orderID", String.valueOf(A.id));
-                            par.put("VID" , String.valueOf(A.VacationID));
+                            par.put("VID", String.valueOf(A.VacationID));
                             par.put("AuthId", String.valueOf(MyApp.MyUser.id));
                             par.put("Index", String.valueOf(finalIndex));
                             par.put("Response", "2");
@@ -2611,32 +3064,29 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(act).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", act);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",act);
-                }
-            }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",act);
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", act);
             }
 
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.BACKTOWORK_CLASS")) {
-            BACKTOWORK_CLASS A = (BACKTOWORK_CLASS) O ;
-            int index = 0 ;
-            for(int i=0;i<MyApp.BacksOrdersAuthUsers.get(POSITION).size();i++) {
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.BACKTOWORK_CLASS")) {
+            BACKTOWORK_CLASS A = (BACKTOWORK_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.BacksOrdersAuthUsers.get(POSITION).size(); i++) {
                 if (MyApp.MyUser.id == MyApp.BacksOrdersAuthUsers.get(POSITION).get(i).id && A.Auths.get(i).getAuth() == 0) {
                     //Auth a = new Auth();
-                    index = i+1 ;
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
             if (finalIndex > 0) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (A.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (A.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
@@ -2646,20 +3096,24 @@ public class MyApprovals extends AppCompatActivity {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(act, "Reject Saved", "Reject Saved");
-                            resetCountersService(() -> MyApprovals.getBacksForApprove(act),act);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (A.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(act.getResources().getString(R.string.backtowork), act.getResources().getString(R.string.backtowork), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesBackToWork", act);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getBacksForApprove(act);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (A.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(act.getResources().getString(R.string.backtowork), act.getResources().getString(R.string.backtowork), A.FName + " " + A.LName, A.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesBackToWork", act);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, act);
                             MyApp.sendNotificationsToGroup(MyApp.BacksOrdersAuthUsers.get(POSITION), act.getResources().getString(R.string.backtowork), act.getResources().getString(R.string.backtowork), A.FName + " " + A.LName, A.JobNumber, "NewUpdatesBackToWork", act, () -> {
                             });
                         }
-
                     }, error -> {
                         l.close();
-                       new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
@@ -2676,57 +3130,58 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(act).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", act);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",act);
-                }
-            }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",act);
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", act);
             }
 
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.CUSTODY_REQUEST_CLASS")) {
-            CUSTODY_REQUEST_CLASS C = (CUSTODY_REQUEST_CLASS) O ;
-            int index = 0 ;
-            for(int i=0;i<MyApp.CustodyOrdersAuthUsers.get(POSITION).size();i++) {
-                if (MyApp.MyUser.id == MyApp.CustodyOrdersAuthUsers.get(POSITION).get(i).id && C.Auths.get(i).getAuth() == 0 ) {
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.CUSTODY_REQUEST_CLASS")) {
+            CUSTODY_REQUEST_CLASS C = (CUSTODY_REQUEST_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.CustodyOrdersAuthUsers.get(POSITION).size(); i++) {
+                if (MyApp.MyUser.id == MyApp.CustodyOrdersAuthUsers.get(POSITION).get(i).id && C.Auths.get(i).getAuth() == 0) {
                     //Auth a = new Auth();
-                    index = i+1 ;
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
             if (finalIndex > 0) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (C.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (C.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
-                    Loading l = new Loading(act); l.show();
+                    Loading l = new Loading(act);
+                    l.show();
                     StringRequest request = new StringRequest(Request.Method.POST, approveOrderUrl[5], response -> {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(act, "Approval Saved", "Approval Saved");
-                            resetCountersService(() -> MyApprovals.getCustodyRequests(act),act);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (C.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(act.getResources().getString(R.string.requestCustody), act.getResources().getString(R.string.requestCustody), C.FirstName + " " + C.LastName, C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesCustodyRequest", act);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getCustodyRequests(act);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (C.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(act.getResources().getString(R.string.requestCustody), act.getResources().getString(R.string.requestCustody), C.FirstName + " " + C.LastName, C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesCustodyRequest", act);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, act);
                             MyApp.sendNotificationsToGroup(MyApp.CustodyOrdersAuthUsers.get(POSITION), act.getResources().getString(R.string.requestCustody), act.getResources().getString(R.string.requestCustody), C.FirstName + " " + C.LastName, C.JobNumber, "NewUpdatesCustodyRequest", act, () -> {
-
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(act, "Approval Save Failed", "Approval Save Failed ");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(act, "Approval Save Failed", "Approval Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(act, "Approval Save Failed", "Approval Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
@@ -2743,57 +3198,58 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(act).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", act);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",act);
-                }
-            }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",act);
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", act);
             }
 
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.EXIT_REQUEST_CLASS")) {
-            EXIT_REQUEST_CLASS C = (EXIT_REQUEST_CLASS) O ;
-            int index = 0 ;
-            for(int i=0;i<MyApp.ExitOrdersAuthUsers.get(POSITION).size();i++) {
-                if (MyApp.MyUser.id == MyApp.ExitOrdersAuthUsers.get(POSITION).get(i).id && C.Auths.get(i).getAuth() == 0 ) {
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.EXIT_REQUEST_CLASS")) {
+            EXIT_REQUEST_CLASS C = (EXIT_REQUEST_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.ExitOrdersAuthUsers.get(POSITION).size(); i++) {
+                if (MyApp.MyUser.id == MyApp.ExitOrdersAuthUsers.get(POSITION).get(i).id && C.Auths.get(i).getAuth() == 0) {
                     //Auth a = new Auth();
-                    index = i+1 ;
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
             if (finalIndex > 0) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (C.Auths.get(i).getAuth() == 0 ){
-                        status = false ;
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (C.Auths.get(i).getAuth() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
-                    Loading l = new Loading(act); l.show();
+                    Loading l = new Loading(act);
+                    l.show();
                     StringRequest request = new StringRequest(Request.Method.POST, approveOrderUrl[6], response -> {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(act, "Approval Saved", "Approval Saved");
-                            resetCountersService(() -> MyApprovals.getExitRequests(act),act);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (C.EmpID == MyApp.EMPS.get(i).id) {
-                                    MyApp.CloudMessage(act.getResources().getString(R.string.exitRequest), act.getResources().getString(R.string.exitRequest), C.Name , C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesExitRequest", act);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getExitRequests(act);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (C.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(act.getResources().getString(R.string.exitRequest), act.getResources().getString(R.string.exitRequest), C.Name, C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesExitRequest", act);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, act);
                             MyApp.sendNotificationsToGroup(MyApp.ExitOrdersAuthUsers.get(POSITION), act.getResources().getString(R.string.exitRequest), act.getResources().getString(R.string.exitRequest), C.Name, C.JobNumber, "NewUpdatesExitRequest", act, () -> {
-
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(act, "Approval Save Failed", "Approval Save Failed ");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(act, "Approval Save Failed", "Approval Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(act, "Approval Save Failed", "Approval Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
@@ -2810,54 +3266,56 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(act).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", act);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",act);
-                }
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", act);
             }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",act);
-            }
-        }
-        else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.BONUS")) {
-            BONUS C = (BONUS) O ;
-            int index = 0 ;
-            for(int i=0;i<MyApp.BonusOrdersAuthUsers.get(POSITION).size();i++) {
-                if (MyApp.MyUser.id == MyApp.BonusOrdersAuthUsers.get(POSITION).get(i).id && C.Accs.get(i).getAcc() == 0 ) {
-                    index = i+1 ;
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.BONUS")) {
+            BONUS C = (BONUS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.BonusOrdersAuthUsers.get(POSITION).size(); i++) {
+                if (MyApp.MyUser.id == MyApp.BonusOrdersAuthUsers.get(POSITION).get(i).id && C.Accs.get(i).getAcc() == 0) {
+                    index = i + 1;
                     break;
                 }
             }
             int finalIndex = index;
             if (finalIndex > 0) {
-                boolean status = true ;
-                for (int i=0;i<(finalIndex-1);i++) {
-                    if (C.Accs.get(i).getAcc() == 0 ){
-                        status = false ;
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (C.Accs.get(i).getAcc() == 0) {
+                        status = false;
                     }
                 }
                 if (status) {
-                    Loading l = new Loading(act); l.show();
+                    Loading l = new Loading(act);
+                    l.show();
                     StringRequest request = new StringRequest(Request.Method.POST, approveOrderUrl[7], response -> {
                         l.close();
                         if (response.equals("1")) {
                             new MESSAGE_DIALOG(act, "Approval Saved", "Approval Saved");
-                            resetCountersService(() -> MyApprovals.getBonusRequests(act),act);
-                            for (int i = 0; i < MyApp.EMPS.size(); i++) {
-                                if (C.JobNumber == MyApp.EMPS.get(i).JobNumber) {
-                                    MyApp.CloudMessage(act.getResources().getString(R.string.requestBonus), act.getResources().getString(R.string.requestBonus), C.Name , C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesBonusRequest", act);
-                                    break;
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getBonusRequests(act);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (C.JobNumber == MyApp.EMPS.get(i).JobNumber) {
+                                            MyApp.CloudMessage(act.getResources().getString(R.string.requestBonus), act.getResources().getString(R.string.requestBonus), C.Name, C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesBonusRequest", act);
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                            }, act);
                             MyApp.sendNotificationsToGroup(MyApp.BonusOrdersAuthUsers.get(POSITION), act.getResources().getString(R.string.requestBonus), act.getResources().getString(R.string.requestBonus), C.Name, C.JobNumber, "NewUpdatesBonusRequest", act, () -> {
                             });
-                        }
-                        else {
+                        } else {
                             new MESSAGE_DIALOG(act, "Approval Save Failed", "Approval Save Failed ");
                         }
                     }, error -> {
                         l.close();
-                        new MESSAGE_DIALOG(act, "Approval Save Failed", "Approval Save Failed "+error.toString());
+                        new MESSAGE_DIALOG(act, "Approval Save Failed", "Approval Save Failed " + error.toString());
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
@@ -2874,23 +3332,156 @@ public class MyApprovals extends AppCompatActivity {
                         }
                     };
                     Volley.newRequestQueue(act).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", act);
                 }
-                else {
-                    ToastMaker.Show(1,"يوجد موافقة قبل موافقتك",act);
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", act);
+            }
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.PUNISHMENT_CLASS")) {
+            PUNISHMENT_CLASS P = (PUNISHMENT_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.PenaltyOrdersAuthUsers.get(POSITION).size(); i++) {
+                if (MyApp.MyUser.id == MyApp.PenaltyOrdersAuthUsers.get(POSITION).get(i).id && P.Auths.get(i).getAuth() == 0) {
+                    index = i + 1;
+                    break;
                 }
             }
-            else {
-                ToastMaker.Show(1,"لقد وافقت على هذا الطلب سابقا",act);
+            int finalIndex = index;
+            if (finalIndex > 0) {
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (P.Auths.get(i).getAuth() == 0) {
+                        status = false;
+                    }
+                }
+                if (status) {
+                    Loading l = new Loading(act);
+                    l.show();
+                    StringRequest request = new StringRequest(Request.Method.POST, approveOrderPunishment, response -> {
+                        l.close();
+                        if (response.equals("1")) {
+                            new MESSAGE_DIALOG(act, "Reject Saved", "Reject Saved");
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getPunishmentForApprove(act);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (P.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(act.getResources().getString(R.string.Punishment), act.getResources().getString(R.string.Punishment), P.FName + " " + P.LName, P.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesPunishment", act);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }, act);
+                            MyApp.sendNotificationsToGroup(MyApp.PenaltyOrdersAuthUsers.get(POSITION), act.getResources().getString(R.string.Punishment), act.getResources().getString(R.string.Punishment), P.FName + " " + P.LName, P.JobNumber, "NewUpdatesPunishment", act, () -> {
+                            });
+                        } else {
+                            new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed ");
+                        }
+                    }, error -> {
+                        l.close();
+                        new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed " + error.toString());
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Calendar c = Calendar.getInstance(Locale.getDefault());
+                            Map<String, String> par = new HashMap<>();
+                            par.put("orderID", String.valueOf(P.id));
+                            par.put("AuthId", String.valueOf(MyApp.MyUser.id));
+                            par.put("Index", String.valueOf(finalIndex));
+                            par.put("Response", "2");
+                            par.put("Time", String.valueOf(c.getTimeInMillis()));
+                            par.put("total", String.valueOf(USER.penaltyOrdersAuthUsers.get(POSITION).size()));
+                            par.put("Notes", Notes);
+                            return par;
+                        }
+                    };
+                    Volley.newRequestQueue(act).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", act);
+                }
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", act);
+            }
+
+        } else if (O.getClass().getName().equals("com.syrsoft.ratcoms.HRActivities.CHAMBER_COMMERCE_CLASS")) {
+            CHAMBER_COMMERCE_CLASS C = (CHAMBER_COMMERCE_CLASS) O;
+            int index = 0;
+            for (int i = 0; i < MyApp.ChamberOrdersAuthUsers.get(POSITION).size(); i++) {
+                if (MyApp.MyUser.id == MyApp.ChamberOrdersAuthUsers.get(POSITION).get(i).id && C.Auths.get(i).getAuth() == 0) {
+                    index = i + 1;
+                    break;
+                }
+            }
+            int finalIndex = index;
+            if (finalIndex > 0) {
+                boolean status = true;
+                for (int i = 0; i < (finalIndex - 1); i++) {
+                    if (C.Auths.get(i).getAuth() == 0) {
+                        status = false;
+                    }
+                }
+                if (status) {
+                    Loading l = new Loading(act);
+                    l.show();
+                    StringRequest request = new StringRequest(Request.Method.POST, responseRequestChamberCommerce, response -> {
+                        l.close();
+                        if (response.equals("1")) {
+                            new MESSAGE_DIALOG(act, "Reject Saved", "Reject Saved");
+                            resetCountersService(new VolleyCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    getChamberForApprove(act);
+                                    for (int i = 0; i < MyApp.EMPS.size(); i++) {
+                                        if (C.EmpID == MyApp.EMPS.get(i).id) {
+                                            MyApp.CloudMessage(act.getResources().getString(R.string.RequestChamberCommerce), act.getResources().getString(R.string.RequestChamberCommerce), C.FName + " " + C.LName, C.JobNumber, MyApp.EMPS.get(i).Token, "NewUpdatesRequestChamberCommerce", act);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }, act);
+                            MyApp.sendNotificationsToGroup(MyApp.PenaltyOrdersAuthUsers.get(POSITION), act.getResources().getString(R.string.RequestChamberCommerce), act.getResources().getString(R.string.RequestChamberCommerce), C.FName + " " + C.LName, C.JobNumber, "NewUpdatesRequestChamberCommerce", act, () -> {
+                            });
+                        } else {
+                            new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed ");
+                        }
+                    }, error -> {
+                        l.close();
+                        new MESSAGE_DIALOG(act, "Reject Save Failed", "Reject Save Failed " + error.toString());
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Calendar c = Calendar.getInstance(Locale.getDefault());
+                            Map<String, String> par = new HashMap<>();
+                            par.put("orderID", String.valueOf(C.id));
+                            par.put("AuthId", String.valueOf(MyApp.MyUser.id));
+                            par.put("Index", String.valueOf(finalIndex));
+                            par.put("Response", "2");
+                            par.put("Time", String.valueOf(c.getTimeInMillis()));
+                            par.put("total", String.valueOf(USER.chamberCommerceAuthUsers.get(POSITION).size()));
+                            par.put("Notes", Notes);
+                            return par;
+                        }
+                    };
+                    Volley.newRequestQueue(act).add(request);
+                } else {
+                    ToastMaker.Show(1, "يوجد موافقة قبل موافقتك", act);
+                }
+            } else {
+                ToastMaker.Show(1, "لقد وافقت على هذا الطلب سابقا", act);
             }
         }
     }
 
-    static void resetCountersService(VolleyCallback callback , Activity A) {
-        MyApp.MYApprovalsCounter = 0 ;
-        MyApp.HRCounter = 0 ;
+    static void resetCountersService(VolleyCallback callback, Activity A) {
+        MyApp.MYApprovalsCounter = 0;
+        MyApp.HRCounter = 0;
+        Log.d("punishmentApprove", "done in reset1 " + MyApp.EMPS.size());
         MyApp.MyUser.getEmployeesData(A, new VollyCallback() {
             @Override
             public void onSuccess(String res) {
+                Log.d("punishmentApprove", "done in reset2 " + MyApp.EMPS.size());
                 if (HR.isRunning) {
                     HR.setHRCounters();
                 }
@@ -2914,10 +3505,10 @@ public class MyApprovals extends AppCompatActivity {
             TextView startDateTV = findViewById(R.id.startDate);
             TextView endDateTV = findViewById(R.id.endDate);
             if (startDateTV.getText() == null || startDateTV.getText().toString().isEmpty()) {
-                new MESSAGE_DIALOG(act,getResources().getString(R.string.startDate),getResources().getString(R.string.startDate));
+                new MESSAGE_DIALOG(act, getResources().getString(R.string.startDate), getResources().getString(R.string.startDate));
                 return;
             }
-            getDoneResignations(startDateTV.getText().toString(),endDateTV.getText().toString(),new VollyCallback() {
+            getDoneResignations(startDateTV.getText().toString(), endDateTV.getText().toString(), new VollyCallback() {
                 @Override
                 public void onSuccess(String s) {
                     setTheListsOfAuthUsersOFResignations(new VollyCallback() {
@@ -2942,13 +3533,13 @@ public class MyApprovals extends AppCompatActivity {
 
                 }
             });
-            getDoneVacations(startDateTV.getText().toString(),endDateTV.getText().toString(),new VollyCallback() {
+            getDoneVacations(startDateTV.getText().toString(), endDateTV.getText().toString(), new VollyCallback() {
                 @Override
                 public void onSuccess(String s) {
                     setTheListsOfAuthUsersOFVacations(new VollyCallback() {
                         @Override
                         public void onSuccess(String s) {
-                            TextView VacationMarker = findViewById(R.id.VMarkerText) ;
+                            TextView VacationMarker = findViewById(R.id.VMarkerText);
                             VacationMarker.setText(String.valueOf(vacationslist.size()));
                             vacationAdapter = new MyApprovals_Vacation_Adapter(vacationslist);
                             vacations.setAdapter(vacationAdapter);
@@ -2966,13 +3557,13 @@ public class MyApprovals extends AppCompatActivity {
 
                 }
             });
-            getDoneBacks(startDateTV.getText().toString(),endDateTV.getText().toString(),new VollyCallback() {
+            getDoneBacks(startDateTV.getText().toString(), endDateTV.getText().toString(), new VollyCallback() {
                 @Override
                 public void onSuccess(String s) {
                     setTheListsOfAuthUsersOFBacks(new VollyCallback() {
                         @Override
                         public void onSuccess(String s) {
-                            TextView BackMarker  = findViewById(R.id.BackMarkerText);
+                            TextView BackMarker = findViewById(R.id.BackMarkerText);
                             BackMarker.setText(String.valueOf(backList.size()));
                             backsAdapter = new MyApprovals_Backs_Adapter(backList);
                             backToWorks.setAdapter(backsAdapter);
@@ -2990,7 +3581,7 @@ public class MyApprovals extends AppCompatActivity {
 
                 }
             });
-            getDoneAdvance(startDateTV.getText().toString(),endDateTV.getText().toString(),new VollyCallback() {
+            getDoneAdvance(startDateTV.getText().toString(), endDateTV.getText().toString(), new VollyCallback() {
                 @Override
                 public void onSuccess(String s) {
                     setTheListsOfAuthUsersOFAdvance(new VollyCallback() {
@@ -3014,13 +3605,13 @@ public class MyApprovals extends AppCompatActivity {
 
                 }
             });
-            getDoneVacationSalaryRequests(startDateTV.getText().toString(),endDateTV.getText().toString(),new VollyCallback() {
+            getDoneVacationSalaryRequests(startDateTV.getText().toString(), endDateTV.getText().toString(), new VollyCallback() {
                 @Override
                 public void onSuccess(String s) {
                     setTheListsOfAuthUsersOFVSalary(new VollyCallback() {
                         @Override
                         public void onSuccess(String s) {
-                            TextView VSMarker = findViewById(R.id.VSMarkerText) ;
+                            TextView VSMarker = findViewById(R.id.VSMarkerText);
                             VSMarker.setText(String.valueOf(vacationSalaryList.size()));
                             vacationsalary_Adapter = new MyApproval_VacationSalary_Adapter(vacationSalaryList);
                             vacationSalarys.setAdapter(vacationsalary_Adapter);
@@ -3038,7 +3629,7 @@ public class MyApprovals extends AppCompatActivity {
 
                 }
             });
-            getDoneCustodyRequests(startDateTV.getText().toString(),endDateTV.getText().toString(),new VollyCallback() {
+            getDoneCustodyRequests(startDateTV.getText().toString(), endDateTV.getText().toString(), new VollyCallback() {
                 @Override
                 public void onSuccess(String s) {
                     setTheListsOfAuthUsersOFCustody(new VollyCallback() {
@@ -3062,13 +3653,13 @@ public class MyApprovals extends AppCompatActivity {
 
                 }
             });
-            getDoneExitRequests(startDateTV.getText().toString(),endDateTV.getText().toString(),new VollyCallback() {
+            getDoneExitRequests(startDateTV.getText().toString(), endDateTV.getText().toString(), new VollyCallback() {
                 @Override
                 public void onSuccess(String s) {
                     setTheListsOfAuthUsersOFExit(new VollyCallback() {
                         @Override
                         public void onSuccess(String s) {
-                            TextView ExitMarker = findViewById(R.id.ExitMarkerText) ;
+                            TextView ExitMarker = findViewById(R.id.ExitMarkerText);
                             ExitMarker.setText(String.valueOf(exiteList.size()));
                             exitRequest_Adapter = new MyApproval_EXIT_REQUEST_ADAPTER(exiteList);
                             ExitRequestsRecycler.setAdapter(exitRequest_Adapter);
@@ -3086,7 +3677,7 @@ public class MyApprovals extends AppCompatActivity {
 
                 }
             });
-            getDoneBonusRequests(startDateTV.getText().toString(),endDateTV.getText().toString(),new VollyCallback() {
+            getDoneBonusRequests(startDateTV.getText().toString(), endDateTV.getText().toString(), new VollyCallback() {
                 @Override
                 public void onSuccess(String s) {
                     setTheListsOfAuthUsersOFBonus(new VollyCallback() {
@@ -3110,6 +3701,56 @@ public class MyApprovals extends AppCompatActivity {
 
                 }
             });
+            getDonePunishment(startDateTV.getText().toString(), endDateTV.getText().toString(), new VollyCallback() {
+                @Override
+                public void onSuccess(String s) {
+                    setTheListsOfAuthUsersOFPunishment(new VollyCallback() {
+                        @Override
+                        public void onSuccess(String s) {
+                            TextView P = findViewById(R.id.PunishmentMarkerText);
+                            P.setText(String.valueOf(punishmentList.size()));
+                            punishmentAdapter = new MyApprovals_Punishment_Adapter(punishmentList);
+                            PunishmentRecycler.setAdapter(punishmentAdapter);
+                        }
+
+                        @Override
+                        public void onFailed(String error) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailed(String error) {
+
+                }
+            });
+            getDoneChamber(startDateTV.getText().toString(), endDateTV.getText().toString(), new VollyCallback() {
+                @Override
+                public void onSuccess(String s) {
+                    setTheListsOfAuthUsersOFChamber(new VollyCallback() {
+                        @Override
+                        public void onSuccess(String s) {
+                            TextView c = findViewById(R.id.ChamberMarkerText);
+                            c.setText(String.valueOf(chamberList.size()));
+                            chamberAdapter = new MyApprovals_Chamber_Adapter(chamberList);
+                            ChamberRecycler.setAdapter(chamberAdapter);
+                        }
+
+                        @Override
+                        public void onFailed(String error) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailed(String error) {
+
+                }
+            });
+            LinearByEmp.setVisibility(View.VISIBLE);
+            LinearByOrder.setVisibility(View.VISIBLE);
         }
     }
 }

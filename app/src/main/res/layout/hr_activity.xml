@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_bg"
-    android:orientation="vertical"
     tools:context=".HR">
 
     <ScrollView
@@ -453,16 +452,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                <Button
-                    android:id="@+id/button15"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/mainpage_btns"
-                    android:onClick="goToStaffByLocation"
-                    android:text="@string/manageStaffAttendanceByLocation"
-                    android:layout_weight="1"
-                    android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/button15"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/mainpage_btns"
+                        android:onClick="goToStaffByLocation"
+                        android:text="@string/manageStaffAttendanceByLocation"
+                        android:visibility="gone" />
 
 
                     <Button
@@ -552,7 +552,6 @@
                         android:text="@string/vacationSalary"
                         android:textAllCaps="false" />
 
-
                     <Button
                         android:id="@+id/HR_requestBonus"
                         android:layout_width="match_parent"
@@ -568,6 +567,44 @@
                         android:padding="10dp"
                         android:text="@string/requestBonus"
                         android:textAllCaps="false" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/HR_requestDiscount"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/approve_btns"
+                        android:drawableTop="@drawable/money_off"
+                        android:gravity="center"
+                        android:onClick="goToRequestRequestDiscount"
+                        android:padding="10dp"
+                        android:text="@string/Punishment"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/HR_requestChamberCommerce"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/approve_btns"
+                        android:drawableTop="@drawable/baseline_reorder_24"
+                        android:gravity="center"
+                        android:onClick="goToRequestChamberCommerce"
+                        android:padding="10dp"
+                        android:text="@string/RequestChamberCommerce"
+                        android:textAllCaps="false" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -607,16 +644,31 @@
                 </LinearLayout>
 
                 <Button
+                    android:id="@+id/ReportSalary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/approve_btns"
+                    android:gravity="start|center_vertical"
+                    android:onClick="goToReportSalary"
+                    android:paddingStart="20dp"
+                    android:text="@string/ReportSalary"
+                    android:textAllCaps="false" />
+
+
+                <Button
                     android:id="@+id/button213"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
                     android:layout_marginTop="5dp"
+                    android:layout_weight="1"
                     android:background="@drawable/approve_btns"
                     android:gravity="start|center_vertical"
                     android:onClick="goToMyAttendance"
                     android:paddingStart="20dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="2dp"
                     android:text="@string/myAttendanceTable"
                     android:textAllCaps="false" />
 
@@ -624,13 +676,13 @@
                     android:id="@+id/button21"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
                     android:layout_marginTop="5dp"
+                    android:layout_weight="1"
                     android:background="@drawable/approve_btns"
                     android:gravity="start|center_vertical"
                     android:onClick="sendNewSalaryReportAdDialog"
                     android:paddingStart="20dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="2dp"
                     android:text="@string/salaryReportCreated"
                     android:textAllCaps="false" />
 
@@ -644,7 +696,6 @@
                     android:background="@drawable/mainpage_btns"
                     android:text="@string/requestDesirvedPayment"
                     android:visibility="gone" />
-
 
 
                 <FrameLayout

@@ -1,6 +1,7 @@
 package com.syrsoft.ratcoms;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -8,6 +9,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -27,20 +29,34 @@ import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -52,9 +68,12 @@ import com.syrsoft.ratcoms.Interfaces.AttendTimeCallback;
 import com.syrsoft.ratcoms.Interfaces.UserVacationTodayCallback;
 import com.syrsoft.ratcoms.Interfaces.getUserAttendance;
 import com.syrsoft.ratcoms.SALESActivities.CLIENT_CLASS;
+import com.syrsoft.ratcoms.SALESActivities.ViewMyVisitDetailes;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
@@ -69,33 +88,40 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
-public class MainPage extends AppCompatActivity {
+public class MainPage extends AppCompatActivity implements OnMapReadyCallback {
 
     private static Activity act;
-    private FrameLayout HR, SALES, SERVICE, STORE , Management ,DEVELOPER;
-    private Location CurrentLocation ;
-    private LocationManager locationManager  ;
-    private LocationListener listener ;
+    private FrameLayout HR, SALES, SERVICE, STORE, Management, DEVELOPER;
+    private Location CurrentLocation;
+    private LocationManager locationManager;
+    private LocationListener listener;
     public static List<USER> EMPLOYEES;
-    private Random r ;
+    private Random r;
     public static Ads_Adapter adsAdapter;
     private List<ADS_CLASS> AdsList;
     private RecyclerView.LayoutManager adManager;
-    private RecyclerView adsRecycler , warningRecycler , tasksRecycler;
-    public static List<WARNING_CLASS> WarningList ;
-    public static Warning_Adapter warningADApter ;
-    ImageView warIcon ;
-    boolean attendanceTrigger = false ;
-    Loading AttendanceLoadingDialog ;
-    int warningCounter = 0 ;
-    private Button ErrorsBtn , StartWortBtn ;
-    static CardView AdsRedDot , SalesCounterCard , HRCounterCard , ProjectsCounterCard ;
-    public static boolean isRunning = false ;
-    List<TASK> TASKs ;
-    RequestQueue Q ;
-    TasksAdapter Task_Adapter ;
-    public static int CurrentAd = 0 ;
-    SharedPreferences prefs ;
+    private RecyclerView adsRecycler, warningRecycler, tasksRecycler;
+    public static List<WARNING_CLASS> WarningList;
+    public static Warning_Adapter warningADApter;
+    ImageView warIcon;
+    boolean attendanceTrigger = false;
+    Loading AttendanceLoadingDialog;
+    int warningCounter = 0;
+    private Button ErrorsBtn, StartWortBtn;
+    static CardView AdsRedDot, SalesCounterCard, HRCounterCard, ProjectsCounterCard;
+    public static boolean isRunning = false;
+    List<TASK> TASKs;
+    RequestQueue Q;
+    TasksAdapter Task_Adapter;
+    public static int CurrentAd = 0;
+    SharedPreferences prefs;
+    private GoogleMap mMap;
+    String getMyClients = "https://ratco-solutions.com/RatcoManagementSystem/getMyClients.php";
+    List<Marker> markerList;
+    List<CLIENT_CLASS> clientList;
+    LinearLayout LayoutResDot, adsCaptionLayout, MyClientCaption, MapCaption;
+    ImageView icon, imageViewMap, imgMap;
+    ScrollView scroll;
 
 
     @Override
@@ -110,7 +136,7 @@ public class MainPage extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        isRunning = true ;
+        isRunning = true;
         getLast5Ads();
         MyApp.MyUser.getNumberOfSiteVisitOrders(new VollyCallback() {
             @Override
@@ -141,7 +167,7 @@ public class MainPage extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        isRunning = false ;
+        isRunning = false;
     }
 
     @Override
@@ -158,13 +184,118 @@ public class MainPage extends AppCompatActivity {
         setLists();
         setViews();
         setViewsVisibility();
+        if (MyApp.db.getUser().JobTitle.equals("SalesMan")) {
+            markerList = new ArrayList<>();
+            LinearLayout MyClientLocation = (LinearLayout) findViewById(R.id.MyClientLocation);
+            MyClientLocation.setVisibility(View.VISIBLE);
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync((OnMapReadyCallback) this);
+            getClientLocation();
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int heightMobile = displayMetrics.heightPixels;
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) MyClientLocation.getLayoutParams();
+            layoutParams.height = heightMobile / 3;
+            MyClientLocation.setLayoutParams(layoutParams);
+
+            MyClientCaption.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (layoutParams.height == heightMobile / 3) {
+                        layoutParams.height = heightMobile / 2;
+                        imageViewMap.setImageResource(android.R.drawable.arrow_up_float);
+                    } else {
+                        layoutParams.height = heightMobile / 3;
+                        imageViewMap.setImageResource(android.R.drawable.arrow_down_float);
+                    }
+                    MyClientLocation.setLayoutParams(layoutParams);
+                }
+            });
+        }
     }
 
-    void setActivityActions () {
+    @Override
+
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+        // Get current location
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+                // Get latitude and longitude
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                Log.d("CurrentLocation", "Latitude: " + latitude);
+                Log.d("CurrentLocation", "Longitude: " + longitude);
+                LatLng currentLatLng = new LatLng(latitude, longitude);
+                //  mMap.addMarker(new MarkerOptions().position(currentLatLng).title("My Location"));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+                locationManager.removeUpdates(this);
+            }
+
+            @Override
+            public void onProviderEnabled(@NonNull String provider) {
+                Log.d("CurrentLocation", "onProviderEnabled");
+            }
+
+            @Override
+            public void onProviderDisabled(@NonNull String provider) {
+                Log.d("CurrentLocation", "onProviderDisabled");
+                checkLocationEnabled();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+                Log.d("CurrentLocation", "onStatusChanged");
+
+            }
+        };
+        // Request location updates
+        locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null);
+        final Marker[] lastMarker = {null};
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                if (lastMarker[0] != null) {
+                    if (marker.getId().equals(lastMarker[0].getId())) {
+//                            for (List<CLIENT_CLASS> cl : EmployeeClientList) {
+//                                if (cl != null) {
+                        for (CLIENT_CLASS cc : clientList) {
+                            // String v = cc.ClientName;
+                            if (cc.ClientName.equals(marker.getTitle())) {
+                                Intent ac = new Intent(act, ViewMyVisitDetailes.class);
+                                ac.putExtra("ItemId", cc.id);
+                                startActivity(ac);
+                                break;
+                            }
+//                                    }
+//                                }
+                        }
+                    }
+                }
+                lastMarker[0] = marker;
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    void setActivityActions() {
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                CurrentLocation = location ;
+                CurrentLocation = location;
                 locationManager.removeUpdates(listener);
                 Log.d("locationService", "i am stopped");
                 registerWorkAttendance(1);
@@ -186,7 +317,7 @@ public class MainPage extends AppCompatActivity {
             }
         };
         ErrorsBtn.setOnClickListener(v -> {
-            Intent i = new Intent(act,Errors.class);
+            Intent i = new Intent(act, Errors.class);
             startActivity(i);
         });
         HR.setOnClickListener(v -> {
@@ -194,8 +325,8 @@ public class MainPage extends AppCompatActivity {
             startActivity(i);
         });
         SALES.setOnClickListener(v -> {
-                Intent i = new Intent(act,SalesActivity.class);
-                startActivity(i);
+            Intent i = new Intent(act, SalesActivity.class);
+            startActivity(i);
         });
         SERVICE.setOnClickListener(v -> {
             Intent i = new Intent(act, Projects_Activity.class);
@@ -205,13 +336,40 @@ public class MainPage extends AppCompatActivity {
 
         });
         Management.setOnClickListener(v -> {
-                Intent i = new Intent(act, ManagementActivity.class);
-                startActivity(i);
+            Intent i = new Intent(act, ManagementActivity.class);
+            startActivity(i);
         });
         DEVELOPER.setOnClickListener(v -> {
             Intent i = new Intent(act, Developer.class);
             startActivity(i);
         });
+        imgMap.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        scroll.requestDisallowInterceptTouchEvent(true);
+                        // Disable touch on transparent view
+                        return false;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        scroll.requestDisallowInterceptTouchEvent(false);
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+                        scroll.requestDisallowInterceptTouchEvent(true);
+                        return false;
+
+                    default:
+                        return true;
+                }
+            }
+        });
+
         setMainButtonsVisibility();
         setWarningVisibility();
         setActivitiesFinish();
@@ -241,14 +399,35 @@ public class MainPage extends AppCompatActivity {
         adsRecycler = findViewById(R.id.adsRecycler);
         warIcon = findViewById(R.id.imageView8);
         warningRecycler = findViewById(R.id.warningRecycler);
-        AttendanceLoadingDialog = new Loading(act) ;
+        AttendanceLoadingDialog = new Loading(act);
+        adsCaptionLayout = findViewById(R.id.adsCaptionLayout);
+        LayoutResDot = findViewById(R.id.LayoutResDot);
+        icon = findViewById(R.id.imageViewAds);
+        imageViewMap = findViewById(R.id.imageViewMap);
+        MyClientCaption = findViewById(R.id.MyClientCaption);
+        //MapCaption = findViewById(R.id.MapCaption);
         RecyclerView.LayoutManager tasksManager = new LinearLayoutManager(act, RecyclerView.VERTICAL, false);
-        adManager = new LinearLayoutManager(act,LinearLayoutManager.HORIZONTAL,false);
+        adManager = new LinearLayoutManager(act, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView.LayoutManager warningManager = new LinearLayoutManager(act, LinearLayoutManager.VERTICAL, false);
         tasksRecycler.setLayoutManager(tasksManager);
         warningRecycler.setLayoutManager(warningManager);
         warningADApter = new Warning_Adapter(WarningList);
         warningRecycler.setAdapter(warningADApter);
+        imgMap = findViewById(R.id.imageView123);
+        scroll = findViewById(R.id.scroll);
+        adsCaptionLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (LayoutResDot.getVisibility() == View.GONE) {
+                    LayoutResDot.setVisibility(View.VISIBLE);
+                    icon.setImageResource(android.R.drawable.arrow_up_float);
+                } else {
+                    icon.setImageResource(android.R.drawable.arrow_down_float);
+                    LayoutResDot.setVisibility(View.GONE);
+                }
+            }
+        });
+
     }
 
     void setViewsVisibility() {
@@ -259,6 +438,7 @@ public class MainPage extends AppCompatActivity {
         DEVELOPER.setVisibility(View.GONE);
         Management.setVisibility(View.GONE);
         StartWortBtn.setVisibility(View.INVISIBLE);
+        LayoutResDot.setVisibility(View.GONE);
     }
 
     void setLists() {
@@ -269,9 +449,9 @@ public class MainPage extends AppCompatActivity {
     }
 
     void setMainButtonsVisibility() {
-        if (MyApp.MyUser != null ) {
+        if (MyApp.MyUser != null) {
             if (MyApp.MyUser.MyPermissions != null && MyApp.MyUser.MyPermissions.size() > 0) {
-                for (Permission p :MyApp.MyUser.MyPermissions) {
+                for (Permission p : MyApp.MyUser.MyPermissions) {
                     if (p.getId() == 37) {
                         if (p.getResult()) {
                             SALES.setVisibility(View.VISIBLE);
@@ -305,21 +485,19 @@ public class MainPage extends AppCompatActivity {
     void setWarningVisibility() {
         LinearLayout warningsCaptionLayout = findViewById(R.id.warningsCaptionLayout);
         LinearLayout WarningsLayout = findViewById(R.id.warningLayout);
-        if (MyApp.MyUser.Department.contains("Account") || MyApp.db.getUser().JobTitle.equals("Manager")|| MyApp.db.getUser().JobTitle.equals("Sales Manager")) {
+        if (MyApp.MyUser.Department.contains("Account") || MyApp.db.getUser().JobTitle.equals("Manager") || MyApp.db.getUser().JobTitle.equals("Sales Manager")) {
             WarningsLayout.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             WarningsLayout.setVisibility(View.GONE);
         }
         warningRecycler.setVisibility(View.GONE);
         warningsCaptionLayout.setOnClickListener(v -> {
             int TheStatus = warningRecycler.getVisibility();
             if (TheStatus == View.VISIBLE) {
-                warIcon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.drop_down_icon , null));
+                warIcon.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.drop_down_icon, null));
                 warningRecycler.setVisibility(View.GONE);
-            }
-            else if (TheStatus == View.GONE) {
-                warIcon.setImageDrawable(ResourcesCompat.getDrawable( getResources(),R.drawable.bring_up_icon , null));
+            } else if (TheStatus == View.GONE) {
+                warIcon.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.bring_up_icon, null));
                 warningRecycler.setVisibility(View.VISIBLE);
             }
         });
@@ -327,18 +505,17 @@ public class MainPage extends AppCompatActivity {
 
     void setStartBtn() {
         Calendar c = Calendar.getInstance(Locale.getDefault());
-        String Today = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DAY_OF_MONTH);
+        String Today = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
         if (MyApp.MyUser != null) {
             MyApp.MyUser.getIsUserAttendNow(Q, new getUserAttendance() {
                 @Override
                 public void onResultBack(boolean result) {
-                    Log.d("AttendToday",result+"");
+                    Log.d("AttendToday", result + "");
                     if (result) {
                         StartWortBtn.setVisibility(View.VISIBLE);
                         StartWortBtn.setBackgroundResource(R.drawable.mainpage_btns);
                         StartWortBtn.setText(MessageFormat.format("started {0}", Today));
-                    }
-                    else {
+                    } else {
                         StartWortBtn.setVisibility(View.VISIBLE);
                         StartWortBtn.setBackgroundResource(R.drawable.btns);
                         StartWortBtn.setText(getResources().getString(R.string.startworkDay));
@@ -347,7 +524,7 @@ public class MainPage extends AppCompatActivity {
 
                 @Override
                 public void onError(String error) {
-                    Log.d("AttendToday",error);
+                    Log.d("AttendToday", error);
                     StartWortBtn.setVisibility(View.VISIBLE);
                     StartWortBtn.setBackgroundResource(R.drawable.btns);
                     StartWortBtn.setText(getResources().getString(R.string.startworkDay));
@@ -356,7 +533,7 @@ public class MainPage extends AppCompatActivity {
         }
     }
 
-    void setActivitiesFinish () {
+    void setActivitiesFinish() {
         MyApp.ActList.add(act);
         if (MyApp.ActList.size() == 2) {
             MyApp.ActList.get(0).finish();
@@ -375,33 +552,30 @@ public class MainPage extends AppCompatActivity {
         TextView SalesCounterText = act.findViewById(R.id.SalesCounterText);
         int SalesCounter = MyApp.db.getSalesCounter();
 
-        if (SalesCounter <= 0 ) {
+        if (SalesCounter <= 0) {
             SalesCounterCard.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             SalesCounterCard.setVisibility(View.VISIBLE);
             SalesCounterText.setText(String.valueOf(SalesCounter));
         }
 
-        if (MyApp.HRCounter <= 0 ) {
+        if (MyApp.HRCounter <= 0) {
             HRCounterCard.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             HRCounterCard.setVisibility(View.VISIBLE);
             HRCounterText.setText(String.valueOf(MyApp.HRCounter));
         }
 
         // set projects _______________
-        int PJCounter = 0 ;
-        for (int x :MyApp.ProjectsCounters) {
-            Log.d("projectsCounter " , String.valueOf(x));
-            PJCounter+=x;
+        int PJCounter = 0;
+        for (int x : MyApp.ProjectsCounters) {
+            Log.d("projectsCounter ", String.valueOf(x));
+            PJCounter += x;
         }
-        Log.d("projectsCounter" , String.valueOf(PJCounter));
+        Log.d("projectsCounter", String.valueOf(PJCounter));
         if (PJCounter <= 0) {
             ProjectsCounterCard.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             ProjectsCounterCard.setVisibility(View.VISIBLE);
             ProjectsCounterText.setText(String.valueOf(PJCounter));
         }
@@ -418,67 +592,60 @@ public class MainPage extends AppCompatActivity {
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 10, 10, listener);
                         Log.d("locationService", "i am started");
                     }
-                }
-                else if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
+                } else if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
                     AttendanceLoadingDialog.close();
-                    new MESSAGE_DIALOG(act,"Accept Permission" , "You Must Accept Location Permission");
+                    new MESSAGE_DIALOG(act, "Accept Permission", "You Must Accept Location Permission");
                 }
             }
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)  {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
-        menu.getItem(0).setTitle(MyApp.db.getUser().FirstName+" "+MyApp.db.getUser().LastName);
+        menu.getItem(0).setTitle(MyApp.db.getUser().FirstName + " " + MyApp.db.getUser().LastName);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.LogOut ){
-            int ID = MyApp.db.getUser().id ;
+        if (item.getItemId() == R.id.LogOut) {
+            int ID = MyApp.db.getUser().id;
             MyApp.logOut(ID);
             MyApp.db.logOut();
-            prefs.edit().putInt("JobNumber",0).apply();
-            Intent i = new Intent(act,Login.class);
+            prefs.edit().putInt("JobNumber", 0).apply();
+            Intent i = new Intent(act, Login.class);
             startActivity(i);
-            MyApp.MyUser = null ;
-            MyApp.ProjectsCounters[0] = MyApp.ProjectsCounters[1] = 0 ;
-            MyApp.HRCounter = 0 ;
+            MyApp.MyUser = null;
+            MyApp.ProjectsCounters[0] = MyApp.ProjectsCounters[1] = 0;
+            MyApp.HRCounter = 0;
             act.finish();
-        }
-        else if (item.getItemId() == R.id.changeMyPassword) {
+        } else if (item.getItemId() == R.id.changeMyPassword) {
             ChangeMyPasswordDialog d = new ChangeMyPasswordDialog(act);
             d.show();
-        }
-        else if (item.getItemId() == R.id.goToHR) {
-            Intent i = new Intent(act,HR.class);
+        } else if (item.getItemId() == R.id.goToHR) {
+            Intent i = new Intent(act, HR.class);
             startActivity(i);
-        }
-        else if (item.getItemId() == R.id.goToProjects) {
+        } else if (item.getItemId() == R.id.goToProjects) {
             if (MyApp.MyUser.Department.equals("Sales") || MyApp.MyUser.Department.equals("Management") || MyApp.MyUser.Department.equals("Projects") || MyApp.MyUser.Department.equals("Aluminum Factory") || MyApp.MyUser.Department.equals("Programming")) {
-                Intent i = new Intent(act,Projects_Activity.class);
+                Intent i = new Intent(act, Projects_Activity.class);
                 startActivity(i);
+            } else {
+                ToastMaker.Show(1, "You Are Not Allowed to log to projects", act);
             }
-            else {
-                ToastMaker.Show(1,"You Are Not Allowed to log to projects",act);
-            }
-        }
-        else if (item.getItemId() == R.id.goToSales) {
+        } else if (item.getItemId() == R.id.goToSales) {
             if (MyApp.MyUser.Department.equals("Sales") || MyApp.MyUser.Department.equals("Management")) {
-                Intent i = new Intent(act,SalesActivity.class);
+                Intent i = new Intent(act, SalesActivity.class);
                 startActivity(i);
-            }
-            else {
-                ToastMaker.Show(1,"You Are Not Sales Employee",act);
+            } else {
+                ToastMaker.Show(1, "You Are Not Sales Employee", act);
             }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void getAndSetMessagingToken(){
+    private void getAndSetMessagingToken() {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
@@ -486,21 +653,21 @@ public class MainPage extends AppCompatActivity {
                         return;
                     }
                     String token = task.getResult();
-                    Log.d("Token" , token);
+                    Log.d("Token", token);
                     sendTokenToDB(token);
                     MyApp.RefME.child("token").setValue(token);
                 });
     }
 
-    private void sendTokenToDB(String token){
-        StringRequest request = new StringRequest(Request.Method.POST, ProjectUrls.setTokenUrl, response -> Log.d("sendingToken" , token+" Token Sent "+ response), error -> {
-        }){
+    private void sendTokenToDB(String token) {
+        StringRequest request = new StringRequest(Request.Method.POST, ProjectUrls.setTokenUrl, response -> Log.d("sendingToken", token + " Token Sent " + response), error -> {
+        }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String,String> par = new HashMap<>();
-                par.put("id" , String.valueOf(MyApp.db.getUser().id));
-                par.put("jn" , String.valueOf(MyApp.db.getUser().JobNumber));
-                par.put("token" , token);
+                Map<String, String> par = new HashMap<>();
+                par.put("id", String.valueOf(MyApp.db.getUser().id));
+                par.put("jn", String.valueOf(MyApp.db.getUser().JobNumber));
+                par.put("token", token);
                 return par;
             }
         };
@@ -508,26 +675,26 @@ public class MainPage extends AppCompatActivity {
     }
 
     void getDirectManager() {
-        MyApp.DIRECT_MANAGER = USER.searchUserByJobNumber(MyApp.EMPS,MyApp.MyUser.DirectManager);
+        MyApp.DIRECT_MANAGER = USER.searchUserByJobNumber(MyApp.EMPS, MyApp.MyUser.DirectManager);
         if (MyApp.DIRECT_MANAGER != null) {
             if (MyApp.DIRECT_MANAGER.VacationStatus == 1) {
-                MyApp.DIRECT_MANAGER = USER.searchUserByJobNumber(MyApp.EMPS,MyApp.DIRECT_MANAGER.VacationAlternative);
+                MyApp.DIRECT_MANAGER = USER.searchUserByJobNumber(MyApp.EMPS, MyApp.DIRECT_MANAGER.VacationAlternative);
             }
         }
-        MyApp.DEPARTMENT_MANAGER = USER.searchUserByJobNumber(MyApp.EMPS,MyApp.MyUser.DepartmentManager);
+        MyApp.DEPARTMENT_MANAGER = USER.searchUserByJobNumber(MyApp.EMPS, MyApp.MyUser.DepartmentManager);
         if (MyApp.DEPARTMENT_MANAGER != null) {
             if (MyApp.DEPARTMENT_MANAGER.VacationStatus == 1) {
-                MyApp.DEPARTMENT_MANAGER = USER.searchUserByJobNumber(MyApp.EMPS,MyApp.DEPARTMENT_MANAGER.VacationAlternative);
+                MyApp.DEPARTMENT_MANAGER = USER.searchUserByJobNumber(MyApp.EMPS, MyApp.DEPARTMENT_MANAGER.VacationAlternative);
             }
         }
         if (MyApp.DIRECT_MANAGER != null && MyApp.DEPARTMENT_MANAGER != null) {
-            Log.d("directManager&Dep" ,MyApp.DIRECT_MANAGER.FirstName+ " "+MyApp.DEPARTMENT_MANAGER.FirstName ) ;
+            Log.d("directManager&Dep", MyApp.DIRECT_MANAGER.FirstName + " " + MyApp.DEPARTMENT_MANAGER.FirstName);
         }
     }
 
     void getEmployees() {
         LinearLayout WarningsLayout = findViewById(R.id.warningLayout);
-        Intent r = new Intent(act,CountersService.class);
+        Intent r = new Intent(act, CountersService.class);
         MyApp.app.startService(r);
         if (MyApp.RefME != null) {
             if (MyApp.MyUser.Department.equals("Account") || MyApp.MyUser.JobTitle.equals("Manager") || MyApp.MyUser.JobTitle.equals("Sales Manager")) {
@@ -547,7 +714,7 @@ public class MainPage extends AppCompatActivity {
                     }
                 });
             }
-            if (MyApp.MyUser.Department.equals("Account") || MyApp.MyUser.JobTitle.equals("Manager") || MyApp.MyUser.JobTitle.equals("Sales Manager") ) {
+            if (MyApp.MyUser.Department.equals("Account") || MyApp.MyUser.JobTitle.equals("Manager") || MyApp.MyUser.JobTitle.equals("Sales Manager")) {
                 MyApp.RefME.child("PASSPORTsWarningNotification").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -584,14 +751,13 @@ public class MainPage extends AppCompatActivity {
         }
         for (USER emp : EMPLOYEES) {
             if (emp.DirectManager == MyApp.db.getUser().JobNumber) {
-                MyApp.ManagerStatus = true ;
+                MyApp.ManagerStatus = true;
                 break;
             }
         }
-        if (warningCounter > 0 ) {
+        if (warningCounter > 0) {
             WarningsLayout.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             WarningsLayout.setVisibility(View.GONE);
         }
     }
@@ -603,24 +769,24 @@ public class MainPage extends AppCompatActivity {
         for (USER u : list) {
             String t = u.IDExpireDate;
             try {
-                Date date = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault()).parse(t);
+                Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(t);
                 Calendar ExpireDate = Calendar.getInstance();
                 if (date != null) {
                     ExpireDate.setTime(date);
                 }
-                ExpireDate.add(Calendar.MONTH,-1);
-                Log.d("directWarning" , now.getTime()+" expire: "+ExpireDate.getTime());
+                ExpireDate.add(Calendar.MONTH, -1);
+                Log.d("directWarning", now.getTime() + " expire: " + ExpireDate.getTime());
                 if (now.after(ExpireDate)) {
                     warningCounter++;
-                    boolean status = false ;
-                    for (WARNING_CLASS ww :WarningList ) {
+                    boolean status = false;
+                    for (WARNING_CLASS ww : WarningList) {
                         if (ww.JobNumber == u.JobNumber && ww.FirstName.equals(u.FirstName) && ww.LastName.equals(u.LastName) && ww.warning.equals("ID")) {
                             status = true;
                             break;
                         }
                     }
-                    if (!status){
-                        WARNING_CLASS w = new WARNING_CLASS(u.JobNumber,u.FirstName,u.LastName,"ID",u.IDExpireDate);
+                    if (!status) {
+                        WARNING_CLASS w = new WARNING_CLASS(u.JobNumber, u.FirstName, u.LastName, "ID", u.IDExpireDate);
                         WarningList.add(w);
                         warningADApter.notifyDataSetChanged();
                     }
@@ -630,19 +796,18 @@ public class MainPage extends AppCompatActivity {
             }
         }
         warningCounterTV.setText(MessageFormat.format("{0}", warningCounter));
-        if (WarningList.size() == 0){
-            LinearLayout l = (LinearLayout)findViewById(R.id.warningLayout);
+        if (WarningList.size() == 0) {
+            LinearLayout l = (LinearLayout) findViewById(R.id.warningLayout);
             l.setVisibility(View.GONE);
-        }
-        else {
-            LinearLayout l = (LinearLayout)findViewById(R.id.warningLayout);
+        } else {
+            LinearLayout l = (LinearLayout) findViewById(R.id.warningLayout);
             l.setVisibility(View.VISIBLE);
         }
         for (WARNING_CLASS w : WarningList) {
             if (w.warning.equals("ID")) {
-                int ReqCode = r.nextInt() ;
-                Intent i = new Intent(act , ManagePassports.class);
-                showNotification(act,"ID Expire Warning ","You Have ID Expire Warning",i,ReqCode);
+                int ReqCode = r.nextInt();
+                Intent i = new Intent(act, ManagePassports.class);
+                showNotification(act, "ID Expire Warning ", "You Have ID Expire Warning", i, ReqCode);
                 break;
             }
         }
@@ -655,22 +820,22 @@ public class MainPage extends AppCompatActivity {
         for (USER u : list) {
             String t = u.PassportExpireDate;
             try {
-                Date date = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault()).parse(t);
+                Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(t);
                 Calendar ExpireDate = Calendar.getInstance();
                 if (date != null) {
                     ExpireDate.setTime(date);
                 }
                 if (now.after(ExpireDate)) {
                     warningCounter++;
-                    boolean status = false ;
-                    for(WARNING_CLASS ww :WarningList ){
+                    boolean status = false;
+                    for (WARNING_CLASS ww : WarningList) {
                         if (ww.JobNumber == u.JobNumber && ww.FirstName.equals(u.FirstName) && ww.LastName.equals(u.LastName) && ww.warning.equals("Passport")) {
                             status = true;
                             break;
                         }
                     }
-                    if (!status){
-                        WARNING_CLASS w = new WARNING_CLASS(u.JobNumber,u.FirstName,u.LastName,"Passport",u.PassportExpireDate);
+                    if (!status) {
+                        WARNING_CLASS w = new WARNING_CLASS(u.JobNumber, u.FirstName, u.LastName, "Passport", u.PassportExpireDate);
                         WarningList.add(w);
                         warningADApter.notifyDataSetChanged();
                     }
@@ -680,19 +845,18 @@ public class MainPage extends AppCompatActivity {
             }
         }
         warningCounterTV.setText(MessageFormat.format("{0}", warningCounter));
-        if (WarningList.size() == 0){
-            LinearLayout l = (LinearLayout)findViewById(R.id.warningLayout);
+        if (WarningList.size() == 0) {
+            LinearLayout l = (LinearLayout) findViewById(R.id.warningLayout);
             l.setVisibility(View.GONE);
-        }
-        else {
-            LinearLayout l = (LinearLayout)findViewById(R.id.warningLayout);
+        } else {
+            LinearLayout l = (LinearLayout) findViewById(R.id.warningLayout);
             l.setVisibility(View.VISIBLE);
         }
         for (WARNING_CLASS w : WarningList) {
             if (w.warning.equals("Passport")) {
-                int ReqCode = r.nextInt() ;
-                Intent i = new Intent(act , ManagePassports.class);
-                showNotification(act,"PASSPORT Expire Warning ","You Have PASSPORT Expire Warning",i,ReqCode);
+                int ReqCode = r.nextInt();
+                Intent i = new Intent(act, ManagePassports.class);
+                showNotification(act, "PASSPORT Expire Warning ", "You Have PASSPORT Expire Warning", i, ReqCode);
                 break;
             }
         }
@@ -705,22 +869,22 @@ public class MainPage extends AppCompatActivity {
         for (USER u : list) {
             String t = u.ContractExpireDate;
             try {
-                Date date = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault()).parse(t);
+                Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(t);
                 Calendar ExpireDate = Calendar.getInstance();
                 if (date != null) {
                     ExpireDate.setTime(date);
                 }
                 if (now.after(ExpireDate)) {
                     warningCounter++;
-                    boolean status = false ;
-                    for(WARNING_CLASS ww :WarningList ){
+                    boolean status = false;
+                    for (WARNING_CLASS ww : WarningList) {
                         if (ww.JobNumber == u.JobNumber && ww.FirstName.equals(u.FirstName) && ww.LastName.equals(u.LastName) && ww.warning.equals("Contract")) {
                             status = true;
                             break;
                         }
                     }
-                    if (!status){
-                        WARNING_CLASS w = new WARNING_CLASS(u.JobNumber,u.FirstName,u.LastName,"Contract",u.ContractExpireDate);
+                    if (!status) {
+                        WARNING_CLASS w = new WARNING_CLASS(u.JobNumber, u.FirstName, u.LastName, "Contract", u.ContractExpireDate);
                         WarningList.add(w);
                         warningADApter.notifyDataSetChanged();
                     }
@@ -730,19 +894,18 @@ public class MainPage extends AppCompatActivity {
             }
         }
         warningCounterTV.setText(MessageFormat.format("{0}", warningCounter));
-        if (WarningList.size() == 0){
-            LinearLayout l = (LinearLayout)findViewById(R.id.warningLayout);
+        if (WarningList.size() == 0) {
+            LinearLayout l = (LinearLayout) findViewById(R.id.warningLayout);
             l.setVisibility(View.GONE);
-        }
-        else {
-            LinearLayout l = (LinearLayout)findViewById(R.id.warningLayout);
+        } else {
+            LinearLayout l = (LinearLayout) findViewById(R.id.warningLayout);
             l.setVisibility(View.VISIBLE);
         }
         for (WARNING_CLASS w : WarningList) {
             if (w.warning.equals("Contract")) {
-                int ReqCode = r.nextInt() ;
-                Intent i = new Intent(act , ManagePassports.class);
-                showNotification(act,"CONTRACT Expire Warning ","You Have CONTRACT Expire Warning",i,ReqCode);
+                int ReqCode = r.nextInt();
+                Intent i = new Intent(act, ManagePassports.class);
+                showNotification(act, "CONTRACT Expire Warning ", "You Have CONTRACT Expire Warning", i, ReqCode);
                 break;
             }
         }
@@ -773,29 +936,26 @@ public class MainPage extends AppCompatActivity {
         Log.d("showNotification", "showNotification: " + reqCode);
     }
 
-    void registerWorkAttendance( int op) {
+    void registerWorkAttendance(int op) {
         StringRequest request = new StringRequest(Request.Method.POST, ProjectUrls.registerWorkTimeUrl, response -> {
             Log.d("locationService", response);
             AttendanceLoadingDialog.close();
             if (response.equals("0")) {
-                new MESSAGE_DIALOG(act,"error","error registering attendance");
-            }
-            else if (response.equals("-1")) {
-                new MESSAGE_DIALOG(act,"error","No Parameters");
-            }
-            else if (Integer.parseInt(response) > 0 ) {
-                ToastMaker.Show(1,getResources().getString(R.string.saved),act);
+                new MESSAGE_DIALOG(act, "error", "error registering attendance");
+            } else if (response.equals("-1")) {
+                new MESSAGE_DIALOG(act, "error", "No Parameters");
+            } else if (Integer.parseInt(response) > 0) {
+                ToastMaker.Show(1, getResources().getString(R.string.saved), act);
                 if (op == 1) {
                     Calendar c = Calendar.getInstance(Locale.getDefault());
-                    String date = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DAY_OF_MONTH);
-                    attendanceTrigger = true ;
+                    String date = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
+                    attendanceTrigger = true;
                     MyApp.MyUser.isAttendNow = true;
                     StartWortBtn.setText(MessageFormat.format("started {0}", date));
                     StartWortBtn.setBackgroundResource(R.drawable.mainpage_btns);
-                }
-                else if (op == 0) {
-                    attendanceTrigger = false ;
-                    CurrentLocation = null ;
+                } else if (op == 0) {
+                    attendanceTrigger = false;
+                    CurrentLocation = null;
                     MyApp.MyUser.isAttendNow = false;
                     StartWortBtn.setText(getResources().getString(R.string.startworkDay));
                     StartWortBtn.setBackgroundResource(R.drawable.btns);
@@ -806,30 +966,28 @@ public class MainPage extends AppCompatActivity {
         }, error -> {
             Log.d("locationService", error.getMessage());
             AttendanceLoadingDialog.close();
-            new MESSAGE_DIALOG(act,"Failed",error.toString());
-        })
-        {
+            new MESSAGE_DIALOG(act, "Failed", error.toString());
+        }) {
             @NonNull
             @Override
             protected Map<String, String> getParams() {
                 Calendar c = Calendar.getInstance(Locale.getDefault());
-                String Date = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DAY_OF_MONTH);
-                String Time = c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE)+":"+c.get(Calendar.SECOND);
-                Log.d("locationService", Date + " "+ Time);
-                Map<String,String> par = new HashMap<>();
-                par.put("JobNumber",String.valueOf(MyApp.db.getUser().JobNumber));
-                par.put("EmpID",String.valueOf(MyApp.db.getUser().id));
-                par.put("Name",MyApp.db.getUser().FirstName+" "+MyApp.db.getUser().LastName);
-                par.put("Date",Date);
-                par.put("Time" , Time);
-                par.put("Op" , String.valueOf(op));
-                if (CurrentLocation == null ){
-                    par.put("LA","");
-                    par.put("LO","");
-                }
-                else {
-                    par.put("LA",String.valueOf(CurrentLocation.getLatitude()));
-                    par.put("LO",String.valueOf(CurrentLocation.getLongitude()));
+                String Date = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
+                String Time = c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
+                Log.d("locationService", Date + " " + Time);
+                Map<String, String> par = new HashMap<>();
+                par.put("JobNumber", String.valueOf(MyApp.db.getUser().JobNumber));
+                par.put("EmpID", String.valueOf(MyApp.db.getUser().id));
+                par.put("Name", MyApp.db.getUser().FirstName + " " + MyApp.db.getUser().LastName);
+                par.put("Date", Date);
+                par.put("Time", Time);
+                par.put("Op", String.valueOf(op));
+                if (CurrentLocation == null) {
+                    par.put("LA", "");
+                    par.put("LO", "");
+                } else {
+                    par.put("LA", String.valueOf(CurrentLocation.getLatitude()));
+                    par.put("LO", String.valueOf(CurrentLocation.getLongitude()));
                 }
 
                 return par;
@@ -841,53 +999,51 @@ public class MainPage extends AppCompatActivity {
     void getTasks() {
         Q = Volley.newRequestQueue(act);
         StringRequest req = new StringRequest(Request.Method.POST, ProjectUrls.getTasksUrl, response -> {
-            Log.d("gettingTasks" , response);
+            Log.d("gettingTasks", response);
             LinearLayout tasksLayout = (LinearLayout) findViewById(R.id.taskLayout);
             if (response.equals("0")) {
                 tasksLayout.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 tasksLayout.setVisibility(View.VISIBLE);
                 try {
                     JSONArray arr = new JSONArray(response);
-                    for (int i=0;i<arr.length();i++) {
+                    for (int i = 0; i < arr.length(); i++) {
                         JSONObject row = arr.getJSONObject(i);
-                        TASK t = new TASK(row.getInt("id"),row.getInt("Salesman"),row.getString("Date"),row.getInt("ClientID"),row.getString("Action"),row.getInt("RefrenceID"));
+                        TASK t = new TASK(row.getInt("id"), row.getInt("Salesman"), row.getString("Date"), row.getInt("ClientID"), row.getString("Action"), row.getInt("RefrenceID"));
                         TASKs.add(t);
-                        getClient(t.Client,i);
+                        getClient(t.Client, i);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.d("gettingTasks" , e.toString());
+                    Log.d("gettingTasks", e.toString());
                 }
                 Task_Adapter = new TasksAdapter(TASKs);
                 tasksRecycler.setAdapter(Task_Adapter);
             }
-        }, error -> Log.d("gettingTasks" , error.toString()))
-        {
+        }, error -> Log.d("gettingTasks", error.toString())) {
             @NonNull
             @Override
             protected Map<String, String> getParams() {
                 Calendar c = Calendar.getInstance(Locale.getDefault());
-                String Date = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DAY_OF_MONTH);
-                Map<String,String> par = new HashMap<>();
+                String Date = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH);
+                Map<String, String> par = new HashMap<>();
                 par.put("Salesman", String.valueOf(MyApp.db.getUser().JobNumber));
-                par.put("Date",Date);
+                par.put("Date", Date);
                 return par;
             }
         };
         Q.add(req);
     }
 
-    void getClient(int ID , int index) {
+    void getClient(int ID, int index) {
         final CLIENT_CLASS[] CLIENT = {null};
         StringRequest request = new StringRequest(Request.Method.POST, ProjectUrls.getClientUrl, response -> {
-            Log.d("clientResponse" ,response+" "+ID);
+            Log.d("clientResponse", response + " " + ID);
             if (!response.equals("0")) {
                 try {
                     JSONArray arr = new JSONArray(response);
                     JSONObject row = arr.getJSONObject(0);
-                    CLIENT[0] = new CLIENT_CLASS(row.getInt("id"),row.getString("ClientName"),row.getString("City"),row.getString("PhonNumber"),row.getString("Address"),row.getString("Email"),row.getInt("SalesMan"),row.getDouble("LA"),row.getDouble("LO"),row.getString("FieldOfWork"));
+                    CLIENT[0] = new CLIENT_CLASS(row.getInt("id"), row.getString("ClientName"), row.getString("City"), row.getString("PhonNumber"), row.getString("Address"), row.getString("Email"), row.getInt("SalesMan"), row.getDouble("LA"), row.getDouble("LO"), row.getString("FieldOfWork"));
                     TASKs.get(index).setClient(CLIENT[0]);
                     Task_Adapter = new TasksAdapter(TASKs);
                     tasksRecycler.setAdapter(Task_Adapter);
@@ -897,14 +1053,13 @@ public class MainPage extends AppCompatActivity {
 
             }
 
-        }, error -> Log.d("clientResponse" ,error.getMessage()))
-        {
+        }, error -> Log.d("clientResponse", error.getMessage())) {
             @NonNull
             @Override
             protected Map<String, String> getParams() {
 
-                Map <String,String> par = new HashMap<>();
-                par.put("ID", String.valueOf(ID) );
+                Map<String, String> par = new HashMap<>();
+                par.put("ID", String.valueOf(ID));
                 return par;
             }
         };
@@ -912,36 +1067,35 @@ public class MainPage extends AppCompatActivity {
     }
 
     void getLast5Ads() {
-        Log.d("getAdsResp" , "i am started");
+        Log.d("getAdsResp", "i am started");
         LinearLayout DotsLayout = findViewById(R.id.dotsLayout);
         AdsList.clear();
         StringRequest request = new StringRequest(Request.Method.POST, ProjectUrls.getLastAdsUrl, response -> {
-            Log.d("getAdsResp" , response);
+            Log.d("getAdsResp", response);
             if (!response.equals("0")) {
                 try {
-                    JSONArray arr = new JSONArray(response) ;
-                    for (int i=0;i<arr.length();i++) {
+                    JSONArray arr = new JSONArray(response);
+                    for (int i = 0; i < arr.length(); i++) {
                         JSONObject row = arr.getJSONObject(i);
-                        ADS_CLASS a = new ADS_CLASS(row.getInt("id"),row.getString("Title"),row.getString("Message"),row.getString("ImageLink"),row.getString("FileLink"),row.getString("Date"));
+                        ADS_CLASS a = new ADS_CLASS(row.getInt("id"), row.getString("Title"), row.getString("Message"), row.getString("ImageLink"), row.getString("FileLink"), row.getString("Date"));
                         AdsList.add(a);
                     }
-                    if (AdsList.size() == 0 ){
-                        LinearLayout l = (LinearLayout)findViewById(R.id.adsLayout);
+                    if (AdsList.size() == 0) {
+                        LinearLayout l = (LinearLayout) findViewById(R.id.adsLayout);
                         l.setVisibility(View.GONE);
-                    }
-                    else {
-                        LinearLayout l = (LinearLayout)findViewById(R.id.adsLayout);
+                    } else {
+                        LinearLayout l = (LinearLayout) findViewById(R.id.adsLayout);
                         l.setVisibility(View.VISIBLE);
                         Collections.reverse(AdsList);
                         adsAdapter = new Ads_Adapter(AdsList);
                         adsRecycler.setLayoutManager(adManager);
                         AdsRedDot.setVisibility(View.VISIBLE);
                         DotsLayout.removeAllViews();
-                        for (int i = 0; i< AdsList.size(); i++) {
+                        for (int i = 0; i < AdsList.size(); i++) {
                             ImageView dot = new ImageView(act);
                             dot.setImageResource(R.drawable.off_dot);
-                            dot.setLayoutParams(new LinearLayout.LayoutParams(20,20));
-                            dot.setPadding(0,0,3,0);
+                            dot.setLayoutParams(new LinearLayout.LayoutParams(20, 20));
+                            dot.setPadding(0, 0, 3, 0);
                             DotsLayout.addView(dot);
                         }
                         adsRecycler.setAdapter(adsAdapter);
@@ -951,45 +1105,42 @@ public class MainPage extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 adsAdapter = new Ads_Adapter(AdsList);
                 adsRecycler.setLayoutManager(adManager);
                 adsRecycler.setAdapter(adsAdapter);
             }
 
         }
-                , error -> Log.d("getAdsResp" , error.toString()));
-        Q.add(request) ;
+                , error -> Log.d("getAdsResp", error.toString()));
+        Q.add(request);
     }
 
     void setAdsCounter() {
         TextView adsCounterTV = findViewById(R.id.adsCounter);
-        MyApp.ADS_Counter = 0 ;
+        MyApp.ADS_Counter = 0;
         if (MyApp.ADS_DB.getLastAdId() != -1) {
             if (MyApp.ADS_DB.getLastAdId() < AdsList.get(0).id) {
-                Log.d("adsCounterProb", "DB size "+MyApp.ADS_DB.getAds().size()+" last id in DB "+MyApp.ADS_DB.getLastAdId() + " last first id in list " + AdsList.get(0).id);
+                Log.d("adsCounterProb", "DB size " + MyApp.ADS_DB.getAds().size() + " last id in DB " + MyApp.ADS_DB.getLastAdId() + " last first id in list " + AdsList.get(0).id);
                 MyApp.ADS_Counter = AdsList.get(0).id - MyApp.ADS_DB.getLastAdId();
                 adsCounterTV.setText(String.valueOf(MyApp.ADS_Counter));
-                int last = MyApp.ADS_Counter - 1 ;
-                Log.d("adsCounterProb", "start "+last + " list size " + AdsList.size() + " counter value " + MyApp.ADS_Counter);
-                for (int i = last ; i >= 0 ; i--) {
-                    Log.d("adsCounterProb", AdsList.get(i).id + " "+i);
+                int last = MyApp.ADS_Counter - 1;
+                Log.d("adsCounterProb", "start " + last + " list size " + AdsList.size() + " counter value " + MyApp.ADS_Counter);
+                for (int i = last; i >= 0; i--) {
+                    Log.d("adsCounterProb", AdsList.get(i).id + " " + i);
                     MyApp.ADS_DB.insertAd(AdsList.get(i).id, AdsList.get(i).Title, AdsList.get(i).Message, AdsList.get(i).ImageLink, AdsList.get(i).FileLink, AdsList.get(i).Date);
                 }
                 AdsRedDot.setVisibility(View.VISIBLE);
-            }
-            else {
-                Log.d("adsCounterProb", MyApp.ADS_DB.getAds().size()+" "+MyApp.ADS_DB.getLastAdId() + " " + AdsList.get(0).id);
+            } else {
+                Log.d("adsCounterProb", MyApp.ADS_DB.getAds().size() + " " + MyApp.ADS_DB.getLastAdId() + " " + AdsList.get(0).id);
                 AdsRedDot.setVisibility(View.GONE);
             }
-        }
-        else {
+        } else {
             MyApp.ADS_Counter = AdsList.size();
             adsCounterTV.setText(String.valueOf(MyApp.ADS_Counter));
-            Log.d("adsCounterProb", "list size "+ AdsList.size() + " counter value " + MyApp.ADS_Counter);
-            for (int i = AdsList.size()-1; i >= 0 ; i--) {
-                Log.d("adsCounterProb", AdsList.get(i).id+" "+ i);
+            Log.d("adsCounterProb", "list size " + AdsList.size() + " counter value " + MyApp.ADS_Counter);
+            for (int i = AdsList.size() - 1; i >= 0; i--) {
+                Log.d("adsCounterProb", AdsList.get(i).id + " " + i);
                 MyApp.ADS_DB.insertAd(AdsList.get(i).id, AdsList.get(i).Title, AdsList.get(i).Message, AdsList.get(i).ImageLink, AdsList.get(i).FileLink, AdsList.get(i).Date);
             }
 
@@ -998,79 +1149,78 @@ public class MainPage extends AppCompatActivity {
 
     static void setAdsDots() {
         LinearLayout DotsLayout = act.findViewById(R.id.dotsLayout);
-        for (int i=0 ;i< DotsLayout.getChildCount();i++) {
-            ImageView img = (ImageView) DotsLayout.getChildAt(i) ;
+        for (int i = 0; i < DotsLayout.getChildCount(); i++) {
+            ImageView img = (ImageView) DotsLayout.getChildAt(i);
             img.setImageResource(R.drawable.off_dot);
         }
-        ImageView img = (ImageView) DotsLayout.getChildAt(CurrentAd) ;
+        ImageView img = (ImageView) DotsLayout.getChildAt(CurrentAd);
         img.setImageResource(R.drawable.on_dot);
     }
+
 
     public void startWorkGo(View view) {
         if (MyApp.MyUser.isAttendNow) {
             AttendanceLoadingDialog.show();
             registerWorkAttendance(0);
+        } else {
+            checkLocationEnabled();
+//            if (ActivityCompat.checkSelfPermission(act, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(act, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) || locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//                    AttendanceLoadingDialog.show();
+//                    CurrentLocation = null;
+//                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+//                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000 * 2, 1, listener);
+//                    }
+//                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 2, 1, listener);
+//                    }
+//                } else {
+//                    final AlertDialog.Builder builder = new AlertDialog.Builder(act);
+//                    final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
+//                    final String message = getResources().getString(R.string.locationNotEnabledMessage);
+//                    String title = getResources().getString(R.string.locationNotEnabledTitle);
+//                    builder.setMessage(message).setTitle(title).setPositiveButton("OK",
+//                            (d, id) -> {
+//                                act.startActivity(new Intent(action));
+//                                d.dismiss();
+//                            }).setNegativeButton("Cancel",
+//                            (d, id) -> {
+//                                d.dismiss();
+//                                //startEndWorkDay.setChecked(false);
+//                            });
+//                    builder.create().show();
+//                }
+//            } else {
+//                Log.d("locationService", "no permission");
+//                AlertDialog.Builder B = new AlertDialog.Builder(act);
+//                B.setTitle(getResources().getString(R.string.acceptLocationPermissionTitle));
+//                B.setMessage(getResources().getString(R.string.acceptLocationPermissionMessage));
+//                B.setPositiveButton("OK", (dialog, which) -> {
+//                    dialog.dismiss();
+//                    ActivityCompat.requestPermissions(act, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 5);
+//                });
+//                B.create();
+//                B.show();
+//            }
         }
-        else {
-            if (ActivityCompat.checkSelfPermission(act, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(act, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) || locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ) {
-                    AttendanceLoadingDialog.show();
-                    CurrentLocation = null ;
-                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000 * 2, 1, listener);
-                    }
-                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 2, 1, listener);
-                    }
-                }
-                else {
-                    final AlertDialog.Builder builder =  new AlertDialog.Builder(act);
-                    final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
-                    final String message = getResources().getString(R.string.locationNotEnabledMessage);
-                    String title = getResources().getString(R.string.locationNotEnabledTitle);
-                    builder.setMessage(message).setTitle(title).setPositiveButton("OK",
-                            (d, id) -> {
-                                act.startActivity(new Intent(action));
-                                d.dismiss();
-                            }).setNegativeButton("Cancel",
-                            (d, id) -> {
-                                d.dismiss();
-                                //startEndWorkDay.setChecked(false);
-                            });
-                    builder.create().show();
-                }
-            }
-            else {
-                Log.d("locationService", "no permission");
-                AlertDialog.Builder B = new AlertDialog.Builder(act);
-                B.setTitle(getResources().getString(R.string.acceptLocationPermissionTitle));
-                B.setMessage(getResources().getString(R.string.acceptLocationPermissionMessage));
-                B.setPositiveButton("OK", (dialog, which) -> {
-                    dialog.dismiss();
-                    ActivityCompat.requestPermissions(act, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},5);
-                });
-                B.create();
-                B.show();
-            }
-        }
+
     }
 
     void checkMyVacationStatus() {
         MyApp.MyUser.getIsUserInVacationToday(Q, new UserVacationTodayCallback() {
             @Override
             public void onSuccess(boolean result, VACATION_CLASS vacation) {
-                Log.d("checkVacation",result+" ");
+                Log.d("checkVacation", result + " ");
                 if (result) {
                     setIamInVacation(vacation.AlternativeID);
-                }
-                else {
+                } else {
                     setIamInOutOfVacation();
                 }
             }
 
             @Override
             public void onFil(String error) {
-                Log.d("checkVacation",error);
+                Log.d("checkVacation", error);
             }
         });
     }
@@ -1080,14 +1230,14 @@ public class MainPage extends AppCompatActivity {
         workButton.setText(getResources().getString(R.string.iamInVaactionNow));
         workButton.setEnabled(false);
         MyApp.MyUser.VacationStatus = 1;
-        StringRequest Req = new StringRequest(Request.Method.POST, ProjectUrls.setMyVacationStatusUrl, response -> Log.d("setIamInVacation" , response)
-                , error -> Log.d("setIamInVacation" , error.toString())){
+        StringRequest Req = new StringRequest(Request.Method.POST, ProjectUrls.setMyVacationStatusUrl, response -> Log.d("setIamInVacation", response)
+                , error -> Log.d("setIamInVacation", error.toString())) {
             @NonNull
             @Override
             protected Map<String, String> getParams() {
-                Map<String,String> par = new HashMap<>();
+                Map<String, String> par = new HashMap<>();
                 par.put("jn", String.valueOf(MyApp.db.getUser().JobNumber));
-                par.put("Status","1");
+                par.put("Status", "1");
                 par.put("alt", String.valueOf(alternative));
                 return par;
             }
@@ -1099,15 +1249,15 @@ public class MainPage extends AppCompatActivity {
         Button workButton = findViewById(R.id.button52);
         workButton.setEnabled(true);
         MyApp.MyUser.VacationStatus = 0;
-        StringRequest Req = new StringRequest(Request.Method.POST, ProjectUrls.setMyVacationStatusUrl, response -> Log.d("setIamInVacation" , response)
-                , error -> Log.d("setIamInVacation" , error.toString())){
+        StringRequest Req = new StringRequest(Request.Method.POST, ProjectUrls.setMyVacationStatusUrl, response -> Log.d("setIamInVacation", response)
+                , error -> Log.d("setIamInVacation", error.toString())) {
             @NonNull
             @Override
             protected Map<String, String> getParams() {
-                Map<String,String> par = new HashMap<>();
+                Map<String, String> par = new HashMap<>();
                 par.put("jn", String.valueOf(MyApp.db.getUser().JobNumber));
-                par.put("Status","0");
-                par.put("alt","0");
+                par.put("Status", "0");
+                par.put("alt", "0");
                 return par;
             }
         };
@@ -1116,25 +1266,24 @@ public class MainPage extends AppCompatActivity {
 
     void getIfThereIsNewRating() {
         final int[] counter = {0};
-        MyApp.RatingCounter = 0 ;
+        MyApp.RatingCounter = 0;
         if (MyApp.ManagerStatus) {
             if (MyApp.MyUser.MyStaff != null && MyApp.MyUser.MyStaff.size() != 0) {
                 StringRequest req = new StringRequest(Request.Method.POST, ProjectUrls.checkRatingAvailability, response -> {
                     Log.d("ratingCounter", response);
                     MyApp.RatingCounter = Integer.parseInt(response);
-                    MyApp.HRCounter = MyApp.HRCounter - MyApp.TempRatingCounter ;
-                    MyApp.HRCounter = MyApp.HRCounter + MyApp.RatingCounter ;
-                    MyApp.TempRatingCounter = MyApp.RatingCounter ;
+                    MyApp.HRCounter = MyApp.HRCounter - MyApp.TempRatingCounter;
+                    MyApp.HRCounter = MyApp.HRCounter + MyApp.RatingCounter;
+                    MyApp.TempRatingCounter = MyApp.RatingCounter;
                     setCounters();
-                }, error -> Log.d("ratingCounter", error.toString()))
-                {
+                }, error -> Log.d("ratingCounter", error.toString())) {
                     @NonNull
                     @Override
                     protected Map<String, String> getParams() {
                         Calendar ca = Calendar.getInstance(Locale.getDefault());
-                        Map<String,String> par = new HashMap<>();
-                        for (int i=0;i<MyApp.MyUser.MyStaff.size();i++) {
-                            par.put("jn"+i, String.valueOf(MyApp.MyUser.MyStaff.get(i).JobNumber));
+                        Map<String, String> par = new HashMap<>();
+                        for (int i = 0; i < MyApp.MyUser.MyStaff.size(); i++) {
+                            par.put("jn" + i, String.valueOf(MyApp.MyUser.MyStaff.get(i).JobNumber));
                         }
                         par.put("Count", String.valueOf(MyApp.MyUser.MyStaff.size()));
                         par.put("Month", String.valueOf(ca.get(Calendar.MONTH)));
@@ -1143,24 +1292,22 @@ public class MainPage extends AppCompatActivity {
                     }
                 };
                 Volley.newRequestQueue(act).add(req);
-            }
-            else {
+            } else {
                 Log.d("ratingCounter", counter[0] + " my staff false");
             }
-        }
-        else {
+        } else {
             Log.d("ratingCounter", counter[0] + " manager status false");
         }
     }
 
     void setUserAttendReminder() {
-        Log.d("SetAlarm","start");
+        Log.d("SetAlarm", "start");
         MyApp.MyUser.getUserAttendTime(Q, new AttendTimeCallback() {
             @SuppressLint("UnspecifiedImmutableFlag")
             @Override
             public void onSuccess(AttendLeaveTime al) {
                 Calendar c = Calendar.getInstance(Locale.getDefault());
-                String time = c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DAY_OF_MONTH)+" "+al.attend;
+                String time = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH) + " " + al.attend;
                 @SuppressLint("SimpleDateFormat") DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 try {
                     Date date = sdf.parse(time);
@@ -1168,25 +1315,24 @@ public class MainPage extends AppCompatActivity {
                     if (date != null) {
                         alarmCa.setTime(date);
                         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        Intent myIntent = new Intent(getApplicationContext(),ReceiveAlarm.class);
+                        Intent myIntent = new Intent(getApplicationContext(), ReceiveAlarm.class);
                         PendingIntent pendingIntent;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             pendingIntent = PendingIntent.getBroadcast(act, 0, myIntent, PendingIntent.FLAG_IMMUTABLE);
-                        }
-                        else {
+                        } else {
                             pendingIntent = PendingIntent.getBroadcast(act, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                         }
-                        manager.setRepeating(AlarmManager.RTC_WAKEUP,alarmCa.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
-                        Log.d("SetAlarm","done");
+                        manager.setRepeating(AlarmManager.RTC_WAKEUP, alarmCa.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                        Log.d("SetAlarm", "done");
                     }
                 } catch (ParseException e) {
-                    Log.d("SetAlarm",e.getMessage());
+                    Log.d("SetAlarm", e.getMessage());
                 }
             }
 
             @Override
             public void onFail(String error) {
-                Log.d("SetAlarm",error);
+                Log.d("SetAlarm", error);
             }
         });
     }
@@ -1201,8 +1347,7 @@ public class MainPage extends AppCompatActivity {
                         public void onResultBack(boolean result) {
                             if (!result) {
                                 // show justification dialog
-                            }
-                            else {
+                            } else {
 
                             }
                         }
@@ -1223,4 +1368,87 @@ public class MainPage extends AppCompatActivity {
 
     }
 
+    public void checkLocationEnabled() {
+        if (ActivityCompat.checkSelfPermission(act, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(act, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) || locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                CurrentLocation = null;
+                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000 * 2, 1, listener);
+                }
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 2, 1, listener);
+                }
+            } else {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(act);
+                final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
+                final String message = getResources().getString(R.string.locationNotEnabledMessage);
+                String title = getResources().getString(R.string.locationNotEnabledTitle);
+                builder.setMessage(message).setTitle(title).setPositiveButton("OK",
+                        (d, id) -> {
+                            act.startActivity(new Intent(action));
+                            d.dismiss();
+                        }).setNegativeButton("Cancel",
+                        (d, id) -> {
+                            d.dismiss();
+                            //startEndWorkDay.setChecked(false);
+                        });
+                builder.create().show();
+            }
+        } else {
+            Log.d("locationService", "no permission");
+            AlertDialog.Builder B = new AlertDialog.Builder(act);
+            B.setTitle(getResources().getString(R.string.acceptLocationPermissionTitle));
+            B.setMessage(getResources().getString(R.string.acceptLocationPermissionMessage));
+            B.setPositiveButton("OK", (dialog, which) -> {
+                dialog.dismiss();
+                ActivityCompat.requestPermissions(act, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 5);
+            });
+            B.create();
+            B.show();
+        }
+    }
+
+    public void getClientLocation() {
+        StringRequest request = new StringRequest(Request.Method.POST, getMyClients, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                clientList = new ArrayList<>();
+                if (response.equals("0")) {
+                    ToastMaker.Show(1, "No Record", act);
+                } else {
+                    try {
+                        JSONArray arr = new JSONArray(response);
+                        for (int i = 0; i < arr.length(); i++) {
+                            JSONObject row = arr.getJSONObject(i);
+                            CLIENT_CLASS c = new CLIENT_CLASS(row.getInt("id"), row.getString("ClientName"), row.getString("City"), row.getString("PhonNumber"), row.getString("Address"), row.getString("Email"), row.getInt("SalesMan"), row.getDouble("LA"), row.getDouble("LO"), row.getString("FieldOfWork"));
+                            clientList.add(c);
+                        }
+                        for (CLIENT_CLASS C : clientList) {
+                            LatLng MyClient = new LatLng(C.LA, C.LO);
+                            markerList.add(mMap.addMarker(new MarkerOptions().position(MyClient).title(C.ClientName)));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("locationsResponse", error.toString());
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> par = new HashMap<String, String>();
+                par.put("jn", String.valueOf(MyApp.db.getUser().JobNumber));
+//                par.put("jn", "30015");
+                return par;
+            }
+        };
+        Volley.newRequestQueue(act).add(request);
+    }
 }
+
+

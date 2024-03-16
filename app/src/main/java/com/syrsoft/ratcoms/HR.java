@@ -43,6 +43,7 @@ import com.syrsoft.ratcoms.HRActivities.ManageStaffAttendanceByLocation;
 import com.syrsoft.ratcoms.HRActivities.MyAttendTable;
 import com.syrsoft.ratcoms.HRActivities.MySalaryReports;
 import com.syrsoft.ratcoms.HRActivities.RatingEmployees;
+import com.syrsoft.ratcoms.HRActivities.ReportSalary;
 import com.syrsoft.ratcoms.HRActivities.RequestBonus;
 import com.syrsoft.ratcoms.HRActivities.RequestCustody;
 import com.syrsoft.ratcoms.HRActivities.SendNewAdWithImage;
@@ -61,15 +62,13 @@ public class HR extends AppCompatActivity {
     private Activity act ;
     private TextView name , mobile, email ,passport,passportEDate , ID , IDEDate , contract , contractEDate,jobNum , jobTitle ,department,directManager ;
     private  ImageView pic ;
-    private Button MySalaryReports,RatingBtn,MyApprovalsBtn,MyOrdersBtn,VacationSalaryBtn,RequestCustodyBtn,AdvencePaymentBtn,ResignationBtn,BacktoWorkBtn,VacationsBtn,ExitRequestBtn,salaryReportBtn , appUpdateBtn , myApprovals , manageProjectEmps , checkEmpsAttendance ;
+    private Button MySalaryReports,RatingBtn,MyApprovalsBtn,MyOrdersBtn,VacationSalaryBtn,RequestCustodyBtn,AdvencePaymentBtn,ResignationBtn,BacktoWorkBtn,VacationsBtn,ExitRequestBtn,salaryReportBtn , appUpdateBtn , myApprovals , manageProjectEmps , checkEmpsAttendance , HR_requestDiscount , HR_requestChamberCommerce ;
     private String getHrOrdersTypes = MyApp.MainUrl + "getHrOrdersTypes.php" ;
     private String getJobTitlesUrl = MyApp.MainUrl +"getJobtitles.php";
     private String insertNewAdUrl = MyApp.MainUrl + "insertNewAd.php" ;
     static List<HR_ORDER_TYPE> Types ;
     public static List<JobTitle> ExitAuthsJobTitles,JobTitles , RequestCustodyAuthsJobTitles , ResignationsAuthsJobtitles , VacationsAuthJobtitles , BacksAuthJobtitles , AdvancePaymentsAuthJobtitles , VacationSalaryAuthJobtitles ;
     public static List<USER>  ExitAuthUsers,CustodyAuthUsers ,  ResignationsAuthUsers , VacationsAuthUsers , BacksAuthUsers , AdvancePaymentaAuthUsers , VacationSalaryAuthUsers ;
-    public static List<JobTitle>  ARequestCustodyAuthsJobTitles , AResignationsAuthsJobtitles , AVacationsAuthJobtitles , ABacksAuthJobtitles , AAdvancePaymentsAuthJobtitles , AVacationSalaryAuthJobtitles ;
-    public static List<USER>  ACustodyAuthUsers ,  AResignationsAuthUsers , AVacationsAuthUsers , ABacksAuthUsers , AAdvancePaymentaAuthUsers , AVacationSalaryAuthUsers ;
     public static boolean isRunning = false ;
     static CardView ApprovalsCard , RatingCard  ;
     static TextView ApprovalCount ,RatingCount  ;
@@ -149,6 +148,8 @@ public class HR extends AppCompatActivity {
         MySalaryReports = (Button) findViewById(R.id.button211);
         checkEmpsAttendance = (Button) findViewById(R.id.HR_CheckEmpsAttendance);
         manageProjectEmps = (Button) findViewById(R.id.button15);
+        HR_requestDiscount = (Button) findViewById(R.id.HR_requestDiscount);
+        HR_requestChamberCommerce = (Button) findViewById(R.id.HR_requestChamberCommerce);
         ApprovalsCard = (CardView) findViewById(R.id.ApprovalsCounterCard);
         ApprovalCount = (TextView) findViewById(R.id.ApprovalsCounterText);
         RatingCard = (CardView) findViewById(R.id.EmployeesRatingCounterCard);
@@ -309,6 +310,15 @@ public class HR extends AppCompatActivity {
                             }
                             continue;
                         }
+                        if (MyApp.MyUser.MyPermissions.get(i).getId() == 45) {
+                            if (MyApp.MyUser.MyPermissions.get(i).getResult()) {
+                                HR_requestDiscount.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                HR_requestDiscount.setVisibility(View.GONE);
+                            }
+                            continue;
+                        }
                     }
                 }
             }
@@ -365,6 +375,17 @@ public class HR extends AppCompatActivity {
     public void gotoAdvancePayment(View view) {
         Intent i = new Intent(getApplicationContext(), com.syrsoft.ratcoms.HRActivities.AdvancePayment.class);
         startActivity(i);
+    }
+
+    public void goToRequestChamberCommerce(View view){
+        Intent i = new Intent(getApplicationContext(), com.syrsoft.ratcoms.HRActivities.RequestCommerceChamber.class);
+        startActivity(i);
+    }
+
+    public void goToRequestRequestDiscount(View view){
+        Intent i = new Intent(getApplicationContext(), com.syrsoft.ratcoms.HRActivities.Punishment.class);
+        startActivity(i);
+
     }
 
     public void goToVacationSalary(View view) {
@@ -1212,6 +1233,11 @@ public class HR extends AppCompatActivity {
 
     public void goToMyAttendance(View view) {
         Intent i = new Intent(act, MyAttendTable.class);
+        startActivity(i);
+    }
+
+    public void goToReportSalary(View view){
+        Intent i = new Intent(act , ReportSalary.class);
         startActivity(i);
     }
 }

@@ -10,7 +10,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,28 +20,26 @@ import com.syrsoft.ratcoms.Loading;
 import com.syrsoft.ratcoms.MyApp;
 import com.syrsoft.ratcoms.R;
 import com.syrsoft.ratcoms.SALESActivities.SALES_ADAPTERS.Catalog_Adapter;
-import com.syrsoft.ratcoms.SALESActivities.SALES_ADAPTERS.DataSheet_Adapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Catalogs extends AppCompatActivity {
 
-    Activity act ;
-    RequestQueue Q ;
+    Activity act;
+    RequestQueue Q;
     List<Catalog_Class> CatalogsList;
-    String searchCatalogsUrl = MyApp.MainUrl+"searchCatalog.php";
+    List<Catalog_Class> filter;
+
+    String getCatalogsUrl = MyApp.MainUrl + "getCatalog.php";
     RecyclerView CatalogsRecycler;
-    EditText SearchField ;
-    Catalog_Adapter Adapter ;
-    RecyclerView.LayoutManager Manager ;
-    boolean status = false ;
+    EditText SearchField;
+    Catalog_Adapter Adapter;
+    RecyclerView.LayoutManager Manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +47,16 @@ public class Catalogs extends AppCompatActivity {
         setContentView(R.layout.sales_catalogs_activity);
         setActivity();
         setActivityActions();
+        getDataSheet();
     }
 
     void setActivity() {
         act = this;
         Q = Volley.newRequestQueue(act);
         CatalogsList = new ArrayList<Catalog_Class>();
+        filter = new ArrayList<Catalog_Class>();
         SearchField = (EditText) findViewById(R.id.editTextTextPersonName3);
-        Manager = new LinearLayoutManager(act,RecyclerView.VERTICAL,false);
+        Manager = new LinearLayoutManager(act, RecyclerView.VERTICAL, false);
         CatalogsRecycler = (RecyclerView) findViewById(R.id.itemsRecycler);
         CatalogsRecycler.setLayoutManager(Manager);
     }
@@ -68,68 +67,41 @@ public class Catalogs extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                filter.clear();
+                for (Catalog_Class catalog : CatalogsList) {
+                    if (catalog.FileName.contains(s.toString())) {
+                        filter.add(catalog);
+                    }
+                }
+                Adapter = new Catalog_Adapter(filter);
+                CatalogsRecycler.setAdapter(Adapter);
             }
-
             @Override
             public void afterTextChanged(Editable s) {
-                if (SearchField.getText().toString().isEmpty()) {
-                    CatalogsList.clear();
-                    Adapter = new Catalog_Adapter(CatalogsList);
-                    CatalogsRecycler.setAdapter(Adapter);
-                }
-                else {
-                    status = true ;
-                    Runnable r = new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(1000);
-                                if (status) {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            searchDataSheet();
-                                        }
-                                    });
-
-                                    status = false ;
-                                }
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    Thread t = new Thread(r);
-                    t.start();
-                }
-
             }
         });
     }
 
-    void searchDataSheet() {
-        CatalogsList.clear();
-        Adapter = new Catalog_Adapter(CatalogsList);
-        CatalogsRecycler.setAdapter(Adapter);
+    void getDataSheet() {
+//        CatalogsList.clear();
+//        Adapter = new Catalog_Adapter(CatalogsList);
+//        CatalogsRecycler.setAdapter(Adapter);
         Loading l = new Loading(act);
         l.show();
-        StringRequest request = new StringRequest(Request.Method.POST, searchCatalogsUrl, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, getCatalogsUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 l.close();
                 if (response.equals("0")) {
 
-                }
-                else {
+                } else {
                     try {
                         JSONArray arr = new JSONArray(response);
-                        for (int i=0;i<arr.length();i++) {
+                        for (int i = 0; i < arr.length(); i++) {
                             JSONObject row = arr.getJSONObject(i);
-                            CatalogsList.add(new Catalog_Class(row.getInt("id"),row.getString("FileName"),row.getString("Link")));
+                            CatalogsList.add(new Catalog_Class(row.getInt("id"), row.getString("FileName"), row.getString("Link")));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -143,15 +115,7 @@ public class Catalogs extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 l.close();
             }
-        })
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> par = new HashMap<String, String>();
-                par.put("Field" , SearchField.getText().toString()) ;
-                return par;
-            }
-        };
+        });
         Q.add(request);
     }
 }

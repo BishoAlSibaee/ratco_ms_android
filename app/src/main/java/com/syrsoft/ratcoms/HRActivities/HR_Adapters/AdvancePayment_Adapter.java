@@ -108,7 +108,6 @@ public class AdvancePayment_Adapter extends RecyclerView.Adapter<AdvancePayment_
                     }
                     status[position] = false ;
                 }
-
             }
         });
 
@@ -164,7 +163,6 @@ public class AdvancePayment_Adapter extends RecyclerView.Adapter<AdvancePayment_
                 return false;
             }
         });
-
     }
 
     @Override

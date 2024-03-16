@@ -152,7 +152,6 @@ public class MyApproval_AdvancePayment_Adapter extends RecyclerView.Adapter<MyAp
                    // MESSAGE_DIALOG m = new MESSAGE_DIALOG(holder.itemView.getContext(),holder.itemView.getContext().getResources().getString(R.string.previousAuthsMustDone),"");
                     MESSAGE_DIALOG m = new MESSAGE_DIALOG(holder.itemView.getContext(),"This Order Rejected","");
                 }
-
             }
         });
 

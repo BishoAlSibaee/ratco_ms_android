@@ -78,7 +78,6 @@ public class AdvancePayment extends AppCompatActivity {
                 {
                     MESSAGE_DIALOG m = new MESSAGE_DIALOG(act,getResources().getString(R.string.default_error_msg) , getResources().getString(R.string.default_error_msg));
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override

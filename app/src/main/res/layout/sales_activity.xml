@@ -9,272 +9,303 @@
     android:padding="10dp"
     tools:context=".SalesActivity">
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/mainpage_btns_background"
-        android:padding="10dp"
-        android:text="@string/sales"
-        android:textAllCaps="false"
-        android:textColor="@color/purple_700"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/mainpage_btns_background"
-        android:orientation="vertical"
-        android:paddingStart="10dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="10dp">
-
-        <TextView
-            android:id="@+id/textView159"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/clientVisitReport"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+        android:layout_height="match_parent" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/addClientVisitReport"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="2dp"
-                android:layout_weight="1"
-                android:background="@drawable/approve_btns"
-                android:drawableTop="@android:drawable/ic_input_add"
-                android:onClick="goToClientVisitReport"
-                android:padding="10dp"
-                android:text="@string/addNewClientVisitReport"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/ViewMyClientVisitReports"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:layout_weight="1"
-                android:background="@drawable/approve_btns"
-                android:drawableTop="@android:drawable/ic_menu_sort_by_size"
-                android:onClick="goToMyVisitReports"
-                android:padding="10dp"
-                android:text="@string/showMyVisitReports"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/ViewMyStaffVisits"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="2dp"
-                android:layout_weight="1"
-                android:background="@drawable/approve_btns"
-                android:drawableTop="@android:drawable/ic_menu_sort_by_size"
-                android:onClick="goToMyStaffVisitsReport"
-                android:padding="10dp"
-                android:text="@string/viewMyStaffVisitReports"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textVview159"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/clients"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/addNewClient"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
-                android:layout_weight="1"
-                android:background="@drawable/approve_btns"
-                android:drawableTop="@android:drawable/ic_input_add"
-                android:drawablePadding="10dp"
-                android:onClick="goToAddNewClientActivity"
+                android:background="@drawable/mainpage_btns_background"
                 android:padding="10dp"
-                android:text="@string/addNewClient"
-                android:textAlignment="center"
+                android:text="@string/sales"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textColor="@color/purple_700"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/myClients"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_weight="1"
-                android:background="@drawable/approve_btns"
-                android:drawableTop="@android:drawable/ic_menu_sort_by_size"
-                android:drawablePadding="10dp"
-                android:onClick="goToMyClientsActivity"
-                android:padding="10dp"
-                android:text="@string/myClients"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-        </LinearLayout>
+                android:layout_marginTop="10dp"
+                android:background="@drawable/mainpage_btns_background"
+                android:orientation="vertical"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp">
 
-        <TextView
-            android:id="@+id/textVvivew159"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/projects"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/textView159"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clientVisitReport"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/addClientVisitReport"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/approve_btns"
+                        android:drawableTop="@android:drawable/ic_input_add"
+                        android:onClick="goToClientVisitReport"
+                        android:padding="10dp"
+                        android:text="@string/addNewClientVisitReport"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/ViewMyClientVisitReports"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/approve_btns"
+                        android:drawableTop="@android:drawable/ic_menu_sort_by_size"
+                        android:onClick="goToMyVisitReports"
+                        android:padding="10dp"
+                        android:text="@string/showMyVisitReports"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/ViewMyStaffVisits"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/approve_btns"
+                        android:drawableTop="@android:drawable/ic_menu_sort_by_size"
+                        android:onClick="goToMyStaffVisitsReport"
+                        android:padding="10dp"
+                        android:text="@string/viewMyStaffVisitReports"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textVview159"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/clients"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/addNewClient"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/approve_btns"
+                        android:drawableTop="@android:drawable/ic_input_add"
+                        android:drawablePadding="10dp"
+                        android:onClick="goToAddNewClientActivity"
+                        android:padding="10dp"
+                        android:text="@string/addNewClient"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/myClients"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/approve_btns"
+                        android:drawableTop="@android:drawable/ic_menu_sort_by_size"
+                        android:drawablePadding="10dp"
+                        android:onClick="goToMyClientsActivity"
+                        android:padding="10dp"
+                        android:text="@string/myClients"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/ButtonViewClients"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/approve_btns"
+                        android:drawableTop="@android:drawable/ic_menu_sort_by_size"
+                        android:drawablePadding="10dp"
+                        android:onClick="goToViewClients"
+                        android:padding="10dp"
+                        android:text="@string/ClientsLocations"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textVvivew159"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/projects"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/AddNewProjectContract"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/approve_btns"
+                        android:drawableTop="@android:drawable/ic_input_add"
+                        android:drawablePadding="10dp"
+                        android:onClick="goToAddNewProject"
+                        android:padding="10dp"
+                        android:text="@string/addNewProjectContract"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/ViewMyProjectContracts"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/approve_btns"
+                        android:drawableTop="@android:drawable/ic_menu_sort_by_size"
+                        android:drawablePadding="10dp"
+                        android:onClick="goToViewMyContractProjects"
+                        android:padding="10dp"
+                        android:text="@string/viewMyProjectContracts"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/BuyOrder"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnGoBuyOrder"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/approve_btns"
+                        android:drawableTop="@android:drawable/ic_input_add"
+                        android:drawablePadding="10dp"
+                        android:onClick="goToAddNewBuyOrder"
+                        android:padding="10dp"
+                        android:text="@string/addnewbuyorder"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/btnViewPurchase"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/approve_btns"
+                        android:drawableTop="@android:drawable/ic_menu_sort_by_size"
+                        android:drawablePadding="10dp"
+                        android:onClick="goToViewPurchase"
+                        android:padding="10dp"
+                        android:text="@string/viewpurchase"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <Button
-                android:id="@+id/AddNewProjectContract"
+                android:id="@+id/ViewCatalogs"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="2dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/approve_btns"
-                android:drawableTop="@android:drawable/ic_input_add"
+                android:drawableStart="?attr/actionModePasteDrawable"
                 android:drawablePadding="10dp"
-                android:onClick="goToAddNewProject"
-                android:padding="10dp"
-                android:text="@string/addNewProjectContract"
-                android:textAlignment="center"
+                android:gravity="start|center_vertical"
+                android:onClick="goToCatalogs"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="Catalogs"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textColor="@color/white" />
 
             <Button
-                android:id="@+id/ViewMyProjectContracts"
+                android:id="@+id/ViewDataSheet"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="2dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/approve_btns"
-                android:drawableTop="@android:drawable/ic_menu_sort_by_size"
+                android:drawableStart="?attr/actionModePasteDrawable"
                 android:drawablePadding="10dp"
-                android:onClick="goToViewMyContractProjects"
-                android:padding="10dp"
-                android:text="@string/viewMyProjectContracts"
-                android:textAlignment="center"
+                android:gravity="start|center_vertical"
+                android:onClick="goToDataSheet"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="Data Sheet"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textColor="@color/white" />
+
         </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/BuyOrder"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnGoBuyOrder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/approve_btns"
-            android:drawableTop="@android:drawable/ic_input_add"
-            android:drawablePadding="10dp"
-            android:padding="10dp"
-            android:text="@string/addnewbuyorder"
-            android:textAlignment="center"
-            android:onClick="goToAddNewBuyOrder"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/btnViewPurchase"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/approve_btns"
-            android:drawablePadding="10dp"
-            android:padding="10dp"
-            android:drawableTop="@android:drawable/ic_menu_sort_by_size"
-            android:text="@string/viewpurchase"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:onClick="goToViewPurchase"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
-    </LinearLayout>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/ViewCatalogs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/approve_btns"
-        android:drawableStart="?attr/actionModePasteDrawable"
-        android:drawablePadding="10dp"
-        android:gravity="start|center_vertical"
-        android:onClick="goToCatalogs"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:text="Catalogs"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/ViewDataSheet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/approve_btns"
-        android:drawableStart="?attr/actionModePasteDrawable"
-        android:drawablePadding="10dp"
-        android:gravity="start|center_vertical"
-        android:onClick="goToDataSheet"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:text="Data Sheet"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
+    </ScrollView>
 
 </LinearLayout>

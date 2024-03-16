@@ -20,7 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_weight="1"
-        android:background="@drawable/no_curve_btn"
+        android:background="@drawable/shaer_btn"
+        android:layout_marginHorizontal="2dp"
         android:text="share"
         android:textSize="10sp" />
 
@@ -29,7 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_weight="1"
-        android:background="@drawable/no_curve_btn"
+        android:layout_marginHorizontal="2dp"
+        android:background="@drawable/approve_btn_background"
         android:text="View File"
         android:textSize="10sp" />
 
